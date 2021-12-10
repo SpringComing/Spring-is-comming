@@ -100,12 +100,6 @@
 			</div>
 		</form>
 	</div>
-	<div id="Progress_Loading">
-		<!-- 로딩바 -->
-		<img src="/assets/images/loading.gif" />
-	</div>
-
-
 
 </body>
 
@@ -149,7 +143,6 @@
 		</div>
 	</div>
 </div>
-
 <script src="/assets/js/joinscript.js"></script>
 <script>
 	$(document).ready(function() {

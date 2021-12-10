@@ -31,7 +31,7 @@ public class MailSender {
 	}
 
 	public String getRandNum() {
-		int rand = (int) (Math.random() * 9999) + 1;
+		int rand = (int) (Math.random() * (9999-1000)) + 1000;
 		String randNum = rand + "";
 
 		return randNum;

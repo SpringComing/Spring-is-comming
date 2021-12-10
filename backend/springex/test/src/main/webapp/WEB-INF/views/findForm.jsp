@@ -5,8 +5,12 @@
 <head>
 <link href="${pageContext.request.contextPath }/assets/css/find.css"
 	rel="stylesheet" type="text/css">
+<link
+	href="${pageContext.request.contextPath }/assets/css/jquery.modal.css"
+	rel="stylesheet" type="text/css">
 
 <script src="http://code.jquery.com/jquery-latest.js"></script>
+
 <title>Insert title here</title>
 </head>
 <body>
@@ -50,14 +54,14 @@
 									<th scope="row"><div>이름</div></th>
 									<td><div>
 											<input type="text" id="name" name="name" class="MS_input_txt"
-												value="" maxlength="30" title="이름" placeholder="">
+												maxlength="30" title="이름">
 										</div></td>
 								</tr>
 								<tr id="find_id_email_wrap">
 									<th scope="row"><div>휴대폰 번호</div></th>
 									<td><div>
 											<input type="text" id="tel" name="tel" class="MS_input_txt"
-												value="" maxlength="80" title="이메일 주소" placeholder="">
+												value="" maxlength="30" title="휴대폰 번호">
 										</div></td>
 								</tr>
 							</tbody>
@@ -69,7 +73,7 @@
 						<br />
 
 						<div class="btn-area">
-							<a class="info-confirm btn_point btn_03" href="#"
+							<a class="info-confirm btn_point btn_03"
 								onclick="findId();">아이디 찾기</a> <a
 								class="info-confirm btn_white btn_03" href="/loginForm">로그인</a>
 						</div>
@@ -108,8 +112,8 @@
 										<th scope="row"><div>이메일</div></th>
 										<td>
 											<div>
-												<input type="text" name="email" id="email" value=""
-													class="MS_input_txt" size="10" maxlength="12">
+												<input type="text" name="email2" id="email2"
+													class="MS_input_txt" maxlength="30">
 											</div>
 										</td>
 									</tr>
@@ -118,8 +122,7 @@
 										<td>
 											<div>
 												<input type="text" id="tel2" name="tel2"
-													class="MS_input_txt" value="" maxlength="80" title="이메일 주소"
-													placeholder=""
+													class="MS_input_txt" value="" maxlength="30" title="휴대폰 번호"
 													onfocus="document.form1.focus_ok.value='yes'">
 											</div>
 										</td>
@@ -127,15 +130,15 @@
 								</tbody>
 							</table>
 							<br />
-							<center>
-								<div>일치하는 계정이 없습니다.</div>
-							</center>
+
+							<div id="checkUser2"
+								style="color: red; font-weight: bold; text-align: center;"></div>
+
 							<br />
 
 							<div class="btn-area">
-								<a href="javascript:find_type('find_pw');"
-									class="btn_point btn_03">비밀번호 찾기</a> <a href="/loginForm"
-									class="btn_white btn_03">로그인</a>
+								<a class="btn_point btn_03" onclick="findPwd();">비밀번호
+									찾기</a> <a href="/loginForm" class="btn_white btn_03">로그인</a>
 							</div>
 						</div>
 					</div>
@@ -160,9 +163,8 @@
 
 					<div id="authCheckLayer" class="phone_authno_wrap">
 						<h5 class="font-Noto">
-							<span>회원가입 시 등록한 휴대폰 번호</span><br>
-							<span id="inputtel"></span> <span data-langcode="H518">으로<br>4자리
-								인증번호가 전송되었습니다.
+							<span>회원가입 시 등록한 휴대폰 번호</span><br> <span id="inputtel"></span>
+							<span data-langcode="H518">으로<br>4자리 인증번호가 전송되었습니다.
 							</span>
 						</h5>
 						<div class="phone_authno ipt_center">
@@ -176,14 +178,13 @@
 						<div class="errormsg">
 							<!-- 인증실패시 메시지 -->
 							<p id="authErrMsgLayer" style="">
-								<span id="authErrMsg"></span><a id="authReSend" href="#"
-									onclick="stopTimer(); $('#authLayerTemp').hide(); checkInformation();"
+								<span id="authErrMsg"></span><a id="authReSend" href=""
+									onclick="stopTimer(); $('#authLayerTemp').hide(); find();"
 									data-langcode="H520">재전송</a>
 							</p>
 						</div>
 						<button id="authSendBtn" class="btnst02 off"
-							style="width: 300px; display: inline-block;"
-							onclick="authTel();">확인</button>
+							style="width: 300px; display: inline-block;" onclick="authTel();">확인</button>
 						<br />
 					</div>
 
@@ -201,9 +202,7 @@
 		});
 
 		$(document).ready(function() {
-
 			$('#authLayerTemp').hide();
-
 		})
 	</script>
 
