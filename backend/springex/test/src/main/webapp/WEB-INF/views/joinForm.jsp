@@ -14,6 +14,9 @@
 	<link href="${pageContext.request.contextPath }/assets/css/jquery.modal.css"
 	rel="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-latest.js"></script>
+<style media="screen">
+
+</style>
 <title>회원가입 페이지</title>
 </head>
 <body>

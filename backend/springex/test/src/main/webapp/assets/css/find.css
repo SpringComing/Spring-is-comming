@@ -1,5 +1,5 @@
 body{
-  background-color: #FFF5F3;
+  background-color: #E8FFE8;
 
 }
 
@@ -137,8 +137,8 @@ div {
     box-sizing: border-box;
 }
 .btn_point {
-    border: 1px solid #dab799;
-    background: #E9C2CC;
+    border: 1px solid black;
+    background: #E0F0FF;
     color: black;
     font-size: 11px;
     line-height: 1;
@@ -160,8 +160,8 @@ a {
 }
 
 .btn_white {
-    border: 1px solid #f3f3f3;
-    background: #fff;
+    border: 1px solid black;
+    background: #FFFFE0;
     color: black;
     font-size: 11px;
     line-height: 1;
@@ -199,7 +199,7 @@ input {
     line-height: 26px;
     padding: 2px 8px;
     border-width: medium;
-    background: #E7E7E7;
+    background: white;
     color: #666;
     font-size: 11px;
     box-sizing: border-box;
