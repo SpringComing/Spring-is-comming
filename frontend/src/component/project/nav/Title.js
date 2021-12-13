@@ -35,14 +35,7 @@ import React from "react";
 const Title = () => {
   return (
     <div className="kanban__nav-name">
-        <div className="kanban-name">프로젝트</div>
-        {/*<div className="kanban-arrow" onClick={this.handleBoardOpen}>*/}
-        <div className="kanban-arrow" >
-          <i className="material-icons">
-            {/*board ? "expand_more" : "chevron_right"*/}
-            chevron_right
-          </i>
-        </div>
+        <div className="kanban-name">프로젝트</div>  
     </div>
   );
 };

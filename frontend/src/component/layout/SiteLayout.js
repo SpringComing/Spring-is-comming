@@ -12,8 +12,8 @@ export default function SiteLayout({children}) {
                     <Header />
                     <Sidebar />
                     {children}
-                    <Footer/>
                 </div>
+                    <Footer/>
             </div>
     );
 }
