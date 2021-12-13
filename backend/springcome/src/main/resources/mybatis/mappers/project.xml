@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="project">
+
+	<select id="findAllByNo"  parameterType="long" resultType="projectvo">
+		<![CDATA[
+		select p.no, p.name, p.description, p.start_date as startDate, p.end_date as endDate, p.reg_date as regDate, p.status, a.sequence, a.color, a.role, a.status as attendStatus
+        from attend a join project p on a.project_no = p.no
+        where a.user_no = #{no}
+		]]>
+	</select>
+	
+</mapper>
