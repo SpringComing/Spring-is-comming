@@ -11,13 +11,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.douzone.mysite.auth.PrincipalDetailsService;
 
-
-// 사용자의 HTTP 요청 경로에 대해 접근 제한과 같은 보안 관련 처리를 설정하는 클래스
+/*
+* 작성자: 이동현
+* 기능: 사용자의 HTTP 요청 경로에 대해 접근 제한과 같은 보안 관련 처리를 설정하는 클래스
+*/
 
 @Configuration
 @EnableWebSecurity // 스프링 시큐리티 필터가 스프링 필터체인에 등록이 됨.
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
+	// Bean객체 생성 (암호화)
 	@Bean
 	public BCryptPasswordEncoder encodePwd() {
 		return new BCryptPasswordEncoder();
@@ -26,6 +29,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private PrincipalDetailsService principalDetailsService;
 	
+	
+	/*
+	* 작성자: 이동현
+	* 기능: Security 관련 보안 설정을 하는 함수
+	*/
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {

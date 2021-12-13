@@ -18,6 +18,14 @@
 		]]>
 	</select>
 	
+	<select id="findPassword" parameterType="map" resultType="UserVo">
+		<![CDATA[
+		select *
+		from user
+		where email = #{e } and tel = #{t }
+		]]>
+	</select>
+	
 	<insert id="join" parameterType="uservo">
 		<![CDATA[
 		insert
@@ -25,6 +33,18 @@
 		values (now(),#{email },#{name }, #{password }, #{tel }, #{birth })
 		]]>
 	</insert>
+	
+	<update id="updatePWD" parameterType="map">
+		<![CDATA[
+		update user
+		   set password = #{p }
+		 where email=#{e }
+		]]>
+	</update>
+	
+
+	
+	
 	
 			
 </mapper>

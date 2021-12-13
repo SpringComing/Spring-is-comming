@@ -23,8 +23,18 @@ public class UserService {
 		return userRepository.findByUseremail(useremail);
 	}
 	
-	public List<UserVo> findEmail(String name, String tel) {
+	public UserVo findEmail(String name, String tel) {
 		return userRepository.findEmail(name, tel);
+	}
+	
+	public UserVo findPassword(String email, String tel) {
+		return userRepository.findPassword(email, tel);
+	}
+	
+	public int updatePWD(String email, String password) {
+
+		return userRepository.updatePWD(email, password);
+
 	}
 
 }

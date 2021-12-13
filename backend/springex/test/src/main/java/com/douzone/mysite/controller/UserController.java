@@ -138,13 +138,13 @@ public class UserController {
 		
 		String name = request.getParameter("name");
 		String tel = request.getParameter("tel");
-		String authCode = Integer.toString(((int)(Math.random() * 9999) + 1));
+		String authCode = Integer.toString(((int)(Math.random() * (9999-1000)) + 1000));
 		
-		List<UserVo> list = userService.findEmail(name, tel);
+		UserVo vo = userService.findEmail(name, tel);
 		
 		Map<String, String> map = new HashMap<>();
 		
-		if(list.size() == 0) {
+		if(vo == null) {
 			map.put("result", "fail");
 			return map;
 		}else {
@@ -159,20 +159,98 @@ public class UserController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/find2", method = RequestMethod.POST)
+	public Map find2(HttpServletRequest request) {
+		
+		String email2 = request.getParameter("email2");
+		String tel = request.getParameter("tel");
+		String authCode = Integer.toString(((int)(Math.random() * (9999-1000)) + 1000));
+		
+		System.out.println(authCode);
+		
+		UserVo vo = userService.findPassword(email2, tel);
+		Map<String, String> map = new HashMap<>();
+		
+		if(vo == null) {
+			map.put("result", "fail");
+			return map;
+		}else {
+			map.put("result", "success");
+			map.put("rand", Sha256.getHash(authCode));
+			return map;
+		}
+
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/auth", method = RequestMethod.POST)
-	public String auth(HttpServletRequest request) {
+	public Map auth(HttpServletRequest request) {
 		
 		String input = request.getParameter("input");
 		String cookie = request.getParameter("cookie");
+		String name = request.getParameter("name");
+		String tel = request.getParameter("tel");
+		
+		Map<String, String> map = new HashMap<>();
 		
 		if(Sha256.getHash(input).equals(cookie)) {
-			System.out.println("인증번호 일치");
-			return "success";
+			UserVo vo = userService.findEmail(name, tel);			
+			map.put("result", "success");
+			map.put("email", vo.getEmail());
+			map.put("join_date", vo.getJoin_date());
+			return map;
 		}else {
-			System.out.println("불일치");
-			return "fail";
+			map.put("result", "fail");
+			return map;
 		}
 
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/auth2", method = RequestMethod.POST)
+	public Map auth2(HttpServletRequest request) {
+		
+		String input = request.getParameter("input");
+		String cookie = request.getParameter("cookie");
+		String email2 = request.getParameter("email2");
+		String tel2 = request.getParameter("tel2");
+		
+		Map<String, String> map = new HashMap<>();
+		
+		if(Sha256.getHash(input).equals(cookie)) {
+			UserVo vo = userService.findPassword(email2, tel2);	
+			map.put("result", "success");
+			return map;
+		}else {
+			map.put("result", "fail");
+			return map;
+		}
+
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/changePWD", method = RequestMethod.POST)
+	public String changePWD(HttpServletRequest request) {
+		
+		String email2 = request.getParameter("email2");
+		String pass1 = request.getParameter("pass1");
+		String pass2 = request.getParameter("pass2");
+		String passwordPattern = "^[a-zA-Z0-9]{5,30}$";
+		
+		if(!pass1.equals(pass2)) {
+			return "nomatch";
+		}else if(!pass1.matches(passwordPattern)) {
+			return "fail";
+		}else {
+			int result = userService.updatePWD(email2, bCryptPasswordEncoder.encode(pass1));
+			
+			System.out.println(result);
+			if(result == 1) {
+				return "success";
+			}else {
+				return "servererror";
+			}
+		}
 	}
 
 }

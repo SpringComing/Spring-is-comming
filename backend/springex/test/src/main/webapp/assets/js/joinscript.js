@@ -47,11 +47,11 @@ function emailAuth() {
 		data: sendData,
 		success: function(resp) {
 			if (resp == 'success') {
+				stopTimer();
 				$('#authLayerTemp').hide();
 				successBox('회원가입 성공');
 
 			} else if (resp == 'serverError') {
-				console.log('서버에러');
 				errorBox('서버 상태를 확인하세요.');
 
 			} else {

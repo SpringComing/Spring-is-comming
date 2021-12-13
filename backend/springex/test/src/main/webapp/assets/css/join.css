@@ -5,10 +5,10 @@
 }
 
 body{
-  background-image: url('/assets/images/background.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed; 
   background-size: 100% 100%;
+  background-color: #E8FFE8;
 }
 
 ul, li {
@@ -24,7 +24,7 @@ a {
 	width: 550px;
 	margin: 30px auto;
 	padding: 15px 20px;
-	background: #FFF5F3;
+	background: #E0F0FF;
 	color: #2b2e4a;
 	font-size: 14px;
 	text-align: left;

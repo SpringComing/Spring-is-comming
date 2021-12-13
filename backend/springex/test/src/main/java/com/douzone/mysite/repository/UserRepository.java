@@ -17,29 +17,49 @@ public class UserRepository {
 	private SqlSession sqlSession;
 
 	public boolean join(UserVo vo) {
-		
+
 		int count = sqlSession.insert("user.join", vo);
 
 		return count == 1;
 
 	}
-	
+
 	public UserVo findByUseremail(String useremail) {
-		
+
 		Map<String, String> map = new HashMap<>();
 		map.put("e", useremail);
 
-		return sqlSession.selectOne("findByUseremail",map); 
+		return sqlSession.selectOne("findByUseremail", map);
 	}
-	
-	public List<UserVo> findEmail(String name, String tel) {
-		
+
+	public UserVo findEmail(String name, String tel) {
+
 		Map<String, String> map = new HashMap<>();
 		map.put("n", name);
 		map.put("t", tel);
-		
-		return sqlSession.selectList("findEmail",map);
-		
+
+		return sqlSession.selectOne("findEmail", map);
+
+	}
+
+	public UserVo findPassword(String email, String tel) {
+
+		Map<String, String> map = new HashMap<>();
+		map.put("e", email);
+		map.put("t", tel);
+
+		return sqlSession.selectOne("findPassword", map);
+
+	}
+	
+	public int updatePWD(String email, String password) {
+
+		Map<String, String> map = new HashMap<>();
+		map.put("e", email);
+		map.put("p", password);
+
+		return sqlSession.update("updatePWD", map);
+
 	}
 
 }

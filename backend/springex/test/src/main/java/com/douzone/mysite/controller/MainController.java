@@ -1,10 +1,7 @@
 package com.douzone.mysite.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +47,11 @@ public class MainController {
 	@RequestMapping({"/findForm"})
 	public String findForm() {
 		return "findForm";
+	}
+	
+	@RequestMapping({"/test"})
+	public String testForm() {
+		return "test";
 	}
 	
 }

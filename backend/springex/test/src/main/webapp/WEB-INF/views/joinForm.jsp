@@ -14,6 +14,9 @@
 	<link href="${pageContext.request.contextPath }/assets/css/jquery.modal.css"
 	rel="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-latest.js"></script>
+<style media="screen">
+
+</style>
 <title>회원가입 페이지</title>
 </head>
 <body>
@@ -100,12 +103,6 @@
 			</div>
 		</form>
 	</div>
-	<div id="Progress_Loading">
-		<!-- 로딩바 -->
-		<img src="/assets/images/loading.gif" />
-	</div>
-
-
 
 </body>
 
@@ -149,7 +146,6 @@
 		</div>
 	</div>
 </div>
-
 <script src="/assets/js/joinscript.js"></script>
 <script>
 	$(document).ready(function() {

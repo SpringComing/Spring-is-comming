@@ -16,6 +16,11 @@ import com.douzone.mysite.vo.UserVo;
 
 // Security Session => Authentication => UserDetails (PrincipalDetails)
 
+/*
+* 작성자: 이동현
+* 기능: UserDetails를 상속받는 즉, Authentification 클래스에 감싸져 Security Session으로 들어가는 클래스
+*/
+
 public class PrincipalDetails implements UserDetails{
 
 	private UserVo userVo; // 컴포지션
@@ -24,7 +29,10 @@ public class PrincipalDetails implements UserDetails{
 		this.userVo = userVo;
 	}
 	
-	// 해당 User의 권한을 리턴하는 곳
+	/*
+	* 작성자: 이동현
+	* 기능: 해당 유저의 권한을 확인
+	*/
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> collect = new ArrayList<>();
