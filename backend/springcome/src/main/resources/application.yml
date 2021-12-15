@@ -50,13 +50,13 @@ spring:
 
    # datasource
    datasource:
-      username: webdb
-      password: blahblha#!@0909#@!
+      username: spring
+      password: spring
       driver-class-name: org.mariadb.jdbc.Driver
-      url: jdbc:mysql://227.8.9.10:3306/webdb?characterEncoding=utf8
+      url: jdbc:mysql://34.64.73.89:3306/spring?characterEncoding=utf8
       hikari:
          minimum-idle: 100
-         maximum-pool-size: 200
+         maximum-pool-size: 200 
 
 ---
 

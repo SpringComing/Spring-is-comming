@@ -8,7 +8,27 @@
 		select p.no, p.name, p.description, p.start_date as startDate, p.end_date as endDate, p.reg_date as regDate, p.status, a.sequence, a.color, a.role, a.status as attendStatus
         from attend a join project p on a.project_no = p.no
         where a.user_no = #{no}
+        order by a.sequence
 		]]>
 	</select>
 	
+	<insert id="insertProject" parameterType="projectvo" useGeneratedKeys="true" keyProperty="no">
+		<![CDATA[
+		insert into project values(null,#{name },#{description  },#{startDate  },#{endDate  },default,now());
+		]]>
+	</insert>
+	
+	<insert id="insertAttend" parameterType="map" >
+		<![CDATA[
+		insert into attend values(#{ userNo },#{ projectNo },'ADMIN',default,'green',#{ sequence });
+		]]>
+	</insert>
+	
+	<select id="findLastSequence"  parameterType="long" resultType="long">
+		<![CDATA[
+		select max(sequence) 
+		from attend
+		where user_no = #{ userNo };
+		]]>
+	</select>
 </mapper>
