@@ -51,7 +51,6 @@ const Project = () => {
     }
   },[]);
 
-  
 
     return (
       <SiteLayout>

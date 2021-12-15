@@ -56,14 +56,16 @@
 }
 
 .project_reg {
+    
     margin-bottom: 60px;
 
     .text {
-
-        margin: 15px 0px 0px 30px; 
+        display: flex;
+        
+        margin: 15px 0px 15px 0px; 
 
         span {
-            width: 170px;
+            width: 120px;
             height: 30px;
             font-size: 28px;
             font-weight: 400;
