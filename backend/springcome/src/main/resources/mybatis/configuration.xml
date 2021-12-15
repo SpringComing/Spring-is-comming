@@ -3,8 +3,10 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="springcome.vo.UserVo" alias="uservo" />
+		<typeAlias type="springcome.vo.ProjectVo" alias="projectvo" />
 	</typeAliases>
 	<mappers>
 		<mapper resource="mybatis/mappers/user.xml" />
+		<mapper resource="mybatis/mappers/project.xml" />
 	</mappers>
 </configuration>

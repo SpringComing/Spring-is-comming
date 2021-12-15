@@ -13,6 +13,11 @@ public class UserVo {
 	public String getTel() {
 		return tel;
 	}
+	@Override
+	public String toString() {
+		return "UserVo [email=" + email + ", password=" + password + ", name=" + name + ", tel=" + tel + ", birth="
+				+ birth + ", join_date=" + join_date + ", profile=" + profile + "]";
+	}
 	public void setTel(String tel) {
 		this.tel = tel;
 	}

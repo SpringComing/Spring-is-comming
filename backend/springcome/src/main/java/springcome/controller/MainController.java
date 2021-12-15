@@ -10,7 +10,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import springcome.auth.PrincipalDetails;
 import springcome.vo.UserVo;
 
-@Controller // View를 리턴
+/*
+ * 클래스: MainController
+ * 작성자: 이동현
+ * 책임: 요청에 따른 View를 리턴 (회원가입, ID/PWD찾기, 로그인, 메인)
+ */
+
+@Controller
 public class MainController {
 	
 	@RequestMapping({"", "/main"})
@@ -48,10 +54,5 @@ public class MainController {
 	public String findForm() {
 		return "findForm";
 	}
-	
-	@RequestMapping({"/test"})
-	public String testForm() {
-		return "test";
-	}
-	
+		
 }

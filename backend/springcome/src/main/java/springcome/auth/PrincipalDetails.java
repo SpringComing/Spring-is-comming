@@ -27,6 +27,7 @@ public class PrincipalDetails implements UserDetails {
 	private UserVo userVo; // 컴포지션
 
 	public PrincipalDetails(UserVo userVo) {
+		System.out.println("테스트 : " + userVo);
 		this.userVo = userVo;
 	}
 
@@ -61,6 +62,7 @@ public class PrincipalDetails implements UserDetails {
 	public String getUsername() {
 		return userVo.getName();
 	}
+	
 
 	public String getJoindate() {
 		return userVo.getJoin_date();
