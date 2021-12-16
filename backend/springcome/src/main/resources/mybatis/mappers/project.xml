@@ -31,4 +31,12 @@
 		where user_no = #{ userNo };
 		]]>
 	</select>
+	
+	<update id ="updateBasic" parameterType="projectvo">
+		<![CDATA[
+		update project
+		set name = #{name }, description = #{description }, start_date = #{startDate } , end_date = #{endDate } 
+		where no = #{ no }
+		]]>
+	</update>
 </mapper>

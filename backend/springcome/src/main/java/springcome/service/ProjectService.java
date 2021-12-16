@@ -25,9 +25,8 @@ public class ProjectService {
 			return false;
 		}
 		
-		System.out.println("----------------------------------------------------projectVo : " + projectVo);
-		
-		
+//		System.out.println("----------------------------------------------------projectVo : " + projectVo);
+
 		Long lastSequence = projectRepository.findLastSequence(userNo);
 		
 		if(projectRepository.insertAttend(userNo, projectVo.getNo(), lastSequence + 1) == false) {
@@ -36,6 +35,10 @@ public class ProjectService {
 		}
 		
 		return true;
+	}
+
+	public boolean updateBasicProject( ProjectVo projectVo) {
+		return projectRepository.updateBasic( projectVo);
 	}
 
 }

@@ -36,4 +36,8 @@ public class ProjectRepository {
 		return sqlSession.selectOne("project.findLastSequence", userNo);
 	}
 
+	public boolean updateBasic(ProjectVo projectVo) {
+		return sqlSession.update("project.updateBasic", projectVo) == 1;
+	}
+
 }

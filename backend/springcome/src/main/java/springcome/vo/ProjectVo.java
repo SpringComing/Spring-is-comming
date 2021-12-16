@@ -7,16 +7,16 @@ public class ProjectVo {
 	private String startDate;
 	private String endDate;
 	private String regDate;
-	private String status;
+	private int status;
 	private Long sequence;
 	private String color;
 	private String role;
 	private int attendStatus;
 	
-	public String getStatus() {
+	public int getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 	public int getAttendStatus() {
