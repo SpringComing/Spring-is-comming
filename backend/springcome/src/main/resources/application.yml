@@ -1,7 +1,7 @@
 # active spring boot profile
 spring:
    profiles:
-      active: dev   
+      active: dev
 
 ---
 
@@ -20,6 +20,7 @@ spring:
          suffix: .jsp
 
 
+
 ---
 
 # dev profile - spring boot configuration
@@ -28,17 +29,16 @@ spring:
    config:
       activate:
          on-profile: dev
-
+      
    # datasource
    datasource:
-      username: spring
-      password: spring
+      username: root
+      password: root
       driver-class-name: org.mariadb.jdbc.Driver
-      url: jdbc:mysql://34.64.73.89:3306/spring?characterEncoding=utf8
+      url: jdbc:mysql://127.0.0.1:3306/teamproject?characterEncoding=utf8
       hikari:
-         minimum-idle: 100
-         maximum-pool-size: 200    
-  
+         minimum-idle: 10
+         maximum-pool-size: 20
 
 ---
 
@@ -53,7 +53,11 @@ spring:
       username: spring
       password: spring
       driver-class-name: org.mariadb.jdbc.Driver
+<<<<<<< HEAD
       url: jdbc:mysql://34.64.73.89:3306/spring?characterEncoding=utf8
+=======
+      url: jdbc:mysql://127.0.0.1:3306/teamproject?characterEncoding=utf8
+>>>>>>> a881cc563d725673d9b1518bb53555d070e1e6fc
       hikari:
          minimum-idle: 100
          maximum-pool-size: 200 
@@ -62,7 +66,7 @@ spring:
 
 # server
 server:
-   port: 7777
+   port: 8080
    servlet:
      context-path: /
      encoding:
@@ -77,12 +81,4 @@ server:
 # mybatis
 mybatis:
    config-location: classpath:mybatis/configuration.xml
-
-
----
-
-# logging
-logging:
-   config: classpath:logback.xml
-
 

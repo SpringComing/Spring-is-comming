@@ -3,7 +3,7 @@
 
 <mapper namespace="project">
 
-	<select id="findAllByNo"  parameterType="long" resultType="projectvo">
+	<select id="findAllByNo" parameterType="long" resultType="projectvo">
 		<![CDATA[
 		select p.no, p.name, p.description, p.start_date as startDate, p.end_date as endDate, p.reg_date as regDate, p.status, a.sequence, a.color, a.role, a.status as attendStatus
         from attend a join project p on a.project_no = p.no
@@ -11,6 +11,7 @@
         order by a.sequence
 		]]>
 	</select>
+<<<<<<< HEAD
 	
 	<insert id="insertProject" parameterType="projectvo" useGeneratedKeys="true" keyProperty="no">
 		<![CDATA[
@@ -39,4 +40,15 @@
 		where no = #{ no }
 		]]>
 	</update>
+=======
+
+	<select id="testFind" resultType="projectvo">
+		<![CDATA[
+		select no,name,description,start_date as startDate, end_date as endDate, reg_date as regDate
+		from project;
+
+		]]>
+	</select>
+
+>>>>>>> a881cc563d725673d9b1518bb53555d070e1e6fc
 </mapper>
