@@ -58,6 +58,7 @@
 		}else{
 			$("input:checkbox[id='check']").prop("checked", false); 
 		}
+
 	}
 	
 	

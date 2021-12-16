@@ -14,5 +14,6 @@
 		<mapper resource="mybatis/mappers/process.xml" />
 		<mapper resource="mybatis/mappers/task.xml" />
 		<mapper resource="mybatis/mappers/checklist.xml" />
+
 	</mappers>
 </configuration>

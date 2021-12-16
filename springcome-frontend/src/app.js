@@ -5,6 +5,7 @@ import Logo from "./components/Logo/Logo.js";
 import { Switch, Route } from "react-router-dom";
 import Header from "./components/Header/Header.js";
 import Basic from "./components/Routes/Basic/Basic.js";
+import Project from "./components/Routes/projects/Project.js";
 import Manage from "./components/Routes/Manage/Manage.js";
 import Reports from "./components/Routes/Reports/Reports.js";
 import Schedule from "./components/Routes/Schedule/Schedule.js";
@@ -19,7 +20,15 @@ class App extends React.Component {
                     <Header />
                     <Sidebar />
                     <Switch>
-                        <Route exact path="/" component={Basic} />
+                        {
+                            //*/
+                            <Route exact path="/" component={Basic} />
+                            
+                            /*/
+                        
+                            <Route exact path="/" component={Project} /> 
+                            //*/
+                        }
                         <Route path="/manage" component={Manage} />
                         <Route path="/schedule" component={Schedule} />
                         <Route path="/reports" component={Reports} />

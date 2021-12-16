@@ -17,5 +17,10 @@ public class ProjectRepository {
 	public List<ProjectVo> findAll(Long no) {
 		return sqlSession.selectList("project.findAllByNo",no);
 	}
+	
+	public List<ProjectVo> findTest(){
+		return sqlSession.selectList("project.testFind");
+		
+	}
 
 }

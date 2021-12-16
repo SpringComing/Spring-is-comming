@@ -17,5 +17,9 @@ public class ProjectService {
 	public List<ProjectVo> getAll(Long no) {
 		return projectRepository.findAll(no);
 	}
+	
+	public List<ProjectVo> findTest(){
+		return projectRepository.findTest();
+	}
 
 }

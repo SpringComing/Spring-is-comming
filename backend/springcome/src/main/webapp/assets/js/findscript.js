@@ -2,6 +2,12 @@ var timer;
 var email;
 var type;
 
+/*
+* 함수: msg_time
+* 작성자: 이동현
+* 기능: 메일 / 휴대폰 인증 인증시간 카운트
+*/
+
 function msg_time() {   // 1초씩 카운트      
 	m = Math.floor(timer / 60) + "분 " + (timer % 60) + "초"; // 남은 시간 계산     
 	$("#authTime").text(m);
@@ -13,6 +19,12 @@ function msg_time() {   // 1초씩 카운트
 	}
 }
 
+/*
+* 함수: find
+* 작성자: 이동현
+* 기능: 아이디 찾기, 비밀번호 찾기 타입 선택
+*/
+
 function find() {
 
 	if (type == 1) {
@@ -23,6 +35,12 @@ function find() {
 
 }
 
+/*
+* 함수: stopTimer
+* 작성자: 이동현
+* 기능: 모달창 종료, 인증시간 만료 시 타이머 중지
+*/
+
 function stopTimer() {
 	$("#authTime").text('');
 	$("#authErrMsg").text('');
@@ -30,10 +48,22 @@ function stopTimer() {
 	clearInterval(tid);
 }
 
+/*
+* 함수: stopTimer
+* 작성자: 이동현
+* 기능: 타이머 실행
+*/
+
 function TimerStart() {
 	timer = 180;
 	tid = setInterval('msg_time()', 1000);
 };
+
+/*
+* 함수: authTel
+* 작성자: 이동현
+* 기능: 휴대폰 인증
+*/
 
 function authTel() {
 
@@ -108,7 +138,11 @@ function authTel() {
 }
 
 
-
+/*
+* 함수: authTel
+* 작성자: 이동현
+* 기능: 아이디 찾기
+*/
 
 function findId() {
 	type = 1;
@@ -142,11 +176,18 @@ function findId() {
 			}
 		},
 		error: function() {
+			console.log('여기들옴')
 			$("#checkUser").text('서버 상태를 확인하세요');
 		}
 	})
 
 }
+
+/*
+* 함수: authTel
+* 작성자: 이동현
+* 기능: 비밀번호 찾기
+*/
 
 function findPwd() {
 	type = 2;
@@ -186,12 +227,24 @@ function findPwd() {
 
 }
 
+/*
+* 함수: setCookie
+* 작성자: 이동현
+* 기능: 쿠키 설정
+*/
+
 function setCookie(cookie_name, value, miuntes) {
 	const exdate = new Date();
 	exdate.setMinutes(exdate.getMinutes() + miuntes);
 	const cookie_value = escape(value) + ((miuntes == null) ? '' : '; expires=' + exdate.toUTCString());
 	document.cookie = cookie_name + '=' + cookie_value;
 }
+
+/*
+* 함수: setCookie
+* 작성자: 이동현
+* 기능: 쿠키 가져오기
+*/
 
 function getCookie(cookie_name) {
 	var x, y;
@@ -207,6 +260,12 @@ function getCookie(cookie_name) {
 	}
 }
 
+/*
+* 함수: infoBox
+* 작성자: 이동현
+* 기능: 아이디 찾기 기능 수행 모달
+*/
+
 function infoBox(email) {
 	modal({
 		type: 'info',
@@ -214,6 +273,12 @@ function infoBox(email) {
 		text: email,
 	});
 }
+
+/*
+* 함수: warningBox
+* 작성자: 이동현
+* 기능: 비밀번호 찾기 기능 수행 모달
+*/
 
 function warningBox(txt) {
 	modal({
@@ -224,6 +289,12 @@ function warningBox(txt) {
 	});
 }
 
+/*
+* 함수: successBox
+* 작성자: 이동현
+* 기능: 아이디 찾기 / 비밀번호 찾기 성공 모달
+*/
+
 function successBox(txt) {
 	modal({
 		type: 'success',
@@ -233,6 +304,11 @@ function successBox(txt) {
 
 }
 
+/*
+* 함수: modal
+* 작성자: 이동현
+* 기능: 모달 설정
+*/
 
 function modal(e) {
 	return $.cModal(e)

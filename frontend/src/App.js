@@ -16,12 +16,10 @@ const App = () => {
                 <Route path="schedule" element={<Schedule />} />
                 <Route path="settings" element={<Settings />} />
                 <Route path='*' element={<Error404 />} />
+                <Route path='/api/checkSession'/>
             </Routes>
         </Router>
     );
 };
 
 export default App;
-
-
-
