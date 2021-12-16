@@ -1,18 +1,29 @@
-import React,{useState,useRef} from 'react';
+import React,{useState,useRef, useEffect} from 'react';
 import Modal from "react-modal";
-import ModalStyle from "../../../assets/css/component/project/ProjectModal.scss"
+import ModalStyle from "../../../assets/css/component/project/ProjectPeopleModal.scss"
 
 
 Modal.setAppElement('body');
 
-const ProjectAddModal = ({modalIsOpen, setModalIsOpen, getProject}) => {
-
-    const refForm = useRef(null);                             
-    const currentDate = new Date().toISOString().substring(0, 10); //현재 날짜 가져오기
-    const [startDate, setStartDate] = useState(currentDate);   //모달 input startDate 
-    const [endDate, setEndDate] = useState(currentDate);       //모달 input endDate
-    const [projectName, setProjectName] = useState("");        //모달 input projectName 
-    const [projectDesc, setProjectDesc] = useState("");        //모달 input projectDesc
+const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getProject, project}) => {
+    const refForm = useRef(null);                            
+    const currentDate = new Date().toISOString().substring(0, 10);  //현재 날짜 가져오기
+    const [startDate, setStartDate] = useState(currentDate);        //모달 input startDate 
+    const [endDate, setEndDate] = useState(currentDate);            //모달 input endDate
+    const [projectName, setProjectName] = useState("");             //모달 input projectName 
+    const [projectDesc, setProjectDesc] = useState("");             //모달 input projectDesc
+    const [flag, setFlag] = useState(true);                         //모달에 프로젝트 내용 넣기위한 플래그
+    
+    /**
+     * 모달에 프로젝트 내용 넣기
+     */
+    if(modalIsOpen && flag){
+        setFlag(false);
+        setStartDate(project.startDate);
+        setEndDate(project.endDate);
+        setProjectName(project.name);
+        setProjectDesc(project.description); 
+    }
     
 
    /**
@@ -21,7 +32,7 @@ const ProjectAddModal = ({modalIsOpen, setModalIsOpen, getProject}) => {
    * 기능: 모달 form 데이터 서버에 fetch
    */
    const handleSubmit = async (e) => {
-    console.log('insert');
+       
         e.preventDefault();
         try {
             //프로젝트 이름에 다른 문자열 없이 스페이스(공백)만 있으면 리턴
@@ -54,13 +65,14 @@ const ProjectAddModal = ({modalIsOpen, setModalIsOpen, getProject}) => {
 
             const jsonResult = await response.json();
 
+            //console.log(jsonResult);
 
             if (jsonResult.result !== 'success') {
                 throw new Error(`${jsonResult.result} ${jsonResult.message}`);
             }
             
-            // inser가 실패한경우
-            if (jsonResult.data === false) {
+            // insert가 실패한경우
+            if (jsonResult.data.result === false) {
                 alert("프로젝트 생성이 실패 했습니다.");
                 return;
             }
@@ -81,10 +93,7 @@ const ProjectAddModal = ({modalIsOpen, setModalIsOpen, getProject}) => {
    */
    const modalClose = () => {
 
-    setStartDate(currentDate);
-    setEndDate(currentDate);
-    setProjectName("");
-    setProjectDesc("");
+    setFlag(true);
 
     setModalIsOpen(false)
    }
@@ -101,7 +110,7 @@ const ProjectAddModal = ({modalIsOpen, setModalIsOpen, getProject}) => {
             overlayClassName={ ModalStyle.Overlay }>
             
             <div className={ ModalStyle.modal_header } >
-                <h2>프로젝트</h2>
+                <h2>프로젝트 팀원 설정</h2>
                 <span onClick={ () => modalClose() }>
                     <i className="material-icons">clear</i>
                 </span>
@@ -110,33 +119,38 @@ const ProjectAddModal = ({modalIsOpen, setModalIsOpen, getProject}) => {
                 className={ ModalStyle.project_reg }
                 ref={ refForm }
                 onSubmit={ handleSubmit } >
-                <div className={ ModalStyle.modal_input } >
-                    <span>프로젝트 이름</span>
-                    <input type='text'  
-                           name="projectName" 
-                           placeholder="프로젝트의 이름을 입력해주세요(필수)"
-                           value={ projectName }
-                           onChange={  (e) => setProjectName(e.target.value ) } />
-                </div>
-                {/* <div className={ModalStyle.modal_input} >
-                    <span >관리자</span>
-                    <input type='text'  />
-                </div> */}
-
+                
                 <div className={ ModalStyle.text }>
-                  <span>설명</span>
+                    <span>팀원 추가</span>
                 </div>
                 <div className={ ModalStyle.modal_textarea } >
                     <textarea name="projectDesc" 
-                              value={ projectDesc } 
-                              onChange={ (e) => setProjectDesc(e.target.value )}  
-                              />
+                            value={ projectDesc } 
+                            onChange={ (e) => setProjectDesc(e.target.value )}  />
                 </div>
 
-                <div className={ ModalStyle.text }>
-                  <span>기간</span>
+                {/* <div className={ ModalStyle.modal_input } >
+                    <span>프로젝트 팀원 설정</span>
+                    <input type='text'  
+                        name="projectName" 
+                        placeholder="프로젝트의 이름을 입력해주세요(필수)"
+                        value={ projectName }
+                        onChange={  (e) => setProjectName(e.target.value ) } />
+                </div> */}
+
+                {/* <div className={ ModalStyle.text }>
+                    <span>설명</span>
                 </div>
-                
+                <div className={ ModalStyle.modal_textarea } >
+                    <textarea name="projectDesc" 
+                            value={ projectDesc } 
+                            onChange={ (e) => setProjectDesc(e.target.value )}  />
+                </div> */}
+
+                <div className={ ModalStyle.text }>
+                    <span>기간</span>
+                </div>
+                            
                 <div className={ ModalStyle.modal_input } >
                     <span >시작</span>
                     <input type="date" name="startDate" value = { startDate }  onChange={ (e) => setStartDate(e.target.value) }/>
@@ -144,13 +158,14 @@ const ProjectAddModal = ({modalIsOpen, setModalIsOpen, getProject}) => {
                     <input type="date" name="endtDate" value = { endDate }  onChange={ (e) => setEndDate(e.target.value) }/>
                 </div>
             </form>
+
             <div className={ ModalStyle.modal_btn }>
               <button type="submit" 
                       form="project_reg"
                       onClick={ () => { 
                               refForm.current.dispatchEvent(new Event("submit", {cancelable: true, bubbles: true})); 
-                                } }>
-                <span>추가</span>
+                            } }>
+                <span>저장</span>
               </button>
             </div>
 
@@ -159,4 +174,4 @@ const ProjectAddModal = ({modalIsOpen, setModalIsOpen, getProject}) => {
     );
 };
 
-export default ProjectAddModal;
+export default ProjectPeopleModal;
