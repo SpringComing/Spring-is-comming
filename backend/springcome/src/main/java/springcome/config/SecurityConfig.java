@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		http.csrf();
+		http.csrf().disable();
 		http.authorizeRequests()
 			.antMatchers("/user/profile").authenticated()        // /user는 로그인 한 사람만
 			.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")      // 로그인 한 사람중에 ADMIN 권한이 있는자
