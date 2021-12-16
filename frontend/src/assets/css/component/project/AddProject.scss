@@ -17,14 +17,7 @@
     cursor: pointer;
     user-select: none;
     background-image: none;
-    border-radius: 5px;
     border: 1px solid transparent;
-
-    &:hover{
-      background: linear-gradient(to right, #bcdd28, #56d82f, #2fd892);
-      border: 1px solid;
-    }
-
   }
 }
 
