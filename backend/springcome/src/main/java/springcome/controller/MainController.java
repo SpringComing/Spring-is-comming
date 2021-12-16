@@ -1,14 +1,16 @@
 package springcome.controller;
 
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import springcome.auth.PrincipalDetails;
-import springcome.vo.UserVo;
 
 /*
  * 클래스: MainController
@@ -18,21 +20,21 @@ import springcome.vo.UserVo;
 
 @Controller
 public class MainController {
-	
+		
 	@RequestMapping({"", "/main"})
-	public String index(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
+	public String index(@AuthenticationPrincipal PrincipalDetails principalDetails, HttpServletRequest req, HttpServletResponse resp) {
 		
-		UserVo vo = new UserVo();
-		vo.setEmail(principalDetails.getEmail());
-		vo.setJoin_date(principalDetails.getJoindate());
-		vo.setBirth(principalDetails.getBirth());
-		vo.setName(principalDetails.getUsername());
-		
-
-		
-		model.addAttribute("UserVo",vo);
-		
-		return "index";
+//		UserVo vo = new UserVo();
+//		vo.setEmail(principalDetails.getEmail());
+//		vo.setJoin_date(principalDetails.getJoindate());
+//		vo.setBirth(principalDetails.getBirth());
+//		vo.setName(principalDetails.getUsername());
+//
+//		model.addAttribute("UserVo",vo);
+		Cookie cookie = new Cookie("useremail", principalDetails.getEmail());
+		cookie.setMaxAge(-1);
+		resp.addCookie(cookie);
+		return "redirect:http://localhost:3000/";
 	}
 	
 	@RequestMapping({"/user"})
@@ -46,7 +48,21 @@ public class MainController {
 	}
 	
 	@RequestMapping({"/loginForm"})
-	public String loginForm() {
+	public String loginForm(HttpServletRequest req, HttpServletResponse resp) {
+		
+		Cookie[] cookies = req.getCookies();
+		
+		if(cookies != null) {
+		
+		for(Cookie c : cookies) {
+			if(c.getName().equals("useremail")) {
+				c.setMaxAge(0);
+				resp.addCookie(c);
+			}
+		}
+		}
+		
+		
 		return "loginForm";
 	}
 	

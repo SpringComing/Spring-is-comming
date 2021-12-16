@@ -22,27 +22,4 @@ public class ProjectService {
 		return projectRepository.findTest();
 	}
 
-	public boolean addProject(Long userNo, ProjectVo projectVo) {
-		
-		if(projectRepository.insertProject(projectVo) == false) {
-			System.out.println("-------------------------------------------------insertProject failed");
-			return false;
-		}
-		
-//		System.out.println("----------------------------------------------------projectVo : " + projectVo);
-
-		Long lastSequence = projectRepository.findLastSequence(userNo);
-		
-		if(projectRepository.insertAttend(userNo, projectVo.getNo(), lastSequence + 1) == false) {
-			System.out.println("-------------------------------------------------insertAttend failed");
-			return false;
-		}
-		
-		return true;
-	}
-
-	public boolean updateBasicProject( ProjectVo projectVo) {
-		return projectRepository.updateBasic( projectVo);
-	}
-
 }

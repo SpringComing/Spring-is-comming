@@ -154,9 +154,9 @@
 		
 	})
 
-	$(document).ajaxSend(function(e, xhr, options) {
-		xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
-	});
+	//$(document).ajaxSend(function(e, xhr, options) {
+	//	xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	//});
 
 	$(function() {
 		$("#email").on('keyup', checkEmail);

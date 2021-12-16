@@ -176,6 +176,7 @@ function findId() {
 			}
 		},
 		error: function() {
+			console.log('여기들옴')
 			$("#checkUser").text('서버 상태를 확인하세요');
 		}
 	})
