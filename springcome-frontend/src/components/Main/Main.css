@@ -15,7 +15,7 @@
 .kanban__main-wrapper-opacity {
     background-color: var(--colorNav);
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     flex-wrap: wrap;
     margin: 0 50px 0 50px;
     opacity: 0.2;

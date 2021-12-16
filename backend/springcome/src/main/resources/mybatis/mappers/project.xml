@@ -11,7 +11,6 @@
         order by a.sequence
 		]]>
 	</select>
-<<<<<<< HEAD
 	
 	<insert id="insertProject" parameterType="projectvo" useGeneratedKeys="true" keyProperty="no">
 		<![CDATA[
@@ -40,7 +39,7 @@
 		where no = #{ no }
 		]]>
 	</update>
-=======
+
 
 	<select id="testFind" resultType="projectvo">
 		<![CDATA[
@@ -50,5 +49,5 @@
 		]]>
 	</select>
 
->>>>>>> a881cc563d725673d9b1518bb53555d070e1e6fc
+
 </mapper>

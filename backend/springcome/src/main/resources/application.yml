@@ -32,13 +32,13 @@ spring:
       
    # datasource
    datasource:
-      username: root
-      password: root
+      username: spring
+      password: spring
       driver-class-name: org.mariadb.jdbc.Driver
-      url: jdbc:mysql://127.0.0.1:3306/teamproject?characterEncoding=utf8
+      url: jdbc:mysql://34.64.73.89:3306/spring?characterEncoding=utf8
       hikari:
-         minimum-idle: 10
-         maximum-pool-size: 20
+         minimum-idle: 100
+         maximum-pool-size: 200
 
 ---
 
@@ -53,11 +53,7 @@ spring:
       username: spring
       password: spring
       driver-class-name: org.mariadb.jdbc.Driver
-<<<<<<< HEAD
       url: jdbc:mysql://34.64.73.89:3306/spring?characterEncoding=utf8
-=======
-      url: jdbc:mysql://127.0.0.1:3306/teamproject?characterEncoding=utf8
->>>>>>> a881cc563d725673d9b1518bb53555d070e1e6fc
       hikari:
          minimum-idle: 100
          maximum-pool-size: 200 
@@ -66,7 +62,7 @@ spring:
 
 # server
 server:
-   port: 8080
+   port: 7777
    servlet:
      context-path: /
      encoding:
