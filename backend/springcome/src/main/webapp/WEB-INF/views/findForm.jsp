@@ -81,6 +81,7 @@
 				</div>
 				<br /> <br />
 			</div>
+			</form>
 			<!--/#find_id/-->
 			<hr />
 			<br />
@@ -197,9 +198,9 @@
 
 	<script src="/assets/js/findscript.js"></script>
 	<script>
-		$(document).ajaxSend(function(e, xhr, options) {
-			xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
-		});
+		//$(document).ajaxSend(function(e, xhr, options) {
+		//	xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+		//});
 
 		$(document).ready(function() {
 			$('#authLayerTemp').hide();

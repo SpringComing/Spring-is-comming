@@ -1,24 +1,13 @@
 import React from 'react';
 import Description from './Description'
-import styles from '../../assets/css/component/project/ProjectCard.scss'
 
-const ProjectCard = ({ project, openModal }) => {
+const ProjectCard = ({ project }) => {
     return (
         <div className="backlog-color card-wrapper">
             <div className="card-wrapper__header">
-                <div className={ styles.backlog_name }>{ project.name }</div>
-                <div className="backlog-dots" >
-                    <div className="backlog-dots" 
-                        onClick={ () => openModal(project.no, 'people') }>
-                        <i className="material-icons">people</i>
-                    </div>
-                    <div className="backlog-dots" >
-                        <i className="material-icons"></i>
-                    </div>
-                    <div className="backlog-dots" 
-                        onClick={ () => openModal(project.no, 'update') }>
-                        <i className="material-icons">settings</i>
-                    </div>
+                <div className="backlog-name">{ project.name }</div>
+                <div className="backlog-dots">
+                    <i className="material-icons">clear</i>
                 </div>
             </div>
             <div className="cards">
