@@ -1,143 +1,92 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Process from './Process';
 import { DragDropContext } from "react-beautiful-dnd";
 import update from 'react-addons-update';
 
 const KanbanMain = ({processes, setProcesses}) => {
 
-    //const childRef = useRef();
+    // const [zindex, setZindex] = useState("1");
+
+    // const changeZindex = () => {
+    //   setZindex
+    // }
 
     const onDragEnd = (result) => { 
-      // droppableId : process.no
+      // droppableId : process의 index
       // dragableId : task.no
       // index : task의 index
 
-      /*if (!result.destination) return;
-      const { source, destination } = result;
-    
+      if (!result.destination) return;
+      let { source, destination } = result;
+
       if (source.droppableId !== destination.droppableId) { // 다른 프로세스에 놓았을 때
 
-
-        const sourceColumn = processes.filter(process => process.no == source.droppableId); //columns[source.droppableId];
-        const destColumn = processes.filter(process => process.no == destination.droppableId); //columns[destination.droppableId];
-        const sourceItems = [...sourceColumn.tasks];
-        const destItems = [...destColumn.tasks];
-        const [removed] = sourceItems.splice(source.index, 1);
+        let sourceColumn = processes[source.droppableId];
+        let destColumn = processes[destination.droppableId];
+        let sourceItems = sourceColumn.tasks;
+        let destItems = destColumn.tasks;
+        
+        let [removed] = sourceItems.splice(source.index, 1);
         destItems.splice(destination.index, 0, removed);
-        setProcesses({
-          ...processes,
-          [source.droppableId-1]: {
-            ...sourceColumn,
-            tasks: sourceItems
+
+        let updateProcesses = update(processes, {
+          [source.droppableId]: {
+            tasks: { $set: sourceItems }
           },
-          [destination.droppableId-1]: { 
-            ...destColumn,
-            tasks: destItems
+          [destination.droppableId]: {
+            tasks: { $set: destItems }
           }
         });
-      } else { // 다른 프로세스에 놓았을 때
 
-        update(processNo, sequence source)
-        const column = processes[source.droppableId-1];
-        const copiedTasks = [...column.tasks];
-        const removed = copiedTasks.splice(source.index, 1);
-        copiedTasks.splice(destination.index, 0, removed);
-        setProcesses({
-          ...processes,
-          [source.droppableId-1]: {
-            ...column,
-            tasks: copiedTasks
+        setProcesses(updateProcesses);
+
+      } else { // 같은 프로세스에 놓았을 때
+        let column = processes[source.droppableId];
+        let copiedItems = column.tasks;
+        let [removed] = copiedItems.splice(source.index, 1);
+        copiedItems.splice(destination.index, 0, removed);
+
+        let updateProcesses = update(processes, {
+          [source.droppableId]: {
+            tasks: { $set: copiedItems }
           }
         });
-      }*/
 
-      
-    };
-
-    /*const onDragEnd = (result) => {
-      
-      // droppableId : process.no
-      // dragableId : task.no
-      // index : task의 index
-
-        if (!result.destination) return;
-        const { source, destination } = result;
-
-        if (source.droppableId !== destination.droppableId) { // 다른 프로세스에 놓았을 때
-
-          updateProcesses = update()
-          const sourceP = processes[source.droppableId-1];
-          const destP = processes[destination.droppableId-1];
-
-          const sourceTs = [...sourceP.tasks];
-          const destTs = [...destP.tasks];
-          const [removed] = sourceTs.splice(source.index, 1);
-          destTs.splice(destination.index, 0, removed);
-/*
-          const updateSourceProcess = update(sourceP, {
-            tasks: {
-              $set: sourceTs
-            }
-          });
-
-          const updateDestinationProcess = update(destP, {
-            tasks: {
-              $set: destTs
-            }
-          });
-
-          let updateProcesses = update(processes, {
-            [source.droppableId-1]: {
-              tasks: {
-                $set: {...sourceTs}
-              }
-            }
-          });
-          updateProcesses = update({
-            [destination.droppableId-1]: {
-              tasks: {
-                $set: {...destTs}
-              }
-            }
-          });
-
-          setProcesses(updateProcesses);
-
-        } else {
-
-          const itemsProcess = processes.filter(process => process.no == source.droppableId);
-          const items = itemsProcess.tasks;
-          console.log("items:"+items);
-          const [reorderedItem] = items.splice(source.index, 1);
-          items.splice(destination.index, 0, reorderedItem);
-
-          let updateProcesses = update(processes, {
-            [source.droppableId]: {
-              tasks: {
-                $set: items
-              }
-            }
-          })
-
-          setProcesses(updateProcesses);
-
-          //setProcesses(updateProcesses);
+        setProcesses(updateProcesses);
       }
+
     }
-*/
+
+    const notifyChangeProcess = (process, index) => {
+      let updateProcesses = update(processes, {
+        [index]: {
+          $set: process
+        }
+      });
+
+      setProcesses(updateProcesses);
+
+    }
+
     return (
         <section className="kanban__main">
             <div className="kanban__main-wrapper">
-                <DragDropContext onDragEnd={onDragEnd}>               
-                    {processes.map((process) => {
+                <DragDropContext onDragEnd={onDragEnd}>
+                    {processes.map((process, index) => 
+                        <div className="backlog-color card-wrapper">
                         return(
-                            <Process key={process.no} process={process} />
+                          
+                            <Process key={process.no} process={process} pindex={index} notifyChangeProcess={notifyChangeProcess} />
+                          
                         );
-                    })}
+                        </div>
+                    )}
                 </DragDropContext>
             </div>
         </section>
     );
+
+    
 }
 
 export default KanbanMain;

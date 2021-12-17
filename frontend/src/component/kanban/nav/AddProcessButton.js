@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from "../../../assets/css/component/kanban/AddProcess.scss"
 
-const AddProcess = () => {
+const AddProcessButton = ({addProcess}) => {
     return (
         <div className={ styles.add_process }>
-            <button>
+            <button onClick={ () => addProcess() } >
                 <span className={ styles.add_icon }><i className="material-icons">add_circle</i></span>
                 프로세스 추가
             </button>
@@ -12,4 +12,4 @@ const AddProcess = () => {
     );
 };
 
-export default AddProcess;
+export default AddProcessButton;

@@ -5,7 +5,7 @@ import Checklist from './Checklist';
 import styles from './Kanban.scss';
 import modalStyles from "../../assets/css/component/kanban/modal.scss";
 
-const Task = ({task}) => {
+const Task = ({task, index, notifyChangeTaskStatus}) => {
 
     const [modalData, setModalData] = useState({isOpen: false});
     const [checklists, setChecklists] = useState(task.checklists);
@@ -18,6 +18,56 @@ const Task = ({task}) => {
             notifyInsertChecklist(text.trim(), task.no);
             setText('');
           }
+        }
+    }
+
+    const changeTaskStatus = async () => {
+
+        try {
+            const response = await fetch(`/api/task`, {
+                method: 'put',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({...task})
+            });
+
+            if(!response.ok) {
+                throw  `${response.status} ${response.statusText}`;
+            }
+
+            const json = await response.json();
+
+            // update가 안 된 경우
+            if(!json.data) {
+                setModalData(Object.assign({}, modalData, {
+                    label: '체크상태가 변경되지 않았습니다.',
+                    isOpen: true
+                }));
+                return;
+            }
+
+            // update가 안 된 경우
+            if(!json.data) {
+                setModalData(Object.assign({}, modalData, {
+                    label: '진행상황이 변경되지 않았습니다.',
+                    isOpen: true
+                }));
+                return;
+            }
+
+            setModalData(Object.assign({}, modalData, {
+                label: '진행상황이 변경되었습니다.',
+                isOpen: true
+            }));
+
+            // update가 된 경우
+            notifyChangeTaskStatus(task, index);
+            
+
+        } catch (err) {
+            console.error(err);
         }
     }
 
@@ -42,7 +92,7 @@ const Task = ({task}) => {
             // update가 안 된 경우
             if(!json.data) {
                 setModalData(Object.assign({}, modalData, {
-                    label: '체크상태가 변경되지 않았습니다.',
+                    label: '진행상황이 변경되지 않았습니다.',
                     isOpen: true
                 }));
                 return;
@@ -187,13 +237,14 @@ const Task = ({task}) => {
                     </div>
                 </div>
 
-                <div className="card__menu-right">
-                    <div className={styles.img_avatar2}>
+                <div className={styles.card__menu_right}>
+                    <div className={styles.img_avatar2} onClick={ () => changeTaskStatus() }>
                         {task.status ? <img src={require("../../assets/img/green.jpg")}/>
                          : <img src={ require("../../assets/img/red.jpg")}/>}
                     </div>
                 </div>
             </div>
+
             <Modal
                 isOpen={modalData.isOpen}
                 ariaHideApp={false}
@@ -211,7 +262,7 @@ const Task = ({task}) => {
                     <button onClick={() => {setModalData(Object.assign({}, modalData, {isOpen: false})) } }>확인</button>
                 </div>
             </Modal>
-        </Fragment>
+            </Fragment>
     );
 
 };

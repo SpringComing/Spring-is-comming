@@ -1,5 +1,15 @@
 @charset "utf-8";
 
+.process__add { 
+    border: 1px dashed #bbb; 
+    width: 80%; 
+    padding: 10px;  
+    border-radius: 3px;
+    color: var(--colorName);
+    font-size: 20px;
+    font-weight: 400;
+} 
+
 ul      { list-style-type: none; padding: 0; margin: 0; } 
 
 .kanban__main {
@@ -54,6 +64,7 @@ ul      { list-style-type: none; padding: 0; margin: 0; }
     flex-direction: column;
     justify-content: space-between;
     margin-left: 20px;
+    z-index: 1;
 }
 
 .card-wrapper__header {
@@ -302,6 +313,7 @@ ul      { list-style-type: none; padding: 0; margin: 0; }
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-top: 10px;
 }
 
 .cards-false {
@@ -311,15 +323,16 @@ ul      { list-style-type: none; padding: 0; margin: 0; }
 .card {
     border-radius: 5px;
     border: 1px dashed var(--colorWhite);
-    background-color: #fadce5;
+    background-color: var(--colorWhite);
     width: 260px;
     height: auto;
     margin-bottom: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    cursor: url(https://ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur), default !important;
-}
+    cursor: url(https://ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur),
+      default !important;
+  }
 
 .card-dragging {
     border: 1px dashed var(--colorBarW);
@@ -460,9 +473,10 @@ ul      { list-style-type: none; padding: 0; margin: 0; }
     margin-left: 5px;
 }
 
-.card__menu-right {
+.card__menu_right {
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .img-avatar {

@@ -18,4 +18,17 @@ public class ProcessRepository {
 		return sqlSession.selectList("process.findAllByProjectNo", no);
 	}
 
+	public Boolean insert(ProcessVo vo) {
+		//System.out.println(vo);
+		return 1 == sqlSession.insert("process.insert", vo);
+	}
+
+	public Long findMaxSeq(Long projectNo) {
+		return sqlSession.selectOne("process.findMaxSeq", projectNo);
+	}
+
+	public Boolean update(ProcessVo vo) {
+		return 1 == sqlSession.update("process.update", vo);
+	}
+
 }

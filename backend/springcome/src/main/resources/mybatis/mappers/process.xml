@@ -12,4 +12,26 @@
 		]]>
 	</select>
 	
+	<insert id="insert" parameterType="processvo" useGeneratedKeys="true" keyProperty="no">
+		<![CDATA[
+		insert into process values(null, #{name }, #{sequence }, #{projectNo })
+		]]>
+	</insert>
+	
+	<select id="findMaxSeq" parameterType="long" resultType="long">
+		<![CDATA[
+		select max(sequence)
+        from process
+        where project_no = #{projectNo}
+		]]>
+	</select>
+	
+	<update id ="update" parameterType="processvo">
+		<![CDATA[
+		update process
+		set name = #{name}
+		where no = #{no }
+		]]>
+	</update>
+	
 </mapper>

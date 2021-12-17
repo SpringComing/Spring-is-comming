@@ -17,4 +17,8 @@ public class TaskRepository {
 	public List<TaskVo> findAllByProcessNo(Long no) {
 		return sqlSession.selectList("task.findAllByProcessNo", no);
 	}
+
+	public Boolean updateTaskStatus(TaskVo vo) {
+		return 1 == sqlSession.update("task.update", vo);
+	}
 }

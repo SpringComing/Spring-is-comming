@@ -34,7 +34,7 @@ public class MainController {
 		Cookie cookie = new Cookie("useremail", principalDetails.getEmail());
 		cookie.setMaxAge(-1);
 		resp.addCookie(cookie);
-		return "redirect:http://localhost:3000/";
+		return "redirect:http://localhost:9999/";
 	}
 	
 	@RequestMapping({"/user"})

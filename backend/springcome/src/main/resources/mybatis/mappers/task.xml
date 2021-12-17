@@ -12,4 +12,12 @@
 		]]>
 	</select>
 	
+	<update id ="update" parameterType="taskvo">
+		<![CDATA[
+		update task
+		set status = !status
+		where no = #{no }
+		]]>
+	</update>
+	
 </mapper>

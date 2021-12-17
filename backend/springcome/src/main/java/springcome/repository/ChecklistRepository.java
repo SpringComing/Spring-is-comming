@@ -30,4 +30,5 @@ public class ChecklistRepository {
 	public Boolean update(Long no) {
 		return 1 == sqlSession.update("checklist.update", no);
 	}
+
 }

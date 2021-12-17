@@ -35,4 +35,17 @@ public class ProcessService {
 		return result;
 	}
 
+	public Boolean insert(ProcessVo vo) {
+		return processRepository.insert(vo);
+		
+	}
+
+	public Long findMaxSeq(Long projectNo) {
+		return processRepository.findMaxSeq(projectNo);
+	}
+
+	public Boolean updateProcess(ProcessVo vo) {
+		return processRepository.update(vo);
+	}
+
 }
