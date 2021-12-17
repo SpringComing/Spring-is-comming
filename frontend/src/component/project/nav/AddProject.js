@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from "../../../assets/css/component/project/AddProject.scss"
 
-const AddProject = () => {
+const AddProject = ({setModalIsOpen}) => {
     return (
         <div className={ styles.add_project }>
-            <button>
+            <button onClick={ () => setModalIsOpen(true) } >
                 <span className={ styles.add_icon }><i className="material-icons">add_circle</i></span>
                 프로젝트 추가
             </button>

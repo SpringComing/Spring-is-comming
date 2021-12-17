@@ -1,6 +1,9 @@
 package springcome.controller;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,10 +34,21 @@ public class MainController {
 //		vo.setName(principalDetails.getUsername());
 //
 //		model.addAttribute("UserVo",vo);
-		Cookie cookie = new Cookie("useremail", principalDetails.getEmail());
-		cookie.setMaxAge(-1);
-		resp.addCookie(cookie);
-		return "redirect:http://localhost:3000/";
+		
+		Cookie Cookie = new Cookie("useremail", principalDetails.getEmail());
+//		Cookie nameCookie = new Cookie("username", principalDetails.getUsername());
+//		Cookie noCookie = new Cookie("userno", principalDetails.getNo().toString());
+		
+		Cookie.setMaxAge(-1);
+		resp.addCookie(Cookie);
+		
+//		nameCookie.setMaxAge(-1);
+//		resp.addCookie(nameCookie);
+//		
+//		noCookie.setMaxAge(-1);
+//		resp.addCookie(noCookie);
+		
+		return "redirect:http://localhost:9999/";
 	}
 	
 	@RequestMapping({"/user"})

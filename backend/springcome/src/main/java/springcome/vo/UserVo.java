@@ -1,7 +1,7 @@
 package springcome.vo;
 
 public class UserVo {
-
+    private Long no;
 	private String email;
 	private String password;
 	private String name;
@@ -10,13 +10,15 @@ public class UserVo {
 	private String join_date;
 	private String profile;
 	
+	
+	public Long getNo() {
+		return no;
+	}
+	public void setNo(Long no) {
+		this.no = no;
+	}
 	public String getTel() {
 		return tel;
-	}
-	@Override
-	public String toString() {
-		return "UserVo [email=" + email + ", password=" + password + ", name=" + name + ", tel=" + tel + ", birth="
-				+ birth + ", join_date=" + join_date + ", profile=" + profile + "]";
 	}
 	public void setTel(String tel) {
 		this.tel = tel;
@@ -56,5 +58,10 @@ public class UserVo {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	@Override
+	public String toString() {
+		return "UserVo [no=" + no + ", email=" + email + ", password=" + password + ", name=" + name + ", tel=" + tel
+				+ ", birth=" + birth + ", join_date=" + join_date + ", profile=" + profile + "]";
 	}
 }

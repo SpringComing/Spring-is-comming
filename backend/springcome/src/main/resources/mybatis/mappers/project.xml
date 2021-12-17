@@ -20,7 +20,7 @@
 	
 	<insert id="insertAttend" parameterType="map" >
 		<![CDATA[
-		insert into attend values(#{ userNo },#{ projectNo },'ADMIN',default,'green',#{ sequence });
+		insert into attend values(#{ userNo },#{ projectNo },#{ role },default,'green',#{ sequence });
 		]]>
 	</insert>
 	
@@ -49,5 +49,11 @@
 
 		]]>
 	</select>
+	
+	<insert id="insertGuest" parameterType="map" >
+		<![CDATA[
+		insert into guest values(null,#{ email },#{ no })
+		]]>
+	</insert>
 
 </mapper>

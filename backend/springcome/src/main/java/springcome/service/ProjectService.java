@@ -17,9 +17,42 @@ public class ProjectService {
 	public List<ProjectVo> getAll(Long no) {
 		return projectRepository.findAll(no);
 	}
+
+	public boolean addProject(Long userNo, ProjectVo projectVo) {
+		
+		if(projectRepository.insertProject(projectVo) == false) {
+			System.out.println("-------------------------------------------------insertProject failed");
+			return false;
+		}
+		
+//		System.out.println("----------------------------------------------------projectVo : " + projectVo);
+
+		Long lastSequence = projectRepository.findLastSequence(userNo);
+		
+		if(projectRepository.insertAttend(userNo, projectVo.getNo(), "ADMIN", lastSequence + 1) == false) {
+			System.out.println("-------------------------------------------------insertAttend failed");
+			return false;
+		}
+		
+		return true;
+	}
+
+	public boolean updateBasicProject( ProjectVo projectVo) {
+		return projectRepository.updateBasic( projectVo);
+	}
 	
 	public List<ProjectVo> findTest(){
 		return projectRepository.findTest();
+	}
+
+	public boolean attendProject(Long no, Long projectNo) {
+		Long lastSequence = projectRepository.findLastSequence(no);
+		
+		return projectRepository.insertAttend(no, projectNo, "USER",lastSequence + 1);
+	}
+
+	public boolean addGuest(String email, Long projectNo) {
+		return projectRepository.insertGuest(email, projectNo);
 	}
 
 }

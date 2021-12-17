@@ -24,6 +24,7 @@ import springcome.vo.UserVo;
 
 public class PrincipalDetails implements UserDetails {
 
+	private static final long serialVersionUID = 1L;
 	private UserVo userVo; // 컴포지션
 
 	public PrincipalDetails(UserVo userVo) {
@@ -42,6 +43,8 @@ public class PrincipalDetails implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> collect = new ArrayList<>();
 		collect.add(new GrantedAuthority() {
+
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public String getAuthority() {
@@ -66,6 +69,10 @@ public class PrincipalDetails implements UserDetails {
 
 	public String getJoindate() {
 		return userVo.getJoin_date();
+	}
+	
+	public Long getNo() {
+		return userVo.getNo();
 	}
 
 	public String getEmail() {

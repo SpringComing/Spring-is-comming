@@ -39,7 +39,7 @@ const ProjectAddModal = ({modalIsOpen, setModalIsOpen, getProject}) => {
                 endDate: endDate
             }
 
-            const response = await fetch('/api/project/1', {
+            const response = await fetch('/api/project', {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',

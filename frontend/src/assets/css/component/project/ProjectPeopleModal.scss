@@ -57,7 +57,7 @@
 
 .project_reg {
     
-    margin-bottom: 60px;
+    margin-bottom: 3px;
 
     .text {
         display: flex;
@@ -70,6 +70,7 @@
             font-size: 28px;
             font-weight: 400;
             color: #7c7ca8;
+            margin-left: 10px;
         }
     }
 
@@ -97,7 +98,7 @@
             color:#7C7CA8;
             border-color:#dddddd;
             font-size: 20px;
-            width: 500px;
+            width: 700px;
             height: 50px;
             margin: 13px 20px 20px 20px;
 
@@ -111,8 +112,6 @@
 
         
     }
-
-
 
     .modal_textarea {
         display: flex;
@@ -133,9 +132,27 @@
             font-size: 20px;
             width: 700px;
             height: 120px;
-            margin: 13px 20px 20px 20px;
+            overflow: auto;
+            margin: 13px 10px 10px 20px;
         }
     }
+
+    .team {
+        display: flex;
+        div {
+            width: 700px;
+            height: 300px;
+            overflow: auto;
+            border-radius: 5px;
+            border: 1px solid;
+            border-color:#dddddd;
+            background-color: #FFFFFF;
+            margin: 13px 20px 20px 20px;
+        }
+
+       
+    }
+
 
 }
 
@@ -150,8 +167,8 @@
         border: 1px solid transparent;
         padding: 4px 3px 2px 1px;
         float: right;
-        margin-right: 80px;
-        margin-bottom: 40px;
+        margin-right: 20px;
+        margin-bottom: 20px;
         width: 170px;
         height: 50px;
 
@@ -168,5 +185,10 @@
             font-weight: 400;
         }
     }
-}
 
+    .email_check {
+        font-size: 20px;
+        font-weight: 400;
+        color: red;
+    }
+}
