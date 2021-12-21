@@ -1,13 +1,13 @@
 import React from "react";
 import Title from "./Title.js";
-import AddProcess from "./AddProcess"
+import AddProcess from "./AddProcessButton"
 
-const Nav = () => {
+const Nav = ({addProcess}) => {
   return (
     <section className="kanban__nav">
         <div className="kanban__nav-wrapper">
           <Title />
-          <AddProcess />
+          <AddProcess addProcess = { addProcess } />
         </div>
       </section>
   );

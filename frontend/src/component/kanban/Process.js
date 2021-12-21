@@ -1,53 +1,155 @@
-import React, {useState, forwardRef, useImperativeHandle, Fragment } from 'react';
+import React, {Fragment, useState} from 'react';
+import Modal from 'react-modal';
 import Task from './Task';
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import styles from "../../assets/css/component/kanban/AddTask.scss"
-import Modal2 from 'react-modal';
-import modalStyles2 from "../../assets/css/component/kanban/AddTaskModal.scss";
+import update from 'react-addons-update';
+import stylesTask from "../../assets/css/component/kanban/AddTask.scss"
+import styles from './Kanban.scss'
+import modalStyles from "../../assets/css/component/kanban/modal.scss";
 
-const Process = ({process}) => {
-    const [tasks, setTasks] = useState(process.tasks);
-    const [modalData2, setModalData2] = useState({isOpen: false});
-    /*
-    useImperativeHandle(ref, () => ({
-        changeTasks(processNo, sindex, dindex) {
-                console.log("hi");
-                let changeTasks = processState.tasks;
-                let moveTask = changeTasks.splice(sindex, 1);
-                changeTasks.splice(dindex, 0, moveTask);
-            setProcess(
-                {
-                    tasks: changeTasks
-                }
-            )
-                
-                //setTasks(changeTasks);
-            
+const Process = ({processes, setProcesses, pindex}) => {
+    const process = processes[pindex];
+    const [text, setText] = useState(process.name);
+    const [clickName, setClickName] = useState(false);
+    const [modalData, setModalData] = useState({isOpen: false});
+
+    const addTask = async() => {
+        console.log("process.no : ", process.no);
+        try {
+            const response = await fetch(`/api/task`, {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: '새 업무',
+                    importance: 1,
+                    status: 0,
+                    color: 'white',
+                    processNo: process.no
+                })
+            });
+
+            if(!response.ok) {
+                throw  `${response.status} ${response.statusText}`;
+            }
+
+            const json = await response.json();
+
+            // insert가 안 된 경우
+            if(!json.data) {
+                setModalData(Object.assign({}, modalData, {
+                    label: '업무가 추가되지 않았습니다.',
+                    isOpen: true
+                }));
+                return;
+            }
+
+            // insert가 된 경우
+            setProcesses(update(processes, {
+                [pindex]: {
+                    tasks: {
+                        $set: json.data
+                    }}}));
+
+        } catch (err) {
+            console.error(err);
         }
-    }));
-    */
-
-    const notifyAddTask = () => {
-        console.log('h1');
-        setModalData2(Object.assign({}, modalData2, {
-            label: '삭제되지 않았습니다.',
-            isOpen: true
-        }));
     }
+
+    const changeProcessName = () => {
+        setClickName(true);
+        setTimeout(()=>{
+            document.getElementById("processName").focus();
+        }, 50);
+        
+    }
+
+    const showName = () => {
+
+        if(!clickName) { return process.name; }
+        else { 
+            return (
+                <input
+                    id="processName"
+                    type='text'
+                    value={text}
+                    className={styles.process__add} 
+                    placeholder={process.name}
+                    onChange={ (e) => setText(e.target.value)} 
+                    onKeyPress={onCheckEnter}
+                    onBlur = {(e) => {setClickName(false)} }
+                />
+            );
+        }
+    }
+
+    const onCheckEnter = (e) => {
+        if(e.key === 'Enter') {
+          if(text.trim() === '') return;
+          else {
+            changeProcess(text.trim());
+            setText(process.name);
+            setClickName(false);
+          }
+        }
+    }
+
+    const changeProcess = async (processName) => {
+        try {
+            const response = await fetch(`/api/process`, {
+                method: 'put',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    no: process.no,
+                    name: processName
+                })
+            });
+    
+            if(!response.ok) {
+                throw  `${response.status} ${response.statusText}`;
+            }
+    
+            const json = await response.json();
+    
+            // update가 안 된 경우
+            if(!json.data) {
+                return;
+            }
+    
+            // update가 된 경우
+            setProcesses(update(processes, {
+                    [pindex]:{
+                        name: {
+                            $set: processName
+                        }}}));
+    
+            setText(processName);
+    
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     return (
-        <Fragment>
-        <div className="backlog-color card-wrapper">
+        <div className={styles["backlog-color"]+' '+styles["card-wrapper"]}>
             <div className="card-wrapper__header">
-                <div className="backlog-name">{process.name}</div>
-                <div className="backlog_dots">
+                <div className="backlog-name" onDoubleClick={() => changeProcessName() }>
+                    {showName()}
+                </div>
+                <div className={styles.backlog_dots}>
                     <i className="material-icons">clear</i>
                 </div>                    
             </div>
 
-            <Droppable droppableId={`${process.no}`} key={process.no}>
+            <Droppable droppableId={`${pindex}`} key={process.no}>
                 {(provided) => (
                     <div className="cards" {...provided.droppableProps} ref={provided.innerRef}>
-                        { tasks.map((task, index) => {
+                        { process.tasks.map((task, index) => {
                             return (
                                 <Draggable draggableId={`${task.no}`} key={task.no} index={index}> 
                                 {(provided) => ( 
@@ -58,7 +160,12 @@ const Process = ({process}) => {
                                     >
                                         <Task
                                                 key={task.no}
-                                                task={task}
+                                                processes={processes}
+                                                setProcesses={setProcesses}
+                                                modalData={modalData}
+                                                setModalData={setModalData}
+                                                pindex={pindex}
+                                                tindex={index}
                                         />
                                     </div> 
                                 )}
@@ -66,40 +173,38 @@ const Process = ({process}) => {
                             );
                         })}
                         {provided.placeholder}
-                        </div>
-                    )}
+                    </div>
+                )}
                 </Droppable>
 
 
-            {/*</DragDropContext>*/}
-
-            <div className={ styles.add_task }>
-                <button onClick={ () => notifyAddTask()}>
-                    <span className={ styles.add_icon }><i className="material-icons">add_circle_outline</i></span>
+            <div className={ stylesTask.add_task }>
+                <button onClick={ () => addTask()}>
+                    <span className={ stylesTask.add_icon }><i className="material-icons">add_circle_outline</i></span>
                     업무 추가
                 </button>
             </div>
-        </div>
-        <Modal2
-                isOpen={modalData2.isOpen}
+
+            <Modal
+                isOpen={modalData.isOpen}
                 ariaHideApp={false}
-                onRequestClose={ () => setModalData2({isOpen: false}) }
+                onRequestClose={ () => setModalData({isOpen: false}) }
                 shouldCloseOnOverlayClick={true}
-                className={modalStyles2.Modal}
-                overlayClassName={modalStyles2.Overlay}
+                className={modalStyles.Modal}
+                overlayClassName={modalStyles.Overlay}
                 style={{content: {width: 350}}}>
                 <div>
                     <form className={styles.DeleteForm}>
-                        <label>{modalData2.label || ''}</label>
+                        <label>{modalData.label || ''}</label>
                     </form>
                 </div>
-                <div className={modalStyles2['modal-dialog-buttons']}>
-                    <button onClick={() => {setModalData2(Object.assign({}, modalData2, {isOpen: false})) } }>추가</button>
+                <div className={modalStyles['modal-dialog-buttons']}>
+                    <button onClick={() => {setModalData(Object.assign({}, modalData, {isOpen: false})) } }>확인</button>
                 </div>
-        </Modal2>
-        </Fragment>
+            </Modal>
+
+        </div>
     )
 }
-//);
 
 export default Process;
