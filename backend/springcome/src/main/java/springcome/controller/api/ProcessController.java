@@ -36,7 +36,7 @@ public class ProcessController {
 		
 		List<ProcessVo> processList = processService.getAllByProjectNo(no);
 		
-		System.out.println("------------------------------processList : " + processList);
+		//System.out.println("------------------------------processList : " + processList);
 		
 		return JsonResult.success(processList);
 	}
@@ -44,7 +44,6 @@ public class ProcessController {
 	@PostMapping("")
 	public JsonResult insert(@RequestBody ProcessVo vo) {
 		//System.out.println(vo);
-		vo.setSequence(processService.findMaxSeq(vo.getProjectNo())+1);
 		processService.insert(vo);
 		return JsonResult.success(processService.getAllByProjectNo(vo.getProjectNo()));
 	}

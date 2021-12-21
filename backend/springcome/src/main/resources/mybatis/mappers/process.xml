@@ -8,7 +8,7 @@
 		select no, name, sequence, project_no as projectNo
         from process
         where project_no = #{no}
-        order by no
+        order by sequence
 		]]>
 	</select>
 	

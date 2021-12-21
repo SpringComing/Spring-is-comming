@@ -36,8 +36,10 @@ public class ProcessService {
 	}
 
 	public Boolean insert(ProcessVo vo) {
+		Long maxSeq = processRepository.findMaxSeq(vo.getProjectNo());
+		if(maxSeq == null) {maxSeq=1L;}
+		vo.setSequence(maxSeq+1);
 		return processRepository.insert(vo);
-		
 	}
 
 	public Long findMaxSeq(Long projectNo) {

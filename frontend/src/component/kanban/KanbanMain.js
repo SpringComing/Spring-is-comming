@@ -1,26 +1,138 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Process from './Process';
 import { DragDropContext } from "react-beautiful-dnd";
 import update from 'react-addons-update';
 
 const KanbanMain = ({processes, setProcesses}) => {
 
-    // const [zindex, setZindex] = useState("1");
+    const changeTaskSameProc = async(
+      processNo, 
+      taskNo, 
+      oriTaskSeq, 
+      newTaskSeq, 
+      copiedItems, 
+      sourcedroppableId) => {
+/*
+        console.log( "processNo "+ processNo + "\noriTaskSeq "+ 
+        oriTaskSeq + "\nnewTaskSeq "+ 
+        newTaskSeq + "\ntaskNo "+ 
+        taskNo + "\ncopiedItems "+ 
+        copiedItems + "\nsourcedroppableId "+ 
+        sourcedroppableId);
+*/      
+      try {
+        const response = await fetch(`/api/task/same`, {
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              processNo: processNo,
+              taskNo: taskNo,
+              oriTaskSeq: oriTaskSeq,
+              newTaskSeq: newTaskSeq
+            })
+        });
 
-    // const changeZindex = () => {
-    //   setZindex
-    // }
+        if(!response.ok) {
+            throw  `${response.status} ${response.statusText}`;
+        }
 
-    const onDragEnd = (result) => { 
+        const json = await response.json();
+
+        // update가 안 된 경우
+        if(!json.data) {
+            return;
+        }
+
+        // update가 된 경우
+        setProcesses(update(processes, {
+          [sourcedroppableId]: {
+            tasks: { 
+              $set: copiedItems 
+            }
+          }
+        }));
+
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    const changeTaskDiffProc = async(
+      oriProcessNo, 
+      newProcessNo, 
+      oriTaskSeq, 
+      newTaskSeq, 
+      taskNo, 
+      sourceItems, 
+      destItems, 
+      sourcedroppableId, 
+      destinationdroppableId) => {
+/*      
+        console.log(oriProcessNo + " "+ 
+          newProcessNo + " "+ 
+          oriTaskSeq + " "+ 
+          newTaskSeq + " "+ 
+          taskNo + " "+ 
+          sourceItems + " "+ 
+          destItems + " "+ 
+          sourcedroppableId + " "+ 
+          destinationdroppableId);
+*/
+      try {
+        const response = await fetch(`/api/task/diff`, {
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              oriProcessNo: oriProcessNo,
+              newProcessNo: newProcessNo,
+              oriTaskSeq: oriTaskSeq,
+              newTaskSeq: newTaskSeq,
+              taskNo: taskNo
+            })
+        });
+
+        if(!response.ok) {
+            throw  `${response.status} ${response.statusText}`;
+        }
+
+        const json = await response.json();
+
+        // update가 안 된 경우
+        if(!json.data) {
+            return;
+        }
+
+        // update가 된 경우
+        setProcesses(update(processes, {
+          [sourcedroppableId]: {
+            tasks: { $set: sourceItems }
+          },
+          [destinationdroppableId]: {
+            tasks: { $set: destItems }
+          }
+        }));
+
+      } catch (err) {
+        console.error(err);
+      }
+
+    }
+
+    const onDragEnd = (result) => {
       // droppableId : process의 index
-      // dragableId : task.no
+      // draggableId : task.no
       // index : task의 index
 
       if (!result.destination) return;
       let { source, destination } = result;
 
       if (source.droppableId !== destination.droppableId) { // 다른 프로세스에 놓았을 때
-
         let sourceColumn = processes[source.droppableId];
         let destColumn = processes[destination.droppableId];
         let sourceItems = sourceColumn.tasks;
@@ -28,17 +140,19 @@ const KanbanMain = ({processes, setProcesses}) => {
         
         let [removed] = sourceItems.splice(source.index, 1);
         destItems.splice(destination.index, 0, removed);
+        
+        console.log(sourceColumn.no);
 
-        let updateProcesses = update(processes, {
-          [source.droppableId]: {
-            tasks: { $set: sourceItems }
-          },
-          [destination.droppableId]: {
-            tasks: { $set: destItems }
-          }
-        });
-
-        setProcesses(updateProcesses);
+        changeTaskDiffProc(
+          sourceColumn.no, 
+          destColumn.no, 
+          source.index+1, 
+          destination.index+1, 
+          destItems[destination.index].no, 
+          sourceItems, 
+          destItems, 
+          source.droppableId, 
+          destination.droppableId);
 
       } else { // 같은 프로세스에 놓았을 때
         let column = processes[source.droppableId];
@@ -46,46 +160,30 @@ const KanbanMain = ({processes, setProcesses}) => {
         let [removed] = copiedItems.splice(source.index, 1);
         copiedItems.splice(destination.index, 0, removed);
 
-        let updateProcesses = update(processes, {
-          [source.droppableId]: {
-            tasks: { $set: copiedItems }
-          }
-        });
-
-        setProcesses(updateProcesses);
+        changeTaskSameProc(
+          column.no, 
+          copiedItems[destination.index].no, 
+          source.index+1, 
+          destination.index+1, 
+          copiedItems, 
+          source.droppableId);
       }
-
-    }
-
-    const notifyChangeProcess = (process, index) => {
-      let updateProcesses = update(processes, {
-        [index]: {
-          $set: process
-        }
-      });
-
-      setProcesses(updateProcesses);
 
     }
 
     return (
         <section className="kanban__main">
             <div className="kanban__main-wrapper">
-                <DragDropContext onDragEnd={onDragEnd}>
-                    {processes.map((process, index) => 
-                        <div className="backlog-color card-wrapper">
-                        return(
-                          
-                            <Process key={process.no} process={process} pindex={index} notifyChangeProcess={notifyChangeProcess} />
-                          
+                <DragDropContext onDragEnd={onDragEnd}>                           
+                    {processes.map((process, index) => {
+                        return(  
+                            <Process key={process.no} processes={processes} setProcesses={setProcesses} pindex={index} />
                         );
-                        </div>
-                    )}
+                    })}
                 </DragDropContext>
             </div>
         </section>
     );
-
     
 }
 

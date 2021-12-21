@@ -1,21 +1,19 @@
 import React, {Fragment, useState} from 'react';
-import Modal from 'react-modal';
 import update from 'react-addons-update';
 import Checklist from './Checklist';
+import TaskModal from "./modal/TaskModal";
 import styles from './Kanban.scss';
-import modalStyles from "../../assets/css/component/kanban/modal.scss";
 
-const Task = ({task, index, notifyChangeTaskStatus}) => {
-
-    const [modalData, setModalData] = useState({isOpen: false});
-    const [checklists, setChecklists] = useState(task.checklists);
+const Task = ({processes, setProcesses, modalData, setModalData, pindex, tindex}) => {
+    const task = processes[pindex].tasks[tindex];
     const [text, setText] = useState('');
+    const [modalIsOpen, setModalIsOpen] = useState(false);           //프로젝트 추가 모달 생성 상태
 
     const onCheckEnter = (e) => {
         if(e.key === 'Enter') {
           if(text.trim() === '') return;
           else {
-            notifyInsertChecklist(text.trim(), task.no);
+            insertChecklist(text.trim());
             setText('');
           }
         }
@@ -24,57 +22,7 @@ const Task = ({task, index, notifyChangeTaskStatus}) => {
     const changeTaskStatus = async () => {
 
         try {
-            const response = await fetch(`/api/task`, {
-                method: 'put',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({...task})
-            });
-
-            if(!response.ok) {
-                throw  `${response.status} ${response.statusText}`;
-            }
-
-            const json = await response.json();
-
-            // update가 안 된 경우
-            if(!json.data) {
-                setModalData(Object.assign({}, modalData, {
-                    label: '체크상태가 변경되지 않았습니다.',
-                    isOpen: true
-                }));
-                return;
-            }
-
-            // update가 안 된 경우
-            if(!json.data) {
-                setModalData(Object.assign({}, modalData, {
-                    label: '진행상황이 변경되지 않았습니다.',
-                    isOpen: true
-                }));
-                return;
-            }
-
-            setModalData(Object.assign({}, modalData, {
-                label: '진행상황이 변경되었습니다.',
-                isOpen: true
-            }));
-
-            // update가 된 경우
-            notifyChangeTaskStatus(task, index);
-            
-
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
-    const notifyChangeChecklistStatus = async (checklist, index) => {
-
-        try {
-            const response = await fetch(`/api/checklist/${checklist.no}`, {
+            const response = await fetch(`/api/task/${task.no}`, {
                 method: 'put',
                 headers: {
                     'Content-Type': 'application/json',
@@ -99,22 +47,20 @@ const Task = ({task, index, notifyChangeTaskStatus}) => {
             }
 
             // update가 된 경우
-            let updateChecklists = update(checklists, {
-                [index]: {
-                    status: {
-                        $set: !checklist.status
-                    }
-                }
-            });
-            
-            setChecklists(updateChecklists);
-
+            setProcesses(update(processes, {
+                [pindex]: {
+                    tasks: {
+                        [tindex]: {
+                            status: {
+                                $set: !task.status
+                            }}}}}));
+                            
         } catch (err) {
             console.error(err);
         }
     }
 
-    const notifyInsertChecklist = async (name, taskNo) => {
+    const insertChecklist = async (name) => {
         try {
             const response = await fetch(`/api/checklist`, {
                 method: 'post',
@@ -124,7 +70,7 @@ const Task = ({task, index, notifyChangeTaskStatus}) => {
                 },
                 body: JSON.stringify({
                     name: name,
-                    taskNo: taskNo
+                    taskNo: task.no
                 })
             });
 
@@ -137,51 +83,20 @@ const Task = ({task, index, notifyChangeTaskStatus}) => {
             // insert가 안 된 경우
             if(!json.data) {
                 setModalData(Object.assign({}, modalData, {
-                    label: '추가되지 않았습니다.',
+                    label: '체크리스트가 추가되지 않았습니다.',
                     isOpen: true
                 }));
                 return;
             }
 
             // insert가 된 경우
-            let addChecklist = json.data;
-            const updateChecklists = ([...checklists, addChecklist]);
-            setChecklists(updateChecklists);
-
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
-    const notifyDeleteChecklist = async (checklistNo) => {        
-        try {
-            const response = await fetch(`/api/checklist/${checklistNo}`, {
-                method: 'get',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: null
-            });
-
-            if(!response.ok) {
-                throw  `${response.status} ${response.statusText}`;
-            }
-
-            const json = await response.json();
-
-            // delete가 안 된 경우
-            if(!json.data) {
-                setModalData(Object.assign({}, modalData, {
-                    label: '삭제되지 않았습니다.',
-                    isOpen: true
-                }));
-                return;
-            }
-
-            // delete가 된 경우
-            setChecklists(checklists.filter(checklist => checklist.no !== checklistNo));
-
+             setProcesses(update(processes, {
+                [pindex]: {
+                    tasks: {
+                        [tindex]: {
+                            checklists: {
+                                $set: [...task.checklists, json.data]
+                            }}}}}));                       
         } catch (err) {
             console.error(err);
         }
@@ -190,25 +105,32 @@ const Task = ({task, index, notifyChangeTaskStatus}) => {
     return (
         <Fragment>
             <div className="card__header">
-                <div className={task.importance == 1 ? "card-container-color card-color-low" : (task.importance == 2 ? "card-container-color card-color-med" : "card-container-color card-color-high")}>
+                <div className={task.importance == 1 ? styles["card-container-color"]+' '+styles["card-color-low"] : (task.importance == 2 ? styles["card-container-color"]+' '+styles["card-color-med"] : styles["card-container-color"]+' '+styles["card-color-high"])}>
                     <div className="card__header-priority">{task.importance == 1 ? '★' : (task.importance == 2 ? '★★' : '★★★' )}</div>
                 </div>
-                <div className="card__header-clear">
-                    <i className="material-icons">clear</i>
+                <div className={styles.card__header_clear} onClick={ () => setModalIsOpen(true) }>
+                    <i className="material-icons">more_vert</i>
                 </div>
             </div>
             <div className={styles.card__title}>
-                <div className={styles.card__text}>{task.name}</div>
-                <div className={styles.card__date}>{"["+task.startDate+"~"+task.endDate+"]"}</div>
+                <div className={styles.card__text}>{task.name}</div>    
+            </div>
+            <div className={styles.card__date}>
+                {task.startDate||task.endDate ? 
+                    (task.startDate ? task.startDate : '') + ' ~ ' + (task.endDate ? task.endDate : '')
+                     : ''}
             </div>
             <ul>
-                {checklists.map((checklist, index) => {
+                {task.checklists.map((checklist, index) => {
                                     return(<Checklist
                                                     key={checklist.no}
-                                                    checklist={checklist}
-                                                    index={index}
-                                                    notifyChangeChecklistStatus={notifyChangeChecklistStatus}
-                                                    notifyDeleteChecklist={notifyDeleteChecklist}
+                                                    processes={processes}
+                                                    setProcesses={setProcesses}
+                                                    modalData={modalData}
+                                                    setModalData={setModalData}
+                                                    pindex={pindex}
+                                                    tindex={tindex}
+                                                    cindex={index}
                                                 />);}
                 )}
             </ul>
@@ -244,25 +166,13 @@ const Task = ({task, index, notifyChangeTaskStatus}) => {
                     </div>
                 </div>
             </div>
-
-            <Modal
-                isOpen={modalData.isOpen}
-                ariaHideApp={false}
-                onRequestClose={ () => setModalData({isOpen: false}) }
-                shouldCloseOnOverlayClick={true}
-                className={modalStyles.Modal}
-                overlayClassName={modalStyles.Overlay}
-                style={{content: {width: 350}}}>
-                <div>
-                    <form className={styles.DeleteForm}>
-                        <label>{modalData.label || ''}</label>
-                    </form>
-                </div>
-                <div className={modalStyles['modal-dialog-buttons']}>
-                    <button onClick={() => {setModalData(Object.assign({}, modalData, {isOpen: false})) } }>확인</button>
-                </div>
-            </Modal>
-            </Fragment>
+            <TaskModal  modalIsOpen= { modalIsOpen } 
+                        setModalIsOpen={ setModalIsOpen }
+                        processes={processes}
+                        setProcesses={setProcesses}
+                        pindex={pindex}
+                        tindex={tindex} />
+        </Fragment>
     );
 
 };

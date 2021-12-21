@@ -1,16 +1,20 @@
 import React, {Fragment, useState} from 'react';
+import Modal from 'react-modal';
 import Task from './Task';
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import update from 'react-addons-update';
 import stylesTask from "../../assets/css/component/kanban/AddTask.scss"
 import styles from './Kanban.scss'
+import modalStyles from "../../assets/css/component/kanban/modal.scss";
 
-const Process = ({process, pindex, notifyChangeProcess}) => {
-    const [tasks, setTasks] = useState(process.tasks);
+const Process = ({processes, setProcesses, pindex}) => {
+    const process = processes[pindex];
     const [text, setText] = useState(process.name);
     const [clickName, setClickName] = useState(false);
+    const [modalData, setModalData] = useState({isOpen: false});
 
     const addTask = async() => {
+        console.log("process.no : ", process.no);
         try {
             const response = await fetch(`/api/task`, {
                 method: 'post',
@@ -19,8 +23,11 @@ const Process = ({process, pindex, notifyChangeProcess}) => {
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    name: name,
-                    taskNo: taskNo
+                    name: '새 업무',
+                    importance: 1,
+                    status: 0,
+                    color: 'white',
+                    processNo: process.no
                 })
             });
 
@@ -33,16 +40,18 @@ const Process = ({process, pindex, notifyChangeProcess}) => {
             // insert가 안 된 경우
             if(!json.data) {
                 setModalData(Object.assign({}, modalData, {
-                    label: '추가되지 않았습니다.',
+                    label: '업무가 추가되지 않았습니다.',
                     isOpen: true
                 }));
                 return;
             }
 
             // insert가 된 경우
-            let addChecklist = json.data;
-            const updateChecklists = ([...checklists, addChecklist]);
-            setChecklists(updateChecklists);
+            setProcesses(update(processes, {
+                [pindex]: {
+                    tasks: {
+                        $set: json.data
+                    }}}));
 
         } catch (err) {
             console.error(err);
@@ -80,32 +89,14 @@ const Process = ({process, pindex, notifyChangeProcess}) => {
         if(e.key === 'Enter') {
           if(text.trim() === '') return;
           else {
-            changeProcess(text.trim(), process);
+            changeProcess(text.trim());
             setText(process.name);
             setClickName(false);
           }
         }
     }
 
-    const notifyChangeTaskStatus = (task, index) => {
-        let updateTasks = update(tasks, {
-            [index] :{
-                status: {
-                    $set: task.status
-                }
-            }
-        });
-        setTasks(updateTasks);
-    }
-
-    const changeProcess = async (processName, process) => {
-
-        let updateProcess = update(process, {
-            name: {
-                $set: processName
-            }
-        });
-
+    const changeProcess = async (processName) => {
         try {
             const response = await fetch(`/api/process`, {
                 method: 'put',
@@ -131,7 +122,12 @@ const Process = ({process, pindex, notifyChangeProcess}) => {
             }
     
             // update가 된 경우
-            notifyChangeProcess(updateProcess, pindex);
+            setProcesses(update(processes, {
+                    [pindex]:{
+                        name: {
+                            $set: processName
+                        }}}));
+    
             setText(processName);
     
         } catch (err) {
@@ -140,34 +136,36 @@ const Process = ({process, pindex, notifyChangeProcess}) => {
     }
 
     return (
-         <Fragment>
+        <div className={styles["backlog-color"]+' '+styles["card-wrapper"]}>
             <div className="card-wrapper__header">
                 <div className="backlog-name" onDoubleClick={() => changeProcessName() }>
                     {showName()}
                 </div>
-                <div className="backlog_dots">
+                <div className={styles.backlog_dots}>
                     <i className="material-icons">clear</i>
                 </div>                    
             </div>
 
             <Droppable droppableId={`${pindex}`} key={process.no}>
-                {(provided, snapshot) => (
-                    <div className={styles.cards} {...provided.droppableProps} style={{ backgroundColor: snapshot.isDraggingOver ? changeZindex() : 'gray' }} ref={provided.innerRef}>
-                        { tasks.map((task, index) => {
+                {(provided) => (
+                    <div className="cards" {...provided.droppableProps} ref={provided.innerRef}>
+                        { process.tasks.map((task, index) => {
                             return (
-                                <Draggable draggableId={`${task.no}`} key={task.no} index={index} > 
+                                <Draggable draggableId={`${task.no}`} key={task.no} index={index}> 
                                 {(provided) => ( 
-                                    <div className={styles.card}
+                                    <div className="card"
                                         ref={provided.innerRef}
                                         {...provided.dragHandleProps}
-                                        {...provided.draggableProps}
-                                        style={provided.draggableProps.style}
+                                        {...provided.draggableProps} 
                                     >
                                         <Task
                                                 key={task.no}
-                                                task={task}
-                                                index={index}
-                                                notifyChangeTaskStatus={notifyChangeTaskStatus} 
+                                                processes={processes}
+                                                setProcesses={setProcesses}
+                                                modalData={modalData}
+                                                setModalData={setModalData}
+                                                pindex={pindex}
+                                                tindex={index}
                                         />
                                     </div> 
                                 )}
@@ -175,9 +173,10 @@ const Process = ({process, pindex, notifyChangeProcess}) => {
                             );
                         })}
                         {provided.placeholder}
-                        </div>
-                    )}
+                    </div>
+                )}
                 </Droppable>
+
 
             <div className={ stylesTask.add_task }>
                 <button onClick={ () => addTask()}>
@@ -185,7 +184,26 @@ const Process = ({process, pindex, notifyChangeProcess}) => {
                     업무 추가
                 </button>
             </div>
-        </Fragment>
+
+            <Modal
+                isOpen={modalData.isOpen}
+                ariaHideApp={false}
+                onRequestClose={ () => setModalData({isOpen: false}) }
+                shouldCloseOnOverlayClick={true}
+                className={modalStyles.Modal}
+                overlayClassName={modalStyles.Overlay}
+                style={{content: {width: 350}}}>
+                <div>
+                    <form className={styles.DeleteForm}>
+                        <label>{modalData.label || ''}</label>
+                    </form>
+                </div>
+                <div className={modalStyles['modal-dialog-buttons']}>
+                    <button onClick={() => {setModalData(Object.assign({}, modalData, {isOpen: false})) } }>확인</button>
+                </div>
+            </Modal>
+
+        </div>
     )
 }
 
