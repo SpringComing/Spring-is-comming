@@ -1,3 +1,5 @@
+@charset "utf-8";
+
 .logo {
     background-color: #888fdc;
     grid-area: logo;
@@ -7,9 +9,10 @@
     font-size: 20px;
     color: white;
     cursor: pointer;
+
+    img {
+      width: 125px;
+      height: 70px;
+      object-fit: fill;
+    }
   }
-  
-  .logo span {
-    margin: 0 5px;
-  }
-  
