@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import springcome.service.ProjectService;
 import springcome.service.UserService;
 import springcome.utility.MailSender;
 import springcome.utility.MessageSender;
 import springcome.utility.Sha256;
+import springcome.vo.GuestVo;
 import springcome.vo.UserVo;
 
 /*
@@ -33,7 +35,10 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-
+	
+	@Autowired
+	private ProjectService projectService;
+	
 	/*
 	* 함수: checkemail
 	* 작성자: 이동현
@@ -128,7 +133,7 @@ public class UserController {
 		map.put("result", "success");
 		map.put("rand", Sha256.getHash(mailSender.randnum));
 		map.put("email", email);
-
+		System.out.println("--------------------------------------------------랜덤값 확인 : " + mailSender.randnum);
 		try {
 			mailSender.sendVerifiNum(email);
 			return map;
@@ -143,25 +148,42 @@ public class UserController {
 	* 작성자: 이동현
 	* 기능: random으로 생성한 4자리 인증번호를 SHA256 해시함수로 암호화 하여 쿠키에 등록 -> 사용자 의 인증코드와 비교하여 일치여부 판단
 	*     메일 인증 성공 시 회원가입 진행 ( 비밀번호 bCrypt 암호화(SHA1+salt값) ) 
+	* 추가: guestEmail이 존재한다면 attend테이블에 레코드를 삽입해서 가입한 유저를 프로젝트에 참석시키고 guest테이블의 있는 같은 email의 레코드를 지운다
 	*/
 
 	@ResponseBody
 	@RequestMapping(value = "/authemail", method = RequestMethod.POST)
-	public String authemail(HttpServletRequest request) {
+	public String authemail(HttpServletRequest request, String guestEmail) {
 
 		String input = Sha256.getHash(request.getParameter("authNum"));
 		String cookie = request.getParameter("cookie");
 		Boolean results;
 
 		if (input.equals(cookie)) {
-			UserVo vo = new UserVo();
-			vo.setEmail(request.getParameter("email"));
-			vo.setName(request.getParameter("name"));
-			vo.setPassword(bCryptPasswordEncoder.encode(request.getParameter("password")));
-			vo.setBirth(request.getParameter("birth"));
-			vo.setTel(request.getParameter("tel"));
-			results = userService.join(vo);
-
+			UserVo userVo = new UserVo();
+			userVo.setEmail(request.getParameter("email"));
+			userVo.setName(request.getParameter("name"));
+			userVo.setPassword(bCryptPasswordEncoder.encode(request.getParameter("password")));
+			userVo.setBirth(request.getParameter("birth"));
+			userVo.setTel(request.getParameter("tel"));
+		
+			results = userService.join(userVo);
+			
+			//guestEmail이 존재한다면 attend테이블에 레코드를 삽입해서 가입한 유저를 프로젝트에 참석시키고 guest테이블의 있는 같은 email의 레코드를 지운다
+			if(guestEmail != null && !guestEmail.equals("") ) {
+				//System.out.println("------------------------------------------------------------guestEmail : " + guestEmail );
+				GuestVo guestVo = projectService.getGuest(guestEmail);
+				//System.out.println("------------------------------------------------------------guestVo : " + guestVo );
+				if(guestVo != null) {
+					//System.out.println("------------------------------------------------------------userVo :  " + userVo );
+					projectService.addAttendProject(userVo.getNo(), guestVo.getProjectNo());
+					//System.out.println("------------------------------------------------------------addAttendProject success " );
+					projectService.deleteGuest(guestVo.getNo());
+					//System.out.println("------------------------------------------------------------deleteGuest success" );
+				}
+			}
+			
+			
 			if (results) {
 				return "success";
 			} else {

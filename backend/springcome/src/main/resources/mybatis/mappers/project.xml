@@ -7,7 +7,7 @@
 		<![CDATA[
 		select p.no, p.name, p.description, p.start_date as startDate, p.end_date as endDate, p.reg_date as regDate, p.status, a.sequence, a.color, a.role, a.status as attendStatus
         from attend a join project p on a.project_no = p.no
-        where a.user_no = #{no}
+        where a.user_no = #{no} and a.status = 1
 		]]>
 	</select>
 
@@ -24,11 +24,19 @@
 		]]>
 	</insert>
 	
+	<select id="findAttend" parameterType="map" resultType="projectvo">
+		<![CDATA[
+		select * 
+		from attend
+		where user_no=#{ userNo } and project_no=#{ projectNo }
+		]]>
+	</select>
+	
 	<select id="findLastSequence"  parameterType="long" resultType="long">
 		<![CDATA[
 		select max(sequence) 
 		from attend
-		where user_no = #{ userNo };
+		where user_no = #{ userNo }
 		]]>
 	</select>
 	
@@ -50,10 +58,31 @@
 		]]>
 	</select>
 	
+	<select id="findGuset" resultType="guestvo" parameterType="string">
+		<![CDATA[
+		select no, email, project_no as projectNo
+		from guest
+		where email = #{value }
+		]]>
+	</select>
+	
 	<insert id="insertGuest" parameterType="map" >
 		<![CDATA[
 		insert into guest values(null,#{ email },#{ no })
 		]]>
 	</insert>
-
+	
+	<delete id="deleteGuestByEmail" parameterType="long">
+		<![CDATA[
+		delete from guest where no = ${value }
+		]]>
+	</delete>
+	
+	<update id="updateAttend" parameterType="map">
+		<![CDATA[
+		update attend 
+		set status = 0
+		where project_no = #{projectNo } and user_no = #{userNo }
+		]]>
+	</update>
 </mapper>

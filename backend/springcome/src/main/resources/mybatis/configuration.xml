@@ -4,6 +4,8 @@
 	<typeAliases>
 		<typeAlias type="springcome.vo.UserVo" alias="uservo" />
 		<typeAlias type="springcome.vo.ProjectVo" alias="projectvo" />
+		<typeAlias type="springcome.vo.AttendVo" alias="attendvo" />
+		<typeAlias type="springcome.vo.GuestVo" alias="guestvo" />
 	</typeAliases>
 	<mappers>
 		<mapper resource="mybatis/mappers/user.xml" />

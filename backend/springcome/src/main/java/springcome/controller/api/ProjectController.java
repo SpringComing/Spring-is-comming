@@ -7,11 +7,14 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import springcome.auth.PrincipalDetails;
@@ -46,13 +49,8 @@ public class ProjectController {
 	public JsonResult getProject(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		List<ProjectVo> projectList = null;
 		
-		if(principalDetails == null) {
-			System.out.println("----------------------------------------------------principalDetails is null");
-			//projectList = projectService.getAll(1L);
-		}else {
-			projectList = projectService.getAll(principalDetails.getNo());
-		}
-
+	    projectList = projectService.getAll(principalDetails.getNo());
+		
 		//System.out.println("------------------------------projectList : " + projectList);
 		
 		return JsonResult.success(projectList);
@@ -104,30 +102,72 @@ public class ProjectController {
 						@AuthenticationPrincipal PrincipalDetails principalDetails,
 						@RequestBody GuestVo guestVo) {
 		
+		boolean existAttend = false;
 		MailSender mailSender = new MailSender();
+		
 		String email = guestVo.getEmail();
 		String sender = principalDetails.getUsername();
 		
 		UserVo userVo = userService.findByUseremail(email);
 		
-		//가입한 유저라면 attend 테이블에 데이터 추가 비회원이면 guest테이블에 데이터 생성
+		//가입한 유저라면 attend 테이블에 데이터 추가 비회원이면 guest테이블에 데이터 추가
 		if(userVo != null) { 
-			projectService.attendProject(userVo.getNo(),guestVo.getProjectNo());
-		}else {			
+			//System.out.println("----------------------------------------------guestVo : " + guestVo);
+			//System.out.println("----------------------------------------------userVo : " + userVo);
+			existAttend = projectService.addAttendProject(userVo.getNo(),guestVo.getProjectNo());
+		} else {			
 			projectService.addGuest(email, guestVo.getProjectNo());
 		}
 			
-		
-		
 		Map<String, Object> map = new HashMap<>();
-		map.put("email", email);
+		map.put("existAttend",existAttend);
 		
+		//이미 참석한 경우 메일을 보내지 않는다
+		if(existAttend) {
+			return JsonResult.success(map);
+		}
+		
+		//초대 이메일 보내기
 		try {
 			mailSender.sendInvitationMail(email,sender);
-			return JsonResult.success(map);
 		} catch (Exception e) {
+			System.out.println(e.toString());
 			return JsonResult.fail(e.toString());
 		}
+		
+		return JsonResult.success(map);
+
+	}
+	
+	/*
+	* 함수: getProjectPeople
+	* 작성자: 성창현
+	* 기능: 프로젝트 인원 데이터 가져오기
+	*/
+	@GetMapping("/people/{projectNo}")
+	public JsonResult getProjectPeople(@PathVariable(value="projectNo", required=true) Long projectNo) {
+		
+		List<UserVo> userVoList = userService.findProjectPeople(projectNo);
+		//System.out.println("-----------------------------------------------userVoList : " + userVoList);
+		
+		return JsonResult.success(userVoList);
+
+	}
+	
+	/*
+	* 함수: updateAttend
+	* 작성자: 성창현
+	* 기능: 프로젝트 인원 제외하는 요청을 받고 attend 테이블에 해당 유저 속성을 업데이트한다
+	*/
+	@PutMapping("/people")
+	public JsonResult updateAttend(
+			@RequestParam(value="projectNo", required=true) Long projectNo,
+			@RequestParam(value="userNo", required=true) Long userNo) {
+		
+		//System.out.println("-----------------------------------------------파라미터 : " + projectNo +" , " + userNo);
+		boolean result = userService.updateProjectPeople(projectNo,userNo);
+		
+		return JsonResult.success(result);
 
 	}
 	

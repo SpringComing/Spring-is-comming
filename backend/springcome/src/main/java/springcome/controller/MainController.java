@@ -1,15 +1,14 @@
 package springcome.controller;
 
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,26 +26,10 @@ public class MainController {
 	@RequestMapping({"", "/main"})
 	public String index(@AuthenticationPrincipal PrincipalDetails principalDetails, HttpServletRequest req, HttpServletResponse resp) {
 		
-//		UserVo vo = new UserVo();
-//		vo.setEmail(principalDetails.getEmail());
-//		vo.setJoin_date(principalDetails.getJoindate());
-//		vo.setBirth(principalDetails.getBirth());
-//		vo.setName(principalDetails.getUsername());
-//
-//		model.addAttribute("UserVo",vo);
-		
 		Cookie Cookie = new Cookie("useremail", principalDetails.getEmail());
-//		Cookie nameCookie = new Cookie("username", principalDetails.getUsername());
-//		Cookie noCookie = new Cookie("userno", principalDetails.getNo().toString());
 		
 		Cookie.setMaxAge(-1);
 		resp.addCookie(Cookie);
-		
-//		nameCookie.setMaxAge(-1);
-//		resp.addCookie(nameCookie);
-//		
-//		noCookie.setMaxAge(-1);
-//		resp.addCookie(noCookie);
 		
 		return "redirect:http://localhost:9999/";
 	}
@@ -56,26 +39,27 @@ public class MainController {
 		return "user";
 	}
 	
-	@RequestMapping({"/joinForm"})
-	public String joinForm() {
+	@RequestMapping({"/joinForm" ,"/joinForm/{guestEmail}"})
+	public String joinForm(
+			@ModelAttribute @PathVariable(value="guestEmail", required=false) String guestEmail) {
 		return "joinForm";
 	}
 	
-	@RequestMapping({"/loginForm"})
-	public String loginForm(HttpServletRequest req, HttpServletResponse resp) {
+	@RequestMapping({"/loginForm", "/loginForm/{guestEmail}"})
+	public String loginForm(HttpServletRequest req, HttpServletResponse resp,
+			@ModelAttribute @PathVariable(value="guestEmail", required=false) String guestEmail) {
 		
 		Cookie[] cookies = req.getCookies();
 		
 		if(cookies != null) {
 		
-		for(Cookie c : cookies) {
-			if(c.getName().equals("useremail")) {
-				c.setMaxAge(0);
-				resp.addCookie(c);
+			for(Cookie c : cookies) {
+				if(c.getName().equals("useremail")) {
+					c.setMaxAge(0);
+					resp.addCookie(c);
+				}
 			}
 		}
-		}
-		
 		
 		return "loginForm";
 	}

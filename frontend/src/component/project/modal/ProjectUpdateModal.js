@@ -1,11 +1,12 @@
 import React,{useState,useRef, useEffect} from 'react';
 import Modal from "react-modal";
 import ModalStyle from "../../../assets/css/component/project/ProjectModal.scss"
+import deleteModalStyle from "../../../assets/css/component/project/ProjectDeleteModal.scss"
 
 
 Modal.setAppElement('body');
 
-const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project}) => {
+const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project, deleteProject}) => {
     const refForm = useRef(null);                            
     const currentDate = new Date().toISOString().substring(0, 10);  //현재 날짜 가져오기
     const [startDate, setStartDate] = useState(currentDate);        //모달 input startDate 
@@ -14,6 +15,8 @@ const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project}) 
     const [projectDesc, setProjectDesc] = useState("");             //모달 input projectDesc
     const [flag, setFlag] = useState(true);                         //모달에 프로젝트 내용 넣기위한 플래그
     
+    const [deleteMdalIsOpen, setDeleteMdalIsOpen] = useState(false);
+
     /**
      * 모달에 프로젝트 내용 넣기
      */
@@ -152,11 +155,37 @@ const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project}) 
               <button type="submit" 
                       form="project_reg"
                       onClick={ () => { 
-                                
                               refForm.current.dispatchEvent(new Event("submit", {cancelable: true, bubbles: true})); 
                             } }>
                 <span>저장</span>
               </button>
+
+              <button onClick={ () => { setDeleteMdalIsOpen(true) } }>
+                <span>삭제</span>
+              </button>
+              {/* <Modal
+                isOpen={ deleteMdalIsOpen }
+                onRequestClose={ () => setDeleteMdalIsOpen(true) }          //오버레이 부분을 클릭하거나 또는 Esc 키를 누를 시 모달 창이 닫히게 한다
+                shouldCloseOnOverlayClick={ false }                         //오버레이 클릭은 막고 Esc 키만으로 모달창을 닫게 한다
+                contentLabel="Project Delete" >
+                <h1>프로젝트를 삭제하면 작업하는 모든 데이터가 삭제 됩니다. 신중하게 선택하세요.</h1>
+                <button onClick={ () => setDeleteMdalIsOpen(false) }>취소</button>
+              </Modal> */}
+              <Modal
+                isOpen={ deleteMdalIsOpen }
+                onRequestClose={() => setDeleteMdalIsOpen(true)}
+                shouldCloseOnOverlayClick={true}
+                className={deleteModalStyle.Modal}
+                overlayClassName={deleteModalStyle.Overlay}
+                style={{content: {width: 350}}}>
+                <h1>프로젝트를 삭제하면 작업하는 모든 데이터가 삭제 됩니다. 신중하게 선택하세요.</h1>
+                
+                <div className={deleteModalStyle['modal-dialog-buttons']}>
+                    <button onClick={() => { setDeleteMdalIsOpen(false);
+                                             deleteProject(); } }>삭제</button>
+                    <button onClick={() => setDeleteMdalIsOpen(false)}>취소</button>
+                </div>
+            </Modal>
             </div>
 
         </Modal>

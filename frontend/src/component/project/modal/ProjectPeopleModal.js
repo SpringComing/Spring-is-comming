@@ -5,27 +5,28 @@ import ModalStyle from "../../../assets/css/component/project/ProjectPeopleModal
 
 Modal.setAppElement('body');
 
-const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getProject, project}) => {
+const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getPeople, project, people, excludeUser}) => {
     const refForm = useRef(null);                           
     const [email, setEmail] = useState("");          //input email 상태
     const [flag, setFlag] = useState(true);          //모달에 프로젝트 내용 넣기위한 플래그
-    const [emailCheck, setEmailCheck] = useState("") 
-    
-    /**
-     * 모달에 프로젝트 내용 넣기
-     */
-    if(modalIsOpen && flag){
-        setFlag(false);
-        
-    }
+    const [emailCheck, setEmailCheck] = useState("") //이메일정규표현식으로 체크해서 표시할 상태
     
 
-   /**
-   * 함수: handleSubmit 
-   * 작성자: 성창현
-   * 기능: 모달 form 데이터 서버에 fetch
-   */
-   const handleSubmit = async (e) => {
+    /**
+    * 모달에 프로젝트 내용 넣기
+    */
+    if(modalIsOpen && flag){
+        setFlag(false);
+        getPeople(project.no);
+    }
+
+
+    /**
+    * 함수: handleSubmit 
+    * 작성자: 성창현
+    * 기능: 모달 form 데이터 서버에 fetch
+    */
+    const handleSubmit = async (e) => {
     
         e.preventDefault();
         try {
@@ -33,17 +34,17 @@ const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getProject, project}) 
             const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/g;
             if (!re.test(e.target.email.value) ) {
                 refForm.current && refForm.current.email.focus();
-                setEmailCheck("이메일 형식이 아닙니다. 다시 입력하세요")
+                setEmailCheck("이메일 형식이 아닙니다. 다시 입력하세요");
                 return;
             }
-            
+        
+            setEmailCheck("초대 이메일을 보내고 있습니다.");
 
             const guestvo = {
                 email: email,
                 projectNo : project.no
             } 
-            
-
+        
             const response = await fetch('/api/project/sendemail', {
                 method: 'post',
                 headers: {
@@ -65,32 +66,33 @@ const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getProject, project}) 
                 throw new Error(`${jsonResult.result} ${jsonResult.message}`);
             }
             
-            // insert가 실패한경우
-            if (jsonResult.data.result === false) {
-                alert("프로젝트 생성이 실패 했습니다.");
+            // 이미 참석한 경우 
+            if (jsonResult.data.existAttend === true) {
+                setEmailCheck("이미 프로젝트에 참여하고 있습니다.");
                 return;
             }
 
-            // insert 성공한 경우
+            // 초대 이메일을 보낸 경우
             console.log("jsonResult",jsonResult);
-
+            setEmailCheck("초대 이메일을 보냈습니다");
+            getPeople(project.no);
         } catch (err) {
             console.error(err);
         }
     }
 
 
-   /**
-   * 함수: modalClose 
-   * 작성자: 성창현
-   * 기능: 모달 상태 리셋후 모달 닫기
-   */
-   const modalClose = () => {
-    setFlag(true);
-    setEmailCheck("");
-    setEmail("");
-    setModalIsOpen(false)
-   }
+    /**
+    * 함수: modalClose 
+    * 작성자: 성창현
+    * 기능: 모달 상태 리셋후 모달 닫기
+    */
+    const modalClose = () => {
+        setFlag(true);
+        setEmailCheck("");
+        setEmail("");
+        setModalIsOpen(false)
+    }
 
 
     return (
@@ -117,8 +119,25 @@ const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getProject, project}) 
                 <div className={ ModalStyle.text }>
                     <span>현재 팀원</span>
                 </div>
-                <div className={ ModalStyle.team } >
-                    <div>
+                <div className={ ModalStyle.team_wrapper } >
+                    <div className={ ModalStyle.team }>
+                        {
+                            people.map(user => <div key={user.no} className="user">
+                                                    <span className={ ModalStyle.team_profile }>
+                                                        <i className="material-icons">account_circle</i>
+                                                    </span>
+                                                    <span className={ ModalStyle.team_name }>
+                                                        { user.name } 
+                                                    </span>
+                                                    <span className={ ModalStyle.team_email }>
+                                                        { user.email } 
+                                                    </span>
+                                                    <span className={ ModalStyle.team_exclude }>
+                                                        <i className="material-icons"
+                                                           onClick={ () => excludeUser(project.no,user.no) } >clear</i>
+                                                    </span>
+                                                </div> )
+                        }
                     </div>
                 </div>
 
@@ -130,7 +149,8 @@ const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getProject, project}) 
                            name="email" 
                            placeholder="초대 할 이메일을 입력해 주세요"
                            value={ email }
-                           onChange={  (e) => setEmail(e.target.value ) } />
+                           onChange={  (e) => { setEmail(e.target.value ); 
+                                                setEmailCheck(""); } } />
                 </div>
             </form>
 

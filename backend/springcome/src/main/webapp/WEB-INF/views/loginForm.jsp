@@ -44,8 +44,19 @@
 	</p>
 	<br />
 	<p style='text-align: center'>
-		Not a Member? <a href="${pageContext.request.contextPath }/joinForm">Sign
-			up now!</a>
+		Not a Member? 
+		<c:choose>
+			<c:when test="${null eq guestEmail && empty guestEmail}">
+				<a href="${pageContext.request.contextPath }/joinForm">
+					Sign up now!
+				</a>
+			</c:when>
+			<c:otherwise>
+				<a href="${pageContext.request.contextPath }/joinForm/${guestEmail }">
+					Sign up now!
+				</a>
+			</c:otherwise>
+		</c:choose>
 	</p>
 
 </body>

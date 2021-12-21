@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import springcome.repository.ProjectRepository;
+import springcome.vo.AttendVo;
+import springcome.vo.GuestVo;
 import springcome.vo.ProjectVo;
 
 @Service
@@ -19,22 +21,15 @@ public class ProjectService {
 	}
 
 	public boolean addProject(Long userNo, ProjectVo projectVo) {
+		boolean result = true;
 		
-		if(projectRepository.insertProject(projectVo) == false) {
-			System.out.println("-------------------------------------------------insertProject failed");
-			return false;
-		}
-		
-//		System.out.println("----------------------------------------------------projectVo : " + projectVo);
+		result = projectRepository.insertProject(projectVo);
 
 		Long lastSequence = projectRepository.findLastSequence(userNo);
 		
-		if(projectRepository.insertAttend(userNo, projectVo.getNo(), "ADMIN", lastSequence + 1) == false) {
-			System.out.println("-------------------------------------------------insertAttend failed");
-			return false;
-		}
+		result = projectRepository.insertAttend(userNo, projectVo.getNo(), "ADMIN", lastSequence + 1);
 		
-		return true;
+		return result;
 	}
 
 	public boolean updateBasicProject( ProjectVo projectVo) {
@@ -45,14 +40,35 @@ public class ProjectService {
 		return projectRepository.findTest();
 	}
 
-	public boolean attendProject(Long no, Long projectNo) {
+	public boolean addAttendProject(Long no, Long projectNo) {
+		
+		//attend table에 있는 테이터인지 확인
+		if(projectRepository.findAttend(no,projectNo) != null) {
+			System.out.println("--------------------------------------------------이미 프로젝트에 참석함");
+			return true;
+		}
+		
 		Long lastSequence = projectRepository.findLastSequence(no);
 		
-		return projectRepository.insertAttend(no, projectNo, "USER",lastSequence + 1);
+		if(lastSequence == null) {
+			lastSequence = 0L;
+		}
+		
+		projectRepository.insertAttend(no, projectNo, "USER",lastSequence + 1L);
+		
+		return false;
 	}
 
 	public boolean addGuest(String email, Long projectNo) {
 		return projectRepository.insertGuest(email, projectNo);
+	}
+
+	public boolean deleteGuest(Long userNo) {
+		return projectRepository.deleteGuest(userNo);
+	}
+
+	public GuestVo getGuest(String guestEmail) {
+		return projectRepository.findGuest(guestEmail);
 	}
 
 }

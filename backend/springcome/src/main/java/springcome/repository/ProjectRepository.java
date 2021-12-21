@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import springcome.vo.GuestVo;
 import springcome.vo.ProjectVo;
 
 @Repository
@@ -51,6 +52,21 @@ public class ProjectRepository {
 		map.put("email", email);
 		map.put("no", projectNo);
 		return sqlSession.insert("project.insertGuest", map) ==  1;
+	}
+
+	public Object findAttend(Long no, Long projectNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("userNo", no);
+		map.put("projectNo", projectNo);
+		return sqlSession.selectOne("project.findAttend", map);
+	}
+
+	public boolean deleteGuest(Long userNo) {
+		return sqlSession.delete("project.deleteGuestByEmail", userNo) == 1;
+	}
+
+	public GuestVo findGuest(String guestEmail) {
+		return sqlSession.selectOne("project.findGuset",guestEmail);
 	}
 	
 }
