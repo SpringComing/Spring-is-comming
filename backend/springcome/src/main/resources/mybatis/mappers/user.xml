@@ -18,6 +18,14 @@
 		]]>
 	</select>
 	
+	<select id="findAll" parameterType="map" resultType="uservo">
+		<![CDATA[
+		select email, name, join_date, tel, birth, profile
+		from user
+		where no = #{no }
+		]]>
+	</select>
+	
 	<select id="findPassword" parameterType="map" resultType="uservo">
 		<![CDATA[
 		select *
@@ -47,6 +55,14 @@
 		update user
 		   set password = #{p }
 		 where email=#{e }
+		]]>
+	</update>
+	
+	<update id="updateProfile" parameterType="map">
+		<![CDATA[
+		update user
+		   set name= #{name }, birth= #{birth }, profile= #{profile }
+		 where no=#{no }
 		]]>
 	</update>
 	

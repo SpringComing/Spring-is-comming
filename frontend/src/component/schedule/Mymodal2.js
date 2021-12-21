@@ -1,3 +1,4 @@
+import { string } from 'prop-types';
 import React,{useState,useRef} from 'react';
 import Modal from "react-modal";
 import ModalStyle from "../../assets/css/component/project/CalendarModal.scss"
@@ -5,26 +6,20 @@ import ModalStyle from "../../assets/css/component/project/CalendarModal.scss"
 
 
 Modal.setAppElement('body');
+const Mymodal2 = ({modalIsOpen2, setModalIsOpen2, data}) => {
 
-const Mymodal = ({modalIsOpen, setModalIsOpen, data}) => {
+   const refForm = useRef(null);                        
+   let importance ='';
 
-    const refForm = useRef(null);                             
-    const currentDate = new Date().toISOString().substring(0, 10); //현재 날짜 가져오기
-
-    /**
-   * 함수: modalClose 
-   * 작성자: 성창현
-   * 기능: 모달 상태 리셋
-   */
    const modalClose = () => {
-    setModalIsOpen(false)
+    setModalIsOpen2(false)
    }
 
 
     return (
         
         <Modal
-            isOpen={ modalIsOpen }
+            isOpen={ modalIsOpen2 }
             className={ ModalStyle.Modal }
             onRequestClose={ () => modalClose() }          //오버레이 부분을 클릭하거나 또는 Esc 키를 누를 시 모달 창이 닫히게 한다
             shouldCloseOnOverlayClick={ false }            //오버레이 클릭은 막고 Esc 키만으로 모달창을 닫게 한다
@@ -34,7 +29,7 @@ const Mymodal = ({modalIsOpen, setModalIsOpen, data}) => {
             >
             
             <div className={ ModalStyle.modal_header }> 
-                <center><h2>프로젝트 정보</h2></center>
+                <center><h2>Task 정보</h2></center>
                 <span onClick={ () => modalClose() }>
                 </span>
             </div>
@@ -48,23 +43,38 @@ const Mymodal = ({modalIsOpen, setModalIsOpen, data}) => {
                     <span className='text'>프로젝트 이름</span>
                     <input type='text'  
                            name="projectName" 
+                           placeholder={' '+ data[5]}
+                           disabled
+                        />
+                </div>
+
+                <div className={ ModalStyle.modal_input }>
+                    <span className='text'>Task 이름</span>
+                    <input type='text'  
+                           name="projectName" 
                            placeholder={' ' + data[0]}
                            disabled
                         />
                 </div>
+
                 <div className={ ModalStyle.modal_input }>
-                  <span className='text' style={{
-                      width: "140px",
-                      height: "40px"
-                  }}>설명</span>
+                    <span className='text'>중요도</span>
+                    <input type='text'  
+                           name="projectName" 
+                           placeholder={' ' + makeStar(data[3])}
+                           disabled
+                        />
                 </div>
-                <div className={ ModalStyle.modal_textarea }>
-                    <textarea name="projectDesc" 
-                              value={ data[3] } 
-                              disabled
-                               
-                              />
+
+                <div className={ ModalStyle.modal_input }>
+                    <span className='text'>프로세스 상태</span>
+                    <input type='text'  
+                           name="projectName" 
+                           placeholder={' ' + data[4]}
+                           disabled
+                        />
                 </div>
+                
                 <div className={ ModalStyle.modal_input }>
                   <span className='text' style={{
                       height: "40px"
@@ -101,6 +111,14 @@ const Mymodal = ({modalIsOpen, setModalIsOpen, data}) => {
         </Modal>
         
     );
+    function makeStar(args){
+        for(var i=0; i<args; i++){
+            importance+='★'
+        }
+        return importance;
+    }
+
+    
 };
 
-export default Mymodal;
+export default Mymodal2;

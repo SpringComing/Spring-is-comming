@@ -9,14 +9,22 @@ public class UserVo {
 	private String birth;
 	private String join_date;
 	private String profile;
+	private String no;
 	
+	public String getNo() {
+		return no;
+	}
+	public void setNo(String no) {
+		this.no = no;
+	}
 	public String getTel() {
 		return tel;
 	}
+
 	@Override
 	public String toString() {
 		return "UserVo [email=" + email + ", password=" + password + ", name=" + name + ", tel=" + tel + ", birth="
-				+ birth + ", join_date=" + join_date + ", profile=" + profile + "]";
+				+ birth + ", join_date=" + join_date + ", profile=" + profile + ", no=" + no + "]";
 	}
 	public void setTel(String tel) {
 		this.tel = tel;

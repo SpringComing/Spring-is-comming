@@ -38,5 +38,13 @@ public class UserService {
 		return userRepository.updatePWD(email, password);
 
 	}
+	
+	public UserVo findAll(String user_no) {
+		return userRepository.findAll(user_no);
+	}
+	
+	public int updateProfile(String name, String birth, String no, String profile) {
+		return userRepository.updateProfile(name, birth, no, profile);
+	}
 
 }
