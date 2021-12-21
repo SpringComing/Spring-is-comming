@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="task">
+
+	<select id="findAllByProcessNo"  parameterType="long" resultType="taskvo">
+		<![CDATA[
+		select no, name, importance, start_date as startDate, end_date as endDate, status, sequence, color, process_no as processNo
+        from task
+        where process_no = #{no }
+        order by sequence
+		]]>
+	</select>
+	
+	<select id="findMaxSeqByProcessNo"  parameterType="long" resultType="long">
+		<![CDATA[
+		select max(sequence)
+        from task
+        where process_no = #{no}
+		]]>
+	</select>
+	
+	
+	<update id ="updateTaskAttr" parameterType="taskvo">
+		<![CDATA[
+			update task
+			set name = #{name }, importance = #{importance }, start_date = #{startDate }, end_date = #{endDate }			
+			where no = #{no }
+		]]>
+	</update>
+	
+	<update id ="updateProcessTaskSeq1" parameterType="taskdiffvo">
+		<![CDATA[
+			update task
+			set sequence = sequence - 1
+			where process_no = #{oriProcessNo } and sequence > #{oriTaskSeq }
+		]]>
+	</update>
+	
+	<update id ="updateProcessTaskSeq2" parameterType="taskdiffvo">
+		<![CDATA[
+			update task
+			set sequence = sequence + 1
+			where process_no = #{newProcessNo } and sequence >= #{newTaskSeq }
+		]]>
+	</update>
+	
+	<update id ="updateProcessTaskSeq3" parameterType="taskdiffvo">
+		<![CDATA[
+			update task
+			set sequence = #{newTaskSeq }, process_no = #{newProcessNo }
+			where no = #{taskNo }
+		]]>
+	</update>
+	
+	<update id ="updateProcessTaskSeq" parameterType="taskdiffvo">
+		<![CDATA[
+			update task
+			set sequence = sequence - 1
+			where process_no = #{oriProcessNo } and sequence > #{oriTaskSeq };
+			
+			update task
+			set sequence = sequence + 1
+			where process_no = #{newProcessNo } and sequence >= #{newTaskSeq };
+			
+			update task
+			set sequence = #{newTaskSeq }, process_no = #{newProcessNo }
+			where no = #{taskNo };
+		]]>
+	</update>
+	
+	<update id ="updateTaskSeq" parameterType="tasksamevo">
+	<![CDATA[	
+			update task
+			set sequence = sequence - 1
+			where process_no = #{processNo } and sequence > #{oriTaskSeq } and sequence <= #{newTaskSeq };
+			
+			update task
+			set sequence = #{newTaskSeq }
+			where no = #{taskNo };
+	]]>	
+	</update>
+	
+	
+	<update id ="updateTaskSeq1" parameterType="tasksamevo">
+		<choose>
+			<when test="oriTaskSeq lt newTaskSeq">
+				<![CDATA[
+				update task
+				set sequence = sequence - 1
+				where process_no = #{processNo } and sequence > #{oriTaskSeq } and sequence <= #{newTaskSeq }
+				]]>				
+			</when>
+			<when test="oriTaskSeq gt newTaskSeq">
+				<![CDATA[
+				update task
+				set sequence = sequence + 1
+				where process_no = #{processNo } and sequence < #{oriTaskSeq } and sequence >= #{newTaskSeq }
+				]]>				
+			</when>
+		</choose>
+
+	</update>
+	
+	<update id ="updateTaskSeq2" parameterType="tasksamevo">
+	<![CDATA[	
+			update task
+			set sequence = #{newTaskSeq }
+			where no = #{taskNo }
+	]]>	
+	</update>
+	
+	<update id ="update" parameterType="long">
+		<![CDATA[
+		update task
+		set status = !status
+		where no = #{no }
+		]]>
+	</update>
+	
+	<insert id="insert" parameterType="taskvo" useGeneratedKeys="true" keyProperty="no">
+		<![CDATA[
+		insert into task values(null, #{name }, #{importance }, #{startDate }, #{endDate }, #{status }, #{sequence }, #{color }, #{processNo })
+		]]>
+	</insert>
+	
+</mapper>

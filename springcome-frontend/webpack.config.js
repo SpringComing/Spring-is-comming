@@ -8,6 +8,11 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.[chunkhash].js"
   },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src/'),
+    }
+  },
   mode: "production",
   module: {
     rules: [

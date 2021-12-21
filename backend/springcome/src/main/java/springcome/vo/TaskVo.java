@@ -103,4 +103,5 @@ public class TaskVo {
 				+ ", processNo=" + processNo + ", checklists=" + checklists + "]";
 	}
 	
+
 }
