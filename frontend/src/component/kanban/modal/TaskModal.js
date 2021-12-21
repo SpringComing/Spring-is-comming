@@ -107,7 +107,7 @@ const TaskModal = ({modalIsOpen, setModalIsOpen, processes, setProcesses, pindex
                 <input type='text'  
                        name="taskName" 
                        placeholder={ task.name }
-                       value={ task.name }
+                       defaultValue={ task.name }
                        onChange={ (e) => setName(e.target.value) } />
             </div>
 
@@ -141,9 +141,9 @@ const TaskModal = ({modalIsOpen, setModalIsOpen, processes, setProcesses, pindex
             
             <div className={ SettingModalStyle.modal_input } >
                 <span >시작</span>
-                <input type="date" name="taskStartDate" value = { task.startDate }  onChange={ (e) => setStartDate(e.target.value) }/>
+                <input type="date" name="taskStartDate" defaultValue={task.startDate} onChange={ (e) => setStartDate(e.target.value) }/>
                 <span >끝</span>
-                <input type="date" name="taskEndtDate" value = { task.endDate }  onChange={ (e) => setEndDate(e.target.value) }/>
+                <input type="date" name="taskEndtDate" defaultValue={task.endDate} onChange={ (e) => setEndDate(e.target.value) }/>
             </div>
         </form>
         <div className={ SettingModalStyle.modal_btn }>
@@ -204,7 +204,7 @@ const TaskModal = ({modalIsOpen, setModalIsOpen, processes, setProcesses, pindex
                     <input type='text'  
                            name="taskName" 
                            placeholder={ task.name }
-                           value={ name }
+                           defaultValue={ task.name }
                            onChange={ (e) => setName(e.target.value) } />
                 </div>
     

@@ -72,15 +72,10 @@ const Kanban = () => {
 
   useEffect(() => {reUploadProcesses()}, []); //컴포넌트 라이프사이클함수중에 didmount, willunmount 함수들과 같은효과
 
-  const openModal =  (no, modal) => {
-    setProcesses({}, ...processes);
-    modal === 'update' ? setUpdateModalIsOpen(true) : setPeopleModalIsOpen(true);
-  }
-
   return (
       <SiteLayout>
         <Nav addProcess = { addProcess }/>
-        <KanbanMain key={projectNo} processes={processes} setProcesses={setProcesses} openModal={ openModal } reUploadProcesses={reUploadProcesses}/>
+        <KanbanMain key={projectNo} processes={processes} setProcesses={setProcesses} />
       </SiteLayout>
   );
 }
