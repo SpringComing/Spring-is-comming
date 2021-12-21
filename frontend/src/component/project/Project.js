@@ -46,6 +46,8 @@ const Project = () => {
       const jsonResult = await response.json();
       
       if(jsonResult.result !== 'success') {
+        location.href = "/api/checkSession"
+        alert("세션이 만료 되었습니다.")
         throw new Error(`${jsonResult.result} ${jsonResult.message}`);
       }
       
@@ -137,10 +139,10 @@ const Project = () => {
     * 작성자: 성창현
     * 기능: 프로젝트와 관련된 모든 데이터 삭제
     */
-  const deleteProject = async (projectNo, userNo) => {
+  const deleteProject = async (projectNo) => {
     try {
-        const response = await fetch(`/api/project/people?projectNo=${projectNo}&userNo=${userNo}`, {
-            method: 'put',
+        const response = await fetch(`/api/project/${projectNo}`, {
+            method: 'delete',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -155,15 +157,15 @@ const Project = () => {
 
         const jsonResult = await response.json();
 
-        // 업데이트 실패시
+        // 삭제 실패시
         if (jsonResult.result !== 'success') {
             alert("서버에서 삭제가 실패했습니다. 다시 시도하세요");
             throw new Error(`${jsonResult.result} ${jsonResult.message}`);
         }
         
-        //업데이트 성공시
-        //console.log("jsonResult",jsonResult);
-        setPeople(people.filter(user => user.no !== userNo) );
+        //삭제 성공시
+        console.log("jsonResult",jsonResult);
+        setProjects(projects.filter(project => project.no !== projectNo) );
 
     } catch (err) {
         console.error(err);

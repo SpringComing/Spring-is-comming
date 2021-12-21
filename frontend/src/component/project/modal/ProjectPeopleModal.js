@@ -119,6 +119,7 @@ const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getPeople, project, pe
                 <div className={ ModalStyle.text }>
                     <span>현재 팀원</span>
                 </div>
+                
                 <div className={ ModalStyle.team_wrapper } >
                     <div className={ ModalStyle.team }>
                         {

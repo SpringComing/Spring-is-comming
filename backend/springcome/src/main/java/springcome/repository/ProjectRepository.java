@@ -62,11 +62,15 @@ public class ProjectRepository {
 	}
 
 	public boolean deleteGuest(Long userNo) {
-		return sqlSession.delete("project.deleteGuestByEmail", userNo) == 1;
+		return sqlSession.delete("project.deleteGuestByUserNo", userNo) == 1;
 	}
 
 	public GuestVo findGuest(String guestEmail) {
 		return sqlSession.selectOne("project.findGuset",guestEmail);
+	}
+
+	public boolean deleteProject(Long projectNo) {
+		return sqlSession.delete("project.deleteProjectAtAttend", projectNo) == 1;
 	}
 	
 }

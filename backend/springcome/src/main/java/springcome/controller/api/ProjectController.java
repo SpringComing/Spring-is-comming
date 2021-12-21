@@ -49,6 +49,11 @@ public class ProjectController {
 	public JsonResult getProject(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		List<ProjectVo> projectList = null;
 		
+		if(principalDetails == null) {
+			System.out.println("-------------------------------------------------------- 세션 만료");
+			return JsonResult.fail("세면 만료");
+		}
+		
 	    projectList = projectService.getAll(principalDetails.getNo());
 		
 		//System.out.println("------------------------------projectList : " + projectList);
@@ -64,8 +69,14 @@ public class ProjectController {
 	@PostMapping("")
 	public JsonResult addProject(@AuthenticationPrincipal PrincipalDetails principalDetails,
 								 @RequestBody ProjectVo projectVo) {
+		
+		if(principalDetails == null) {
+			System.out.println("-------------------------------------------------------- 세션 만료");
+			return JsonResult.fail("세면 만료");
+		}
+		
 		boolean result = false;
-		System.out.println("insert start");
+		//System.out.println("insert start");
 		//System.out.println("-------------------------------------------------projectVo"+ projectVo);
 		
 		result = projectService.addProject(principalDetails.getNo(), projectVo);
@@ -89,6 +100,21 @@ public class ProjectController {
 	}
 	
 	/*
+	 * 함수: deletePoject
+	 * 작성자: 성창현
+	 * 기능: 프로젝트와 관련된 데이터 전부 삭제
+	 */
+	@DeleteMapping("/{projectNo}")
+	public JsonResult deletePoject(@PathVariable(value="projectNo", required=true) Long projectNo) {
+		
+		System.out.println("-------------------------------------------------projectNo"+ projectNo);
+		boolean result = projectService.deleteProject(projectNo);
+		
+		
+		return JsonResult.success(result);
+	}
+	
+	/*
 	* 함수: sendInvitationMail
 	* 작성자: 이동현, 성창현
 	* 기능: 회원가입 요청 시 이메일 인증을 수행하는 함수
@@ -101,6 +127,11 @@ public class ProjectController {
 	public JsonResult Invitation(
 						@AuthenticationPrincipal PrincipalDetails principalDetails,
 						@RequestBody GuestVo guestVo) {
+		
+		if(principalDetails == null) {
+			System.out.println("-------------------------------------------------------- 세션 만료");
+			return JsonResult.fail("세면 만료");
+		}
 		
 		boolean existAttend = false;
 		MailSender mailSender = new MailSender();

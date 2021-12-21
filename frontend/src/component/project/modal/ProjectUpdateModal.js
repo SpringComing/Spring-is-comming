@@ -163,14 +163,6 @@ const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project, d
               <button onClick={ () => { setDeleteMdalIsOpen(true) } }>
                 <span>삭제</span>
               </button>
-              {/* <Modal
-                isOpen={ deleteMdalIsOpen }
-                onRequestClose={ () => setDeleteMdalIsOpen(true) }          //오버레이 부분을 클릭하거나 또는 Esc 키를 누를 시 모달 창이 닫히게 한다
-                shouldCloseOnOverlayClick={ false }                         //오버레이 클릭은 막고 Esc 키만으로 모달창을 닫게 한다
-                contentLabel="Project Delete" >
-                <h1>프로젝트를 삭제하면 작업하는 모든 데이터가 삭제 됩니다. 신중하게 선택하세요.</h1>
-                <button onClick={ () => setDeleteMdalIsOpen(false) }>취소</button>
-              </Modal> */}
               <Modal
                 isOpen={ deleteMdalIsOpen }
                 onRequestClose={() => setDeleteMdalIsOpen(true)}
@@ -181,11 +173,13 @@ const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project, d
                 <h1>프로젝트를 삭제하면 작업하는 모든 데이터가 삭제 됩니다. 신중하게 선택하세요.</h1>
                 
                 <div className={deleteModalStyle['modal-dialog-buttons']}>
-                    <button onClick={() => { setDeleteMdalIsOpen(false);
-                                             deleteProject(); } }>삭제</button>
+                    <button onClick={() => { deleteProject(project.no);
+                                             setDeleteMdalIsOpen(false); 
+                                             modalClose(); } }>삭제</button>
                     <button onClick={() => setDeleteMdalIsOpen(false)}>취소</button>
                 </div>
-            </Modal>
+              </Modal>
+
             </div>
 
         </Modal>

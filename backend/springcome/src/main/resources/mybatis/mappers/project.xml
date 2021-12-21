@@ -72,7 +72,7 @@
 		]]>
 	</insert>
 	
-	<delete id="deleteGuestByEmail" parameterType="long">
+	<delete id="deleteGuestByUserNo" parameterType="long">
 		<![CDATA[
 		delete from guest where no = ${value }
 		]]>
@@ -83,6 +83,14 @@
 		update attend 
 		set status = 0
 		where project_no = #{projectNo } and user_no = #{userNo }
+		]]>
+	</update>
+	
+	<update id="deleteProjectAtAttend" parameterType="long">
+		<![CDATA[
+		update attend 
+		set status = 0
+		where project_no = #{projectNo }
 		]]>
 	</update>
 </mapper>

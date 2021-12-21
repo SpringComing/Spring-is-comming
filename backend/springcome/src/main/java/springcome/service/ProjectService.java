@@ -71,4 +71,8 @@ public class ProjectService {
 		return projectRepository.findGuest(guestEmail);
 	}
 
+	public boolean deleteProject(Long projectNo) {
+		return projectRepository.deleteProject(projectNo);
+	}
+
 }
