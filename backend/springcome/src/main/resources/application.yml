@@ -35,7 +35,9 @@ spring:
       username: spring
       password: spring
       driver-class-name: org.mariadb.jdbc.Driver
+
       url: jdbc:mysql://34.64.73.89:3306/spring?characterEncoding=utf8&allowMultiQueries=true
+
       hikari:
          minimum-idle: 100
          maximum-pool-size: 200

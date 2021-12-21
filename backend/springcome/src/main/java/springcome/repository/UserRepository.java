@@ -69,5 +69,22 @@ public class UserRepository {
 		return sqlSession.update("updatePWD", map);
 
 	}
+	
+	public UserVo findAll(String user_no) {
+		Map<String, String> map = new HashMap<>();
+		map.put("no", user_no);
+		
+		return sqlSession.selectOne("user.findAll",map);
+	}
+	
+	public int updateProfile(String name, String birth, String no, String profile) {
+		Map<String, String> map = new HashMap<>();
+		map.put("name", name);
+		map.put("birth", birth);
+		map.put("no", no);
+		map.put("profile", profile);
+		
+		return sqlSession.update("user.updateProfile",map);
+	}
 
 }

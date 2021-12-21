@@ -4,15 +4,21 @@
 	<typeAliases>
 		<typeAlias type="springcome.vo.UserVo" alias="uservo" />
 		<typeAlias type="springcome.vo.ProjectVo" alias="projectvo" />
+		<typeAlias type="springcome.vo.TaskVo" alias="taskvo" />
+		<typeAlias type="springcome.vo.ChecklistVo" alias="checklistvo" />
+		<typeAlias type="springcome.vo.MemoVo" alias="memovo" />
+		<typeAlias type="springcome.vo.TaskToProjectVo" alias="tasktoprojectvo" />
 		<typeAlias type="springcome.vo.ProcessVo" alias="processvo" />
 		<typeAlias type="springcome.vo.TaskVo" alias="taskvo" />
 		<typeAlias type="springcome.vo.TaskSameVo" alias="tasksamevo" />
 		<typeAlias type="springcome.vo.TaskDiffVo" alias="taskdiffvo" />
 		<typeAlias type="springcome.vo.ChecklistVo" alias="checklistvo" />
+
 	</typeAliases>
 	<mappers>
 		<mapper resource="mybatis/mappers/user.xml" />
 		<mapper resource="mybatis/mappers/project.xml" />
+		<mapper resource="mybatis/mappers/calendar.xml" />
 		<mapper resource="mybatis/mappers/process.xml" />
 		<mapper resource="mybatis/mappers/task.xml" />
 		<mapper resource="mybatis/mappers/checklist.xml" />

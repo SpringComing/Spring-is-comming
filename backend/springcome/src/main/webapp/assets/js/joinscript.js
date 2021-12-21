@@ -13,7 +13,7 @@ function msg_time() {   // 1초씩 카운트
 	m = Math.floor(timer / 60) + "분 " + (timer % 60) + "초"; // 남은 시간 계산     
 	$("#authTime").text(m);
 	timer--;                  // 1초씩 감소
-	if (timer == 110) {          // 시간이 종료 되었으면..        
+	if (timer == 0) {          // 시간이 종료 되었으면..        
 		$("#authTime").text('인증시간 초과');
 		clearInterval(tid);
 

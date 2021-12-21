@@ -1,6 +1,6 @@
 package springcome.vo;
 
-public class ProjectVo {
+public class ProjectVo{
 	private Long no;
 	private String name;
 	private String description;
