@@ -20,6 +20,10 @@ const Mymodal = ({modalIsOpen, setModalIsOpen, data}) => {
     setModalIsOpen(false)
    }
 
+//    const moveProject = () => {
+//      window.location.href("/")
+//    }
+
 
     return (
         
@@ -84,8 +88,11 @@ const Mymodal = ({modalIsOpen, setModalIsOpen, data}) => {
             <div className={ ModalStyle.modal_btn }>
             <button style={{ width:150 ,marginLeft: 20,marginRight:0 }} 
                       form="project_reg"
-                      onClick={ () => {  
-                              modalClose(); 
+                      onClick={ (e) => {  
+
+                              window.location.replace("/");
+
+
                               } }>
                  이동
               </button>

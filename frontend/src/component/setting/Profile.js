@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { useState, useEffect } from 'react';
 import SiteLayout from "../layout/SiteLayout"
+import "./setting.css"
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
 integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" 
 crossorigin="anonymous"/>
@@ -12,6 +13,7 @@ const Profile = () => {
     const [profileeditable, setProfileEditable] = useState(1);
     const[checkName, setCheckName] = useState();
     const[buttonType, setButtonType] = useState("Edit");
+    const[profileImage, setProfileImage] = useState();
 
     const handleChange = (e) => {
       var profileBox = []
@@ -26,6 +28,14 @@ const Profile = () => {
         setProfile(profileBox);
     }
 
+    const handleChangeFile = (e) => {
+      const newImage = URL.createObjectURL(e.target.files[0]);
+      setProfileImage(newImage)
+      changeImage(e.target.files[0])
+    
+    
+    }
+
     const onChange = (e) =>{
       var profileBox = []
       
@@ -36,9 +46,7 @@ const Profile = () => {
           profileBox.push(profile[i])
         }
       }
-
       setProfile(profileBox)
-
     }
 
     const profileChange = (e) =>{
@@ -83,6 +91,19 @@ const Profile = () => {
           profileBox.push(jsonResult.data.join_date);
           profileBox.push(jsonResult.data.profile);
           setProfile(profileBox)
+
+          console.log(jsonResult.data)
+
+          //setProfileImage(atob(jsonResult.data.image));
+          document.getElementById("image").src = "data:image/;base64," + jsonResult.data.image;
+          
+          if(jsonResult.data.image == null){
+            setProfileImage('https://bootdey.com/img/Content/avatar/avatar7.png')
+          }else{
+            
+          }
+
+
           
           console.log(jsonResult.data);
 
@@ -130,7 +151,10 @@ const Profile = () => {
                   <div className="d-flex flex-column align-items-center text-center" style={{
                       marginTop: "55px"
                   }}>
-                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" className="rounded-circle" width={150} />
+                    {/* <input type={'file'} name={'uploadImage'} style={{width:"100px", height:"30px", fontSize:"10px", textAlign:"right", marginLeft:"200px"}}/> */}
+                    <div className="filebox"> <label htmlFor="ex_file" style={{width:"40px", height:"20px", marginLeft:"170px", backgroundColor:"#DFDFDF", fontSize:"13px"}}>Edit</label> <input onChange={handleChangeFile} type="file" id="ex_file" accept='image/*' style={{position: "absolute", width:"1px", height:"1px", padding:"0px", margin:"-1px", overflow:"hidden", border: "0"}}/> </div>
+
+                    <img src={profileImage} id="image" alt="Admin" className="rounded-circle" width={200} height={150}/>
                     <div className="mt-3">
                       <h4>{profile[0]}</h4><br />
                       <input style={
@@ -258,8 +282,37 @@ const Profile = () => {
 
 };
 
-const changeProfile = async (profile) => {
+const changeImage = async (images) => {
+  const formData = new FormData();
+  formData.append("image", images)
 
+  try {
+      const response = await fetch(`/api/changeImage`, {
+          method: 'put',
+          headers: {
+              'Accept': 'application/json'
+          },
+          body: formData
+      });
+      if(!response.ok) {
+          throw  `${response.status} ${response.statusText}`;
+      }
+      const json = await response.json();
+      if(!json.data) {
+          return;
+      }
+
+      //document.getElementById("image").src = "data:image/;base64," + json.data.image;
+          
+
+  } catch (err) {
+      console.error(err);
+  }
+}
+
+
+const changeProfile = async (profile) => {
+  
     try {
         const response = await fetch(`/api/changeProfile`, {
             method: 'put',

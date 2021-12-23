@@ -1,13 +1,20 @@
 package springcome.controller.api;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.apache.commons.codec.binary.Base64;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import springcome.auth.PrincipalDetails;
 import springcome.dto.JsonResult;
@@ -22,9 +29,27 @@ public class SettingController {
 
 	@RequestMapping("/api/profile")
 	public JsonResult profile(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-		
+		String base64Str = null;
+
 		if(principalDetails != null) {
+			
+			
+//		
+//			try {
+//				File imageFile = new File("C:/profile/" + principalDetails.getEmail()+".jpg");
+//				FileInputStream fis =  new FileInputStream(imageFile);
+//				byte[] b = new byte[fis.available()];
+//				fis.read(b);
+//				byte[] encoded = Base64.encodeBase64(b);
+//				base64Str = new String(encoded);
+//								
+//			}catch(IOException e) {
+//				System.out.println("이미지 없뜸");
+//			}
+			
+			
 			UserVo vo = userservice.findAll(principalDetails.getNo());
+			
 			return JsonResult.success(vo);
 			
 		}else {
@@ -32,12 +57,32 @@ public class SettingController {
 		}
 	}
 	
+	@RequestMapping("/api/changeImage")
+	public JsonResult changeImage(@AuthenticationPrincipal PrincipalDetails principalDetails, MultipartHttpServletRequest request) throws IllegalStateException, IOException {
+		String base64Str = null;
+		MultipartFile report = request.getFile("image");	
+		System.out.println(report.getOriginalFilename());
+		InputStream fis =  report.getInputStream();
+		byte[] b = new byte[fis.available()];
+		fis.read(b);
+		byte[] encoded = Base64.encodeBase64(b);
+		base64Str = new String(encoded);
+		int result = userservice.updateImage(base64Str, principalDetails.getNo());
+		
+		
+		
+//		String file = principalDetails.getEmail() + ".jpg";
+//		String fileSavePath = "C:/profile/";
+//		File f1 = new File(fileSavePath, file);
+//		report.transferTo(f1);	
+		
+
+		return JsonResult.success(base64Str);
+	}
+	
 	@RequestMapping("/api/changeProfile")
 	public JsonResult changeProfile(@AuthenticationPrincipal PrincipalDetails principalDetails, @RequestBody String args) {
-		
-		
-		
-		
+
 		if(principalDetails != null) {
 			
 			try {

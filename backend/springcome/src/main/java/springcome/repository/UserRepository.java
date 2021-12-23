@@ -86,5 +86,12 @@ public class UserRepository {
 		
 		return sqlSession.update("user.updateProfile",map);
 	}
+	
+	public int updateImage(String image,String no) {
+		Map<String, String> map = new HashMap<>();
+		map.put("image", image);
+		map.put("no", no);
+		return sqlSession.update("user.updateImage",map);
+	}
 
 }

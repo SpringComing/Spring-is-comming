@@ -224,14 +224,15 @@
         width: 700px;
         height: 300px;
         overflow: auto;
+        scroll-behavior: smooth;
         border-radius: 5px;
         border: 1px solid;
         border-color:#fcfcf8;
         background-color: #FFFFFF;
-        margin: 13px 20px 20px 20px;
+        //margin: 13px 20px 0px 20px;
         div {
             display: flex;
-            justify-content: space-between;
+            //justify-content: space-between;
             margin: 10px 10px 0px 10px;
             border-radius: 5px;
             border: 0px solid;
@@ -247,7 +248,7 @@
                 //display: flex;
                 //border: 1px solid red;
                 margin: 2px 2px 0px 2px;
-                width: 100px;
+                //width: 100px;
                 height: 55px;
             }
             .team_profile {

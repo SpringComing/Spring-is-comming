@@ -46,5 +46,9 @@ public class UserService {
 	public int updateProfile(String name, String birth, String no, String profile) {
 		return userRepository.updateProfile(name, birth, no, profile);
 	}
+	
+	public int updateImage(String image, String no) {
+		return userRepository.updateImage(image, no);
+	}
 
 }

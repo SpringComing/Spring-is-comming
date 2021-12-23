@@ -27,6 +27,9 @@ public class MainController {
 		Cookie cookie = new Cookie("useremail", principalDetails.getEmail());
 		cookie.setMaxAge(-1);
 		resp.addCookie(cookie);
+		Cookie cookie2 = new Cookie("userno", principalDetails.getNo());
+		cookie2.setMaxAge(-1);
+		resp.addCookie(cookie2);
 		return "redirect:http://localhost:9999/";
 	}
 	
