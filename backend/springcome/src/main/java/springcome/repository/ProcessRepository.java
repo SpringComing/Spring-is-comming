@@ -31,4 +31,8 @@ public class ProcessRepository {
 		return 1 == sqlSession.update("process.update", vo);
 	}
 
+	public Boolean delete(Long no) {
+		return 1 == sqlSession.delete("process.delete", no);
+	}
+
 }

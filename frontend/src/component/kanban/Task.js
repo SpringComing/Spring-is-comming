@@ -4,7 +4,7 @@ import Checklist from './Checklist';
 import TaskModal from "./modal/TaskModal";
 import styles from './Kanban.scss';
 
-const Task = ({processes, setProcesses, modalData, setModalData, pindex, tindex}) => {
+const Task = ({projectNo, processes, setProcesses, modalData, setModalData, pindex, tindex}) => {
     const task = processes[pindex].tasks[tindex];
     const [text, setText] = useState('');
     const [modalIsOpen, setModalIsOpen] = useState(false);           //프로젝트 추가 모달 생성 상태
@@ -146,16 +146,16 @@ const Task = ({processes, setProcesses, modalData, setModalData, pindex, tindex}
                 <div className="card__menu-left">
                     <div className="comments-wrapper">
                         <div className="comments-ico">
-                            <i className="material-icons">comment</i>
+                            <i className="material-icons"></i>
                         </div>
-                        <div className="comments-num">1</div>
+                        <div className="comments-num"></div>
                     </div>
 
                     <div className="attach-wrapper">
                         <div className="attach-ico">
-                            <i className="material-icons">attach_file</i>
+                            <i className="material-icons"></i>
                         </div>
-                        <div className="attach-num">2</div>
+                        <div className="attach-num"></div>
                     </div>
                 </div>
 
@@ -166,7 +166,10 @@ const Task = ({processes, setProcesses, modalData, setModalData, pindex, tindex}
                     </div>
                 </div>
             </div>
-            <TaskModal  modalIsOpen= { modalIsOpen } 
+            <TaskModal 
+                        key={task.no}
+                        projectNo={projectNo}
+                        modalIsOpen={ modalIsOpen } 
                         setModalIsOpen={ setModalIsOpen }
                         processes={processes}
                         setProcesses={setProcesses}

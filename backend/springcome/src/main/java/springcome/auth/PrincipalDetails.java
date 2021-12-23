@@ -24,14 +24,12 @@ import springcome.vo.UserVo;
 
 public class PrincipalDetails implements UserDetails {
 
+	private static final long serialVersionUID = 1L;
 	private UserVo userVo; // 컴포지션
-
 	public PrincipalDetails(UserVo userVo) {
 		System.out.println("테스트 : " + userVo);
 		this.userVo = userVo;
 	}
-
-
 	
 	/*
 	* 함수: getAuthorities()
@@ -42,40 +40,36 @@ public class PrincipalDetails implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> collect = new ArrayList<>();
 		collect.add(new GrantedAuthority() {
-
+			private static final long serialVersionUID = 1L;
 			@Override
 			public String getAuthority() {
 				return "User";
 			}
-
 		});
-
 		return null;
 	}
-
 	@Override
 	public String getPassword() {
 		return userVo.getPassword();
 	}
-
 	@Override
 	public String getUsername() {
 		return userVo.getName();
 	}
 	
-
 	public String getJoindate() {
 		return userVo.getJoin_date();
 	}
-
+	
+	public Long getNo() {
+		return userVo.getNo();
+	}
 	public String getEmail() {
 		return userVo.getEmail();
 	}
-
 	public String getTel() {
 		return userVo.getTel();
 	}
-
 	public String getBirth() {
 		return userVo.getBirth();
 	}
@@ -85,22 +79,18 @@ public class PrincipalDetails implements UserDetails {
 	* 작성자: 이동현
 	* 기능: 비밀번호 만료기간 체크, 휴먼유저 체크 등을 할 때 사용할 함수
 	*/
-
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
 	}
-
 	@Override
 	public boolean isAccountNonLocked() {
 		return true;
 	}
-
-	@Override 
+	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
-
 	@Override
 	public boolean isEnabled() {
 		return true;

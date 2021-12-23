@@ -3,6 +3,7 @@ package springcome.controller.api;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,4 +54,10 @@ public class ProcessController {
 		System.out.println(vo);
 		return JsonResult.success(processService.updateProcess(vo));
 	}
+	
+	@DeleteMapping("/{no}")
+	public JsonResult delete(@PathVariable(value = "no", required = true) Long no){
+		return JsonResult.success(processService.delete(no));
+	}
+	
 }

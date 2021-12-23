@@ -1,5 +1,6 @@
 package springcome.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +8,11 @@ import org.springframework.stereotype.Service;
 
 import springcome.repository.ChecklistRepository;
 import springcome.repository.TaskRepository;
+import springcome.vo.FileVo;
 import springcome.vo.TaskDiffVo;
 import springcome.vo.TaskSameVo;
 import springcome.vo.TaskVo;
+import springcome.vo.UserVo;
 
 @Service
 public class TaskService {
@@ -50,6 +53,35 @@ public class TaskService {
 	public Boolean updateTaskAttr(TaskVo vo) {
 		return taskRepository.updateTaskAttr(vo);
 	}
+
+	public List<UserVo> getTaskUser(Long no) {
+		return taskRepository.getTaskUser(no);
+	}
+
+	public List<UserVo> getTaskNoneUser(HashMap<String, Long> map) {
+		return taskRepository.getTaskNoneUser(map);
+	}
+
+	public Boolean insertAssign(HashMap<String, Long> map) {
+		return taskRepository.insertAssign(map);
+	}
+
+	public Boolean deleteAssign(HashMap<String, Long> map) {
+		return taskRepository.deleteAssign(map);
+	}
+
+	public Boolean deleteTask(Long no) {
+		return taskRepository.deleteTask(no);
+	}
+
+	public List<FileVo> getFileList(Long no) {
+		return taskRepository.getFileList(no);
+	}
+
+	public Boolean insertFile(FileVo vo) {
+		return taskRepository.insertFile(vo);
+	}
+
 
 
 

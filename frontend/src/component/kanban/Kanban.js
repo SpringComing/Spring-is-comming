@@ -7,6 +7,7 @@ import Nav from "./nav/Nav"
 const Kanban = () => {
   const [processes, setProcesses] = useState([]);
   const projectNo = 1;
+  const [project, setProject] = useState([]);
   
   const addProcess = async () => {
     try {
@@ -70,12 +71,47 @@ const Kanban = () => {
       }
   }
 
-  useEffect(() => {reUploadProcesses()}, []); //컴포넌트 라이프사이클함수중에 didmount, willunmount 함수들과 같은효과
+  const reUploadProject = async() => {
+    try {
+      const response = await fetch(`/api/project/attr/${projectNo}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',   // cf. application/x-www-form-urlencoded
+          'Accept': 'application/json'          // cf. text/html
+        },         
+        body: null
+      });
+
+      if(!response.ok) {
+        throw new Error(`${response.status} ${response.statusText}`);
+      }
+
+      const jsonResult = await response.json();
+
+      if(jsonResult.result !== 'success') {
+        throw new Error(`${jsonResult.result} ${jsonResult.message}`);
+      }
+
+      setProject(jsonResult.data);
+
+    } catch (err) {
+      console.error(err);
+    }
+}
+
+  useEffect(() => {reUploadProcesses(), reUploadProject()}, []); //컴포넌트 라이프사이클함수중에 didmount, willunmount 함수들과 같은효과
 
   return (
       <SiteLayout>
-        <Nav addProcess = { addProcess }/>
-        <KanbanMain key={projectNo} processes={processes} setProcesses={setProcesses} />
+        <Nav 
+          addProcess={ addProcess }
+          project={project} />
+        <KanbanMain 
+          key={projectNo} 
+          processes={processes} 
+          setProcesses={setProcesses} 
+          projectNo={projectNo} 
+          reUploadProcesses={reUploadProcesses} />
       </SiteLayout>
   );
 }

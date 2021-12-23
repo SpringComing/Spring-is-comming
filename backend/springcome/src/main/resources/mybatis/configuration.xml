@@ -9,6 +9,7 @@
 		<typeAlias type="springcome.vo.TaskSameVo" alias="tasksamevo" />
 		<typeAlias type="springcome.vo.TaskDiffVo" alias="taskdiffvo" />
 		<typeAlias type="springcome.vo.ChecklistVo" alias="checklistvo" />
+		<typeAlias type="springcome.vo.FileVo" alias="filevo" />
 	</typeAliases>
 	<mappers>
 		<mapper resource="mybatis/mappers/user.xml" />
@@ -16,5 +17,6 @@
 		<mapper resource="mybatis/mappers/process.xml" />
 		<mapper resource="mybatis/mappers/task.xml" />
 		<mapper resource="mybatis/mappers/checklist.xml" />
+		
 	</mappers>
 </configuration>
