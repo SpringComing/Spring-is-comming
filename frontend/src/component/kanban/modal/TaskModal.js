@@ -7,7 +7,7 @@ import CommentModalStyle from "../../../assets/css/component/kanban/TaskCommentM
 import ModalStyle from "../../../assets/css/component/project/CommentModal.scss"
 import  Cookie  from "react-cookies"
 import base64 from 'base-64'
-import fileDownload from 'file-saver'
+import { saveAs} from 'file-saver'
 
 Modal.setAppElement('body');
 
@@ -631,7 +631,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
             }
             let binary = base64.decode(json.data);
             let blob = new Blob([new String(binary)], {type: "text/plain;charset=utf-8"});
-            fileDownload.saveAs(blob, file.name);
+            saveAs(blob, file.name);
         } catch (err) {
             console.error(err);
         }

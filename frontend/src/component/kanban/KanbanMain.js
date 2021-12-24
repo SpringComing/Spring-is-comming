@@ -3,7 +3,7 @@ import Process from './Process';
 import { DragDropContext } from "react-beautiful-dnd";
 import update from 'react-addons-update';
 
-const KanbanMain = ({processes, setProcesses}) => {
+const KanbanMain = ({projectNo, processes, setProcesses, reUploadProcesses}) => {
 
     const changeTaskSameProc = async(
       processNo, 
@@ -128,10 +128,11 @@ const KanbanMain = ({processes, setProcesses}) => {
       // droppableId : process의 index
       // draggableId : task.no
       // index : task의 index
-
-      if (!result.destination) return;
       let { source, destination } = result;
 
+      if (!result.destination) return;
+      if (source.droppableId === destination.droppableId && source.index === destination.index) return;
+      
       if (source.droppableId !== destination.droppableId) { // 다른 프로세스에 놓았을 때
         let sourceColumn = processes[source.droppableId];
         let destColumn = processes[destination.droppableId];
@@ -141,7 +142,7 @@ const KanbanMain = ({processes, setProcesses}) => {
         let [removed] = sourceItems.splice(source.index, 1);
         destItems.splice(destination.index, 0, removed);
         
-        console.log(sourceColumn.no);
+        //console.log(sourceColumn.no);
 
         changeTaskDiffProc(
           sourceColumn.no, 
@@ -177,7 +178,13 @@ const KanbanMain = ({processes, setProcesses}) => {
                 <DragDropContext onDragEnd={onDragEnd}>                           
                     {processes.map((process, index) => {
                         return(  
-                            <Process key={process.no} processes={processes} setProcesses={setProcesses} pindex={index} />
+                            <Process 
+                            key={process.no} 
+                            projectNo={projectNo} 
+                            processes={processes} 
+                            setProcesses={setProcesses} 
+                            pindex={index}
+                            reUploadProcesses={reUploadProcesses} />
                         );
                     })}
                 </DragDropContext>

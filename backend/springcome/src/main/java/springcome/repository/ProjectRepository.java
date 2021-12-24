@@ -23,4 +23,8 @@ public class ProjectRepository {
 		
 	}
 
+	public ProjectVo findByProjectNo(Long no) {
+		return sqlSession.selectOne("project.findByProjectNo", no);
+	}
+
 }

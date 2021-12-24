@@ -1,9 +1,9 @@
 import React from "react";
 
-const Title = () => {
+const Title = ({project}) => {
   return (
     <div className="kanban__nav-name">
-        <div className="kanban-name">{"SpringCome (2021/08/30 ~ 2021/10/15)"}</div>
+        <div className="kanban-name">{ `${project.name} (${project.startDate} ~ ${project.endDate})` }</div>
     </div>
   );
 };

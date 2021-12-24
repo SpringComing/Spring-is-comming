@@ -50,4 +50,8 @@ public class ProcessService {
 		return processRepository.update(vo);
 	}
 
+	public Boolean delete(Long no) {
+		return processRepository.delete(no);
+	}
+
 }

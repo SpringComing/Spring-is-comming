@@ -7,16 +7,44 @@ import stylesTask from "../../assets/css/component/kanban/AddTask.scss"
 import styles from './Kanban.scss'
 import modalStyles from "../../assets/css/component/kanban/modal.scss";
 
-const Process = ({processes, setProcesses, pindex}) => {
+const Process = ({projectNo, processes, setProcesses, pindex, reUploadProcesses}) => {
     const process = processes[pindex];
     const [text, setText] = useState(process.name);
     const [clickName, setClickName] = useState(false);
     const [modalData, setModalData] = useState({isOpen: false});
 
-    const addTask = async() => {
-        console.log("process.no : ", process.no);
+    const delProcess = async(processNo, pindex) => {
         try {
-            const response = await fetch(`/api/task`, {
+            const response = await fetch(`/api/process/${processNo}`, {
+                method: 'delete',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: null
+            });
+    
+            if(!response.ok) {
+                throw  `${response.status} ${response.statusText}`;
+            }
+    
+            const json = await response.json();
+    
+            if(!json.data) {
+                return;
+            }
+    
+            reUploadProcesses();
+    
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    const addTask = async() => {
+        //console.log("process.no : ", process.no);
+        try {
+            const response = await fetch(`/api/task/`, {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
@@ -142,7 +170,8 @@ const Process = ({processes, setProcesses, pindex}) => {
                     {showName()}
                 </div>
                 <div className={styles.backlog_dots}>
-                    <i className="material-icons">clear</i>
+                    <i className="material-icons"
+                    onClick={ () => delProcess(process.no, pindex) }>clear</i>
                 </div>                    
             </div>
 
@@ -160,6 +189,7 @@ const Process = ({processes, setProcesses, pindex}) => {
                                     >
                                         <Task
                                                 key={task.no}
+                                                projectNo={projectNo}
                                                 processes={processes}
                                                 setProcesses={setProcesses}
                                                 modalData={modalData}
