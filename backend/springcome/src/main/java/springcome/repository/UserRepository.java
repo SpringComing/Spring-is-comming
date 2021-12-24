@@ -70,27 +70,27 @@ public class UserRepository {
 
 	}
 	
-	public UserVo findAll(String user_no) {
+	public UserVo findAll(Long test) {
 		Map<String, String> map = new HashMap<>();
-		map.put("no", user_no);
+		map.put("no", test.toString());
 		
 		return sqlSession.selectOne("user.findAll",map);
 	}
 	
-	public int updateProfile(String name, String birth, String no, String profile) {
+	public int updateProfile(String name, String birth, Long test, String profile) {
 		Map<String, String> map = new HashMap<>();
 		map.put("name", name);
 		map.put("birth", birth);
-		map.put("no", no);
+		map.put("no", test.toString() );
 		map.put("profile", profile);
 		
 		return sqlSession.update("user.updateProfile",map);
 	}
 	
-	public int updateImage(String image,String no) {
+	public int updateImage(String image,Long test) {
 		Map<String, String> map = new HashMap<>();
 		map.put("image", image);
-		map.put("no", no);
+		map.put("no", test.toString());
 		return sqlSession.update("user.updateImage",map);
 	}
 

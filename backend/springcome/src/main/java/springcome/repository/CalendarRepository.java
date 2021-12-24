@@ -18,17 +18,17 @@ public class CalendarRepository {
 	@Autowired
 	private SqlSession sqlSession;
 
-	public List<ProjectVo> FindProject(String userno) {
+	public List<ProjectVo> FindProject(Long test) {
 
 		Map<String, String> map = new HashMap<>();
-		map.put("no", userno);
+		map.put("no", test.toString());
 
 		return sqlSession.selectList("calendar.FindProject", map);
 	}
 
-	public int insertMemo(String no, String title, String date, String n) {
+	public int insertMemo(Long test, String title, String date, String n) {
 		Map<String, String> map = new HashMap<>();
-		map.put("no", no);
+		map.put("no", test.toString());
 		map.put("title", title);
 		map.put("date", date);
 		map.put("n", n);
@@ -36,37 +36,37 @@ public class CalendarRepository {
 		return sqlSession.insert("insertMemo", map);
 	}
 
-	public List<MemoVo> findMemo(String userno) {
+	public List<MemoVo> findMemo(Long test) {
 
 		Map<String, String> map = new HashMap<>();
-		map.put("no", userno);
+		map.put("no", test.toString());
 		return sqlSession.selectList("calendar.FindMemo", map);
 
 	}
 
-	public int deleteMemo(String title, String date, String userno, String no) {
+	public int deleteMemo(String title, String date, Long test, String no) {
 		Map<String, String> map = new HashMap<>();
 		map.put("title", title);
 		map.put("date", date);
-		map.put("no", userno);
+		map.put("no", test.toString());
 		map.put("n", no);
 
 		return sqlSession.delete("calendar.deleteMemo", map);
 
 	}
 
-	public List<TaskToProjectVo> findTask(String userno) {
+	public List<TaskToProjectVo> findTask(Long test) {
 		Map<String, String> map = new HashMap<>();
-		map.put("no", userno);
+		map.put("no", test.toString());
 		return sqlSession.selectList("calendar.FindTask", map);
 
 	}
 	
-	public int updateMemo(String title, String date, String userno, String no) {
+	public int updateMemo(String title, String date, Long test, String no) {
 		Map<String, String> map = new HashMap<>();
 		map.put("title", title);
 		map.put("date", date);
-		map.put("no", userno);
+		map.put("no", test.toString());
 		map.put("n", no);
 
 		return sqlSession.update("calendar.updateMemo", map);

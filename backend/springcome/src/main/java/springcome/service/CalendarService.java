@@ -15,28 +15,28 @@ public class CalendarService {
 	@Autowired
 	private CalendarRepository calendarRepository;
 	
-	public List<ProjectVo> FindProject(String userno){
-		return calendarRepository.FindProject(userno);
+	public List<ProjectVo> FindProject(Long long1){
+		return calendarRepository.FindProject(long1);
 	}
 	
-	public int insertMemo(String no, String title, String date, String n) {
-		return calendarRepository.insertMemo(no, title, date,n);
+	public int insertMemo(Long long1, String title, String date, String n) {
+		return calendarRepository.insertMemo(long1, title, date,n);
 	}
 	
-	public List<MemoVo> findMemo(String userno){
-		return calendarRepository.findMemo(userno);
+	public List<MemoVo> findMemo(Long long1){
+		return calendarRepository.findMemo(long1);
 	}
 	
-	public int deleteMemo(String title, String date, String userno, String no) {
-		return calendarRepository.deleteMemo(title, date, userno,no);
+	public int deleteMemo(String title, String date, Long long1, String no) {
+		return calendarRepository.deleteMemo(title, date, long1,no);
 	}
 	
-	public List<TaskToProjectVo> findTask(String userno){
-		return calendarRepository.findTask(userno);
+	public List<TaskToProjectVo> findTask(Long long1){
+		return calendarRepository.findTask(long1);
 	}
 	
-	public int updateMemo(String title, String date, String userno, String no) {
-		return calendarRepository.updateMemo(title, date, userno, no);
+	public int updateMemo(String title, String date, Long long1, String no) {
+		return calendarRepository.updateMemo(title, date, long1, no);
 	}
 	
 	public String maxNo() {

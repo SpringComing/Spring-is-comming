@@ -59,8 +59,8 @@ public class TaskService {
 		return taskRepository.findComment(no);
 	}
 	
-	public int addComment(String message, String task_no, String user_no) {
-		return taskRepository.addComment(message, task_no, user_no);
+	public int addComment(String message, String task_no, Long userno) {
+		return taskRepository.addComment(message, task_no, userno);
 	}
 	
 	public CommentVo commentData(int no) {

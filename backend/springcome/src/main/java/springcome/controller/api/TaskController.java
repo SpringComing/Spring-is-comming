@@ -122,7 +122,7 @@ public class TaskController {
 		
 		String taskNo = jsonObj.get("no").toString();
 		String Message = jsonObj.get("message").toString();
-		String userno = principalDetails.getNo();
+		Long userno = principalDetails.getNo();
 		int result = taskService.addComment(Message, taskNo, userno);
 		CommentVo vo = taskService.commentData(result);
 		

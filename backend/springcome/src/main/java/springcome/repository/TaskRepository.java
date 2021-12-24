@@ -110,11 +110,11 @@ public class TaskRepository {
 
 	}
 	
-	public int addComment(String message, String task_no, String user_no) {
+	public int addComment(String message, String task_no, Long test) {
 		Map<String,String> a = new HashMap<>();
 		a.put("message", message);
 		a.put("task_no", task_no);
-		a.put("user_no", user_no);
+		a.put("user_no", test.toString());
 		this.sqlSession.insert("task.addComment",a);
 		return Integer.valueOf(String.valueOf((a.get("no"))));
 	}

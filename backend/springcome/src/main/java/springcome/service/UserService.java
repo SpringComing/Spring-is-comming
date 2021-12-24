@@ -39,16 +39,16 @@ public class UserService {
 
 	}
 	
-	public UserVo findAll(String user_no) {
-		return userRepository.findAll(user_no);
+	public UserVo findAll(Long long1) {
+		return userRepository.findAll(long1);
 	}
 	
-	public int updateProfile(String name, String birth, String no, String profile) {
-		return userRepository.updateProfile(name, birth, no, profile);
+	public int updateProfile(String name, String birth, Long long1, String profile) {
+		return userRepository.updateProfile(name, birth, long1, profile);
 	}
 	
-	public int updateImage(String image, String no) {
-		return userRepository.updateImage(image, no);
+	public int updateImage(String image, Long long1) {
+		return userRepository.updateImage(image, long1);
 	}
 
 }
