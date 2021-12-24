@@ -28,6 +28,7 @@
 		<h3>회원가입</h3>
 		<form name="login"
 			action="#" method="post">
+			<input type="hidden" name="guestEmail" id="guestEmail" value="${guestEmail }" >
 			<div class="flex">
 				<ul class="container">
 					<li class="item center">이메일</li>

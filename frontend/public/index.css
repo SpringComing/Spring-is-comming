@@ -12,7 +12,7 @@
     --colorBarW: #b7bec7;
     --colorWhite: white;
     --colorNav: #eef2f9;
-    --colorIcon: #a1ffff;
+    --colorIcon: #ff640a;
     --colorName: #707090;
   }
   
@@ -219,7 +219,7 @@
     margin-right: 30px;
     font-size: 14px;
     font-weight: 300;
-    width: 100px;
+    width: auto;
   }
   
   .input-text {
@@ -628,6 +628,7 @@
     background-color: var(--colorNav);
     grid-area: main;
     position: relative;
+    z-index: 5;
   }
   
   .kanban__main-wrapper {

@@ -18,7 +18,7 @@ const ProjectAddModal = ({modalIsOpen, setModalIsOpen, getProject}) => {
    /**
    * 함수: handleSubmit 
    * 작성자: 성창현
-   * 기능: 모달 form 데이터 서버에 fetch
+   * 기능: 모달 form 데이터 서버에 fetch 프로젝트 데이터 추가
    */
    const handleSubmit = async (e) => {
     console.log('insert');
@@ -39,7 +39,7 @@ const ProjectAddModal = ({modalIsOpen, setModalIsOpen, getProject}) => {
                 endDate: endDate
             }
 
-            const response = await fetch('/api/project/1', {
+            const response = await fetch('/api/project', {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
@@ -56,6 +56,8 @@ const ProjectAddModal = ({modalIsOpen, setModalIsOpen, getProject}) => {
 
 
             if (jsonResult.result !== 'success') {
+                location.href = "/api/checkSession"
+                alert("세션이 만료 되었습니다.");
                 throw new Error(`${jsonResult.result} ${jsonResult.message}`);
             }
             

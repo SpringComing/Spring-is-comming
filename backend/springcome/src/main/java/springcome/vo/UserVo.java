@@ -1,7 +1,7 @@
 package springcome.vo;
 
 public class UserVo {
-	
+
 	private Long no;
 	private String email;
 	private String password;
@@ -36,12 +36,20 @@ public class UserVo {
 	}
 
 	private String image;
+
 	
+	public Long getNo() {
+		return no;
+	}
+	public void setNo(Long no) {
+		this.no = no;
+
 	public String getImage() {
 		return image;
 	}
 	public void setImage(String image) {
 		this.image = image;
+
 	}
 	public String getTel() {
 		return tel;
@@ -74,5 +82,4 @@ public class UserVo {
 				+ ", birth=" + birth + ", join_date=" + join_date + ", profile=" + profile + ", image=" + image + "]";
 	}
 
-	
 }

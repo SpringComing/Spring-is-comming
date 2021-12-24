@@ -1,11 +1,12 @@
 import React,{useState,useRef, useEffect} from 'react';
 import Modal from "react-modal";
 import ModalStyle from "../../../assets/css/component/project/ProjectModal.scss"
+import deleteModalStyle from "../../../assets/css/component/project/ProjectDeleteModal.scss"
 
 
 Modal.setAppElement('body');
 
-const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project}) => {
+const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project, deleteProject, sendProjectMSG}) => {
     const refForm = useRef(null);                            
     const currentDate = new Date().toISOString().substring(0, 10);  //현재 날짜 가져오기
     const [startDate, setStartDate] = useState(currentDate);        //모달 input startDate 
@@ -14,6 +15,8 @@ const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project}) 
     const [projectDesc, setProjectDesc] = useState("");             //모달 input projectDesc
     const [flag, setFlag] = useState(true);                         //모달에 프로젝트 내용 넣기위한 플래그
     
+    const [deleteMdalIsOpen, setDeleteMdalIsOpen] = useState(false);
+
     /**
      * 모달에 프로젝트 내용 넣기
      */
@@ -29,7 +32,7 @@ const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project}) 
    /**
    * 함수: handleSubmit 
    * 작성자: 성창현
-   * 기능: 모달 form 데이터 서버에 fetch
+   * 기능: 모달 form 데이터 서버에 fetch 프로젝트 업데이트
    */
    const handleSubmit = async (e) => {
         e.preventDefault();
@@ -50,7 +53,7 @@ const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project}) 
                 endDate: endDate
             }
 
-            const response = await fetch('/api/project/1', {
+            const response = await fetch('/api/project', {
                 method: 'put',
                 headers: {
                     'Content-Type': 'application/json',
@@ -76,7 +79,9 @@ const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project}) 
             }
 
             // update 성공한 경우
-            getProject();
+            getProject(); 
+            console.log("project.no : ",project.no);         
+            sendProjectMSG(project.no,project.name,"프로젝트 내용이 변경되었습니다.");
 
         } catch (err) {
             console.error(err);
@@ -92,7 +97,6 @@ const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project}) 
    const modalClose = () => {
 
     setFlag(true);
-
     setModalIsOpen(false)
    }
 
@@ -152,11 +156,31 @@ const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project}) 
               <button type="submit" 
                       form="project_reg"
                       onClick={ () => { 
-                                
                               refForm.current.dispatchEvent(new Event("submit", {cancelable: true, bubbles: true})); 
                             } }>
                 <span>저장</span>
               </button>
+
+              <button onClick={ () => { setDeleteMdalIsOpen(true) } }>
+                <span>삭제</span>
+              </button>
+              <Modal
+                isOpen={ deleteMdalIsOpen }
+                onRequestClose={() => setDeleteMdalIsOpen(true)}
+                shouldCloseOnOverlayClick={true}
+                className={deleteModalStyle.Modal}
+                overlayClassName={deleteModalStyle.Overlay}
+                style={{content: {width: 350}}}>
+                <h1>프로젝트를 삭제하면 작업하는 모든 데이터가 삭제 됩니다. 신중하게 선택하세요.</h1>
+                
+                <div className={deleteModalStyle['modal-dialog-buttons']}>
+                    <button onClick={() => { deleteProject(project.no);
+                                             setDeleteMdalIsOpen(false); 
+                                             modalClose(); } }>삭제</button>
+                    <button onClick={() => setDeleteMdalIsOpen(false)}>취소</button>
+                </div>
+              </Modal>
+
             </div>
 
         </Modal>

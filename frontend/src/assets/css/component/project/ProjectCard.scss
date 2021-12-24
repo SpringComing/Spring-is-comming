@@ -18,10 +18,12 @@
 }
 
 .backlog_name:hover {
+    width: 180px;
     color: var(--colorName);
     font-size: 16px;
     font-weight: 400;
     margin: 0 10px;
+    word-wrap: break-word;
 }
 
   

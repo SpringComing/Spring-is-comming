@@ -46,7 +46,9 @@
     }
 }
 .project_reg {
+  
     margin-bottom: 3px;
+
     .text {
         display: flex;
         margin: 15px 0px 15px 0px;
@@ -55,7 +57,10 @@
             height: 30px;
             font-size: 28px;
             font-weight: 400;
-            color: #7C7CA8;
+
+            color: #7c7ca8;
+
+
             margin-left: 10px;
         }
     }
@@ -91,6 +96,7 @@
             }
         }
     }
+
     .modal_textarea {
         display: flex;
         text-align: center;
@@ -113,9 +119,12 @@
             margin: 13px 10px 10px 20px;
         }
     }
+
+
     .team_wrapper {
         display: flex;
-        //background-color: #E7FCE7;
+        //background-color: #e7fce7;
+
         .team {
             width: 700px;
             height: 300px;
@@ -123,8 +132,12 @@
             border-radius: 5px;
             border: 1px solid;
             border-color:#fcfcf8;
-            background-color: #FFFFFF;
+
+            background-color: #ffffff;
             margin: 13px 20px 20px 20px;
+
+
+
             div {
                 display: flex;
                 justify-content: space-between;
@@ -133,59 +146,86 @@
                 border: 1px solid;
                 border-color:#dddddd;
                 height: 60px;
+
+
                 &:hover{
-                    border-color: #66E966;
+                    border-color: #66e966;
+
                     outline: 0;
                     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0 , 0.08), 0 0 8px rgba(0, 0, 0 , 0.6);
                     box-shadow: inset 0 1px 1px rgba(0, 0, 0 , 0.08), 0 0 8px rgba(0, 0, 0 , 0.6);
                 }
+
                 span {
                     //display: flex;
                     //border: 1px solid red;
                     margin: 2px 2px 0px 2px;
                     width: 100px;
                     height: 55px;
+
+
+                    
                 }
+
+
                 .team_profile {
                     i {
                         margin-top: 5px;
                         line-height: 1;
                         font-size: 35px;
-                        color: #7C7CA8;
+
+                        color: #7c7ca8;
                         width: 50px;
                     }
                 }
+
+
                 .team_name {
                     width: 400px;
                     font-size: 20px;
                     font-weight: 400;
-                    color: #7C7CA8;
+
+                    color: #7c7ca8;
                     line-height: 2;
                     width: 80px;
+                    
                 }
+
+
                 .team_email {
                     width: 400px;
                     font-size: 20px;
                     font-weight: 400;
-                    color: #7C7CA8;
+
+                    color: #7c7ca8;
                     line-height: 2;
                     width: 200px;
                 }
+
+
                 .team_exclude {
                     i {
                         margin-top: 5px;
                         line-height: 1;
                         font-size: 35px;
-                        color: #7C7CA8;
+
+                        color: #7c7ca8;
+
                         &:hover{
                             font-size: 40px;
-                            color: #2A9600;
+                            color: #2a9600;
                         }
+
                     }
                 }
+
+                
             }
         }
     }
+
+
+
 }
 .modal_btn {
     button {
@@ -210,6 +250,8 @@
             font-weight: 400;
         }
     }
+
+
     .email_check {
         font-size: 20px;
         font-weight: 400;
@@ -217,76 +259,84 @@
     }
 }
 
-.team_wrapper {
-    display: flex;
-    //background-color: #E7FCE7;
-    .team {
-        width: 700px;
-        height: 300px;
-        overflow: auto;
-        border-radius: 5px;
-        border: 1px solid;
-        border-color:#fcfcf8;
-        background-color: #FFFFFF;
-        margin: 13px 20px 20px 20px;
-        div {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 10px 0px 10px;
-            border-radius: 5px;
-            border: 0px solid;
-            border-color:#dddddd;
-            height: 60px;
-            &:hover{
-                border-color: #66E966;
-                outline: 0;
-                -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0 , 0.08), 0 0 8px rgba(0, 0, 0 , 0.6);
-                box-shadow: inset 0 1px 1px rgba(0, 0, 0 , 0.08), 0 0 8px rgba(0, 0, 0 , 0.6);
-            }
-            span {
-                //display: flex;
-                //border: 1px solid red;
-                margin: 2px 2px 0px 2px;
-                width: 100px;
-                height: 55px;
-            }
-            .team_profile {
-                i {
-                    margin-top: 5px;
-                    line-height: 1;
-                    font-size: 35px;
-                    color: #7C7CA8;
-                    width: 50px;
-                }
-            }
-            .team_name {
-                width: 400px;
-                font-size: 20px;
-                font-weight: 400;
-                color: #7C7CA8;
-                line-height: 2;
-                width: 80px;
-            }
-            .team_email {
-                width: 400px;
-                font-size: 20px;
-                font-weight: 400;
-                color: #7C7CA8;
-                line-height: 2;
-                width: 200px;
-            }
-            .team_exclude {
-                i {
-                    margin-top: 5px;
-                    line-height: 1;
-                    font-size: 35px;
-                    color: #7C7CA8;
-                    &:hover{
-                        font-size: 40px;
-                        color: #2A9600;
-                    }
-                }
-            }
-        }
-    }
-}
+//     .email_check {
+//         font-size: 20px;
+//         font-weight: 400;
+//         color: red;
+//     }
+// }
+
+// .team_wrapper {
+//     display: flex;
+//     //background-color: #E7FCE7;
+//     .team {
+//         width: 700px;
+//         height: 300px;
+//         overflow: auto;
+//         border-radius: 5px;
+//         border: 1px solid;
+//         border-color:#fcfcf8;
+//         background-color: #FFFFFF;
+//         margin: 13px 20px 20px 20px;
+//         div {
+//             display: flex;
+//             justify-content: space-between;
+//             margin: 10px 10px 0px 10px;
+//             border-radius: 5px;
+//             border: 0px solid;
+//             border-color:#dddddd;
+//             height: 60px;
+//             &:hover{
+//                 border-color: #66E966;
+//                 outline: 0;
+//                 -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0 , 0.08), 0 0 8px rgba(0, 0, 0 , 0.6);
+//                 box-shadow: inset 0 1px 1px rgba(0, 0, 0 , 0.08), 0 0 8px rgba(0, 0, 0 , 0.6);
+//             }
+//             span {
+//                 //display: flex;
+//                 //border: 1px solid red;
+//                 margin: 2px 2px 0px 2px;
+//                 width: 100px;
+//                 height: 55px;
+//             }
+//             .team_profile {
+//                 i {
+//                     margin-top: 5px;
+//                     line-height: 1;
+//                     font-size: 35px;
+//                     color: #7C7CA8;
+//                     width: 50px;
+//                 }
+//             }
+//             .team_name {
+//                 width: 400px;
+//                 font-size: 20px;
+//                 font-weight: 400;
+//                 color: #7C7CA8;
+//                 line-height: 2;
+//                 width: 80px;
+//             }
+//             .team_email {
+//                 width: 400px;
+//                 font-size: 20px;
+//                 font-weight: 400;
+//                 color: #7C7CA8;
+//                 line-height: 2;
+//                 width: 200px;
+//             }
+//             .team_exclude {
+//                 i {
+//                     margin-top: 5px;
+//                     line-height: 1;
+//                     font-size: 35px;
+//                     color: #7C7CA8;
+//                     &:hover{
+//                         font-size: 40px;
+//                         color: #2A9600;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
+

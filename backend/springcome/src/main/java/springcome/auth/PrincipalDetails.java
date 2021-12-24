@@ -40,7 +40,9 @@ public class PrincipalDetails implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> collect = new ArrayList<>();
 		collect.add(new GrantedAuthority() {
+
 			private static final long serialVersionUID = 1L;
+
 			@Override
 			public String getAuthority() {
 				return "User";
@@ -69,6 +71,7 @@ public class PrincipalDetails implements UserDetails {
 	public Long getNo() {
 		return userVo.getNo();
 	}
+  
 	public String getEmail() {
 		return userVo.getEmail();
 	}

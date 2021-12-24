@@ -28,6 +28,7 @@ public class SessionController {
 		
 		if(principalDetails == null || checkCookie == null) {
 
+
 			return "redirect:http://localhost:7777/loginForm";
 
 		}else {

@@ -42,7 +42,7 @@
 		]]>
 	</select>
 	
-	<insert id="join" parameterType="uservo">
+	<insert id="join" parameterType="uservo"  useGeneratedKeys="true" keyProperty="no">
 		<![CDATA[
 		insert
 		  into user (join_date, email, name, password, tel, birth)
@@ -57,7 +57,15 @@
 		 where email=#{e }
 		]]>
 	</update>
-	
+
+	<select id="findPeopleByProjectNo" parameterType="long" resultType="uservo">
+		<![CDATA[
+		select u.no, u.email, u.name
+		from attend a join user u on a.user_no = u.no
+		where a.project_no = #{projectNo }
+		]]>
+	</select>
+
 	<update id="updateProfile" parameterType="map">
 		<![CDATA[
 		update user
@@ -73,7 +81,6 @@
 		where no = #{no}
 		]]>
 	</update>
-	
 
 	
 	

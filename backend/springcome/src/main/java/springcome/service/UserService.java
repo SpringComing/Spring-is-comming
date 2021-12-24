@@ -1,5 +1,7 @@
 package springcome.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +51,14 @@ public class UserService {
 	
 	public int updateImage(String image, Long long1) {
 		return userRepository.updateImage(image, long1);
+	}
+
+	public List<UserVo> findProjectPeople(Long projectNo) {
+		return userRepository.findPeopleByProjectNo(projectNo);
+	}
+
+	public boolean updateProjectPeople(Long projectNo, Long userNo) {
+		return userRepository.updateAttend(projectNo, userNo);
 	}
 
 }

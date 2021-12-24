@@ -4,6 +4,9 @@
 	<typeAliases>
 		<typeAlias type="springcome.vo.UserVo" alias="uservo" />
 		<typeAlias type="springcome.vo.ProjectVo" alias="projectvo" />
+		<typeAlias type="springcome.vo.AttendVo" alias="attendvo" />
+		<typeAlias type="springcome.vo.GuestVo" alias="guestvo" />
+		<typeAlias type="springcome.vo.AlarmVo" alias="alarmvo" />
 		<typeAlias type="springcome.vo.TaskVo" alias="taskvo" />
 		<typeAlias type="springcome.vo.ChecklistVo" alias="checklistvo" />
 		<typeAlias type="springcome.vo.MemoVo" alias="memovo" />
@@ -20,10 +23,11 @@
 	<mappers>
 		<mapper resource="mybatis/mappers/user.xml" />
 		<mapper resource="mybatis/mappers/project.xml" />
+		<mapper resource="mybatis/mappers/alarm.xml" />
 		<mapper resource="mybatis/mappers/calendar.xml" />
 		<mapper resource="mybatis/mappers/process.xml" />
 		<mapper resource="mybatis/mappers/task.xml" />
 		<mapper resource="mybatis/mappers/checklist.xml" />
-		
+
 	</mappers>
 </configuration>

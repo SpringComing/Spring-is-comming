@@ -46,9 +46,10 @@ function emailAuth() {
 	var password = $("#password").val();
 	var birth = $("#birth").val();
 	var tel = $("#tel").val();
-
+	var guestEmail = $("#guestEmail").val();
 
 	var sendData = {
+		"guestEmail" : guestEmail,
 		"authNum": authNum,
 		"cookie": getCookie('테스트쿠키'),
 		"email": email,
@@ -323,7 +324,7 @@ function successBox(txt) {
 }
 
 /*
-* 함수: successBox
+* 함수: errorBox
 * 작성자: 이동현
 * 기능: 회원가입 실패 모달
 */
@@ -338,7 +339,7 @@ function errorBox(txt) {
 }
 
 /*
-* 함수: successBox
+* 함수: modal
 * 작성자: 이동현
 * 기능: 모달 설정
 */

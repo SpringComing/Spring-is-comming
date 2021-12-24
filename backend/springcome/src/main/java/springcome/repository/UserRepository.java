@@ -1,6 +1,7 @@
 package springcome.repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -92,6 +93,17 @@ public class UserRepository {
 		map.put("image", image);
 		map.put("no", test.toString());
 		return sqlSession.update("user.updateImage",map);
+	}
+
+	public List<UserVo> findPeopleByProjectNo(Long projectNo) {
+		return sqlSession.selectList("user.findPeopleByProjectNo", projectNo);
+	}
+
+	public boolean updateAttend(Long projectNo, Long userNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("projectNo", projectNo);
+		map.put("userNo", userNo);
+		return sqlSession.update("project.updateAttend", map) == 1;
 	}
 
 }

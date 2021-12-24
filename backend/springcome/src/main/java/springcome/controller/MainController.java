@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -24,9 +26,17 @@ public class MainController {
 	@RequestMapping({"", "/main"})
 	public String index(@AuthenticationPrincipal PrincipalDetails principalDetails, HttpServletRequest req, HttpServletResponse resp) {
 		
+
+// 		Cookie Cookie = new Cookie("useremail", principalDetails.getEmail());
+		
+// 		Cookie.setMaxAge(-1);
+// 		resp.addCookie(Cookie);
+		
+
 		Cookie cookie = new Cookie("useremail", principalDetails.getEmail());
 		cookie.setMaxAge(-1);
 		resp.addCookie(cookie);
+
 
 		Cookie cookie2 = new Cookie("userno", principalDetails.getNo().toString());
 		cookie2.setMaxAge(-1);
@@ -39,26 +49,27 @@ public class MainController {
 		return "user";
 	}
 	
-	@RequestMapping({"/joinForm"})
-	public String joinForm() {
+	@RequestMapping({"/joinForm" ,"/joinForm/{guestEmail}"})
+	public String joinForm(
+			@ModelAttribute @PathVariable(value="guestEmail", required=false) String guestEmail) {
 		return "joinForm";
 	}
 	
-	@RequestMapping({"/loginForm"})
-	public String loginForm(HttpServletRequest req, HttpServletResponse resp) {
+	@RequestMapping({"/loginForm", "/loginForm/{guestEmail}"})
+	public String loginForm(HttpServletRequest req, HttpServletResponse resp,
+			@ModelAttribute @PathVariable(value="guestEmail", required=false) String guestEmail) {
 		
 		Cookie[] cookies = req.getCookies();
 		
 		if(cookies != null) {
 		
-		for(Cookie c : cookies) {
-			if(c.getName().equals("useremail")) {
-				c.setMaxAge(0);
-				resp.addCookie(c);
+			for(Cookie c : cookies) {
+				if(c.getName().equals("useremail")) {
+					c.setMaxAge(0);
+					resp.addCookie(c);
+				}
 			}
 		}
-		}
-		
 		
 		return "loginForm";
 	}
