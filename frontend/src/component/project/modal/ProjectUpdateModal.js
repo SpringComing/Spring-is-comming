@@ -6,7 +6,7 @@ import deleteModalStyle from "../../../assets/css/component/project/ProjectDelet
 
 Modal.setAppElement('body');
 
-const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project, deleteProject}) => {
+const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project, deleteProject, sendProjectMSG}) => {
     const refForm = useRef(null);                            
     const currentDate = new Date().toISOString().substring(0, 10);  //현재 날짜 가져오기
     const [startDate, setStartDate] = useState(currentDate);        //모달 input startDate 
@@ -32,7 +32,7 @@ const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project, d
    /**
    * 함수: handleSubmit 
    * 작성자: 성창현
-   * 기능: 모달 form 데이터 서버에 fetch
+   * 기능: 모달 form 데이터 서버에 fetch 프로젝트 업데이트
    */
    const handleSubmit = async (e) => {
         e.preventDefault();
@@ -79,7 +79,9 @@ const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project, d
             }
 
             // update 성공한 경우
-            getProject();
+            getProject(); 
+            console.log("project.no : ",project.no);         
+            sendProjectMSG(project.no,project.name,"프로젝트 내용이 변경되었습니다.");
 
         } catch (err) {
             console.error(err);
@@ -95,7 +97,6 @@ const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project, d
    const modalClose = () => {
 
     setFlag(true);
-
     setModalIsOpen(false)
    }
 

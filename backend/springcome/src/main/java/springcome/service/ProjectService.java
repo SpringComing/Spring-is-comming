@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import springcome.repository.ProjectRepository;
-import springcome.vo.AttendVo;
 import springcome.vo.GuestVo;
 import springcome.vo.ProjectVo;
 
@@ -73,6 +71,10 @@ public class ProjectService {
 
 	public boolean deleteProject(Long projectNo) {
 		return projectRepository.deleteProject(projectNo);
+	}
+
+	public List<Long> getAllUserNoByProjectNo(Long projectNo) {
+		return projectRepository.findAllUserNoByProjectNo(projectNo);
 	}
 
 }

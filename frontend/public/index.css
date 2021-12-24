@@ -12,7 +12,7 @@
     --colorBarW: #b7bec7;
     --colorWhite: white;
     --colorNav: #eef2f9;
-    --colorIcon: #a1ffff;
+    --colorIcon: #ff640a;
     --colorName: #707090;
   }
   
@@ -217,7 +217,7 @@
     margin: 0 10px;
     font-size: 14px;
     font-weight: 300;
-    width: 100px;
+    width: auto;
   }
   
   .input-text {
@@ -473,6 +473,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    z-index: 5;
   }
   
   .kanban__nav-wrapper {
@@ -623,6 +624,7 @@
     background-color: var(--colorNav);
     grid-area: main;
     position: relative;
+    z-index: 5;
   }
   
   .kanban__main-wrapper {

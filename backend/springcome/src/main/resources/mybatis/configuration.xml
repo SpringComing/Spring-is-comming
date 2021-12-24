@@ -6,9 +6,11 @@
 		<typeAlias type="springcome.vo.ProjectVo" alias="projectvo" />
 		<typeAlias type="springcome.vo.AttendVo" alias="attendvo" />
 		<typeAlias type="springcome.vo.GuestVo" alias="guestvo" />
+		<typeAlias type="springcome.vo.AlarmVo" alias="alarmvo" />
 	</typeAliases>
 	<mappers>
 		<mapper resource="mybatis/mappers/user.xml" />
 		<mapper resource="mybatis/mappers/project.xml" />
+		<mapper resource="mybatis/mappers/alarm.xml" />
 	</mappers>
 </configuration>

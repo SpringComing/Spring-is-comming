@@ -8,7 +8,7 @@ import Settings from "./component/setting/Settings";
 
 const App = () => {
 
-    const[projectNo, setProjectNo] = useState(null);
+    //const[projectNo, setProjectNo] = useState(null);
     
 
     return (

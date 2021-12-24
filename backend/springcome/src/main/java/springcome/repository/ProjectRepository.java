@@ -72,5 +72,9 @@ public class ProjectRepository {
 	public boolean deleteProject(Long projectNo) {
 		return sqlSession.delete("project.deleteProjectAtAttend", projectNo) == 1;
 	}
+
+	public List<Long> findAllUserNoByProjectNo(Long projectNo) {
+		return sqlSession.selectList("project.findAllUserNoByProjectNo", projectNo);
+	}
 	
 }

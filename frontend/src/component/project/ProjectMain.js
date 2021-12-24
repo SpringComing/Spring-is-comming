@@ -7,9 +7,11 @@ const ProjectMain = ({ projects, openModal }) => {
             <div className="kanban__main-wrapper">
                 { 
                     projects.map( project =>  <ProjectCard key={ project.no } project={ project } openModal = { openModal }/> ) 
+                    
                 }
             </div>
         </section>
+ 
     );
 };
 

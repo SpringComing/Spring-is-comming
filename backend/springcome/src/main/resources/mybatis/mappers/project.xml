@@ -93,4 +93,11 @@
 		where project_no = #{projectNo }
 		]]>
 	</update>
+	<select id="findAllUserNoByProjectNo" resultType="long" parameterType="long">
+		<![CDATA[
+		select user_no
+		from attend
+		where project_no = #{projectNo } 
+		]]>
+	</select>
 </mapper>

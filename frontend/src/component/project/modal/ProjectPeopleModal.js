@@ -5,7 +5,7 @@ import ModalStyle from "../../../assets/css/component/project/ProjectPeopleModal
 
 Modal.setAppElement('body');
 
-const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getPeople, project, people, excludeUser}) => {
+const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getPeople, project, people, excludeUser,sendProjectMSG}) => {
     const refForm = useRef(null);                           
     const [email, setEmail] = useState("");          //input email 상태
     const [flag, setFlag] = useState(true);          //모달에 프로젝트 내용 넣기위한 플래그
@@ -24,7 +24,7 @@ const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getPeople, project, pe
     /**
     * 함수: handleSubmit 
     * 작성자: 성창현
-    * 기능: 모달 form 데이터 서버에 fetch
+    * 기능: 이메일 보내기
     */
     const handleSubmit = async (e) => {
     
@@ -63,6 +63,8 @@ const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getPeople, project, pe
             //console.log(jsonResult);
 
             if (jsonResult.result !== 'success') {
+                location.href = "/api/checkSession"
+                alert("세션이 만료 되었습니다.");
                 throw new Error(`${jsonResult.result} ${jsonResult.message}`);
             }
             
@@ -76,6 +78,7 @@ const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getPeople, project, pe
             console.log("jsonResult",jsonResult);
             setEmailCheck("초대 이메일을 보냈습니다");
             getPeople(project.no);
+            sendProjectMSG(project.no,project.name,"프로젝트 인원이 추가되었습니다.");
         } catch (err) {
             console.error(err);
         }

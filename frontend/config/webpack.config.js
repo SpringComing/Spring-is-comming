@@ -36,7 +36,12 @@ module.exports = (env) => ({
         host: "0.0.0.0",
         port: 9999,
         proxy: {
-            '/api': 'http://localhost:7777'
+            '/api': 'http://localhost:7777',
+            '/socket' : {
+                target: 'ws://localhost:7777',
+                ws: true,
+                changeOrigin: true
+            }
         },
         inline: true,
         liveReload: true,
