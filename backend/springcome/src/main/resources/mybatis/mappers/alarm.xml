@@ -20,6 +20,7 @@
 		select b.user_no as userNo, a.no as alarmNo, a.message, a.reg_date as regDate, a.type, b.status
 		from alarmbox b join alarm a on b.alram_no = a.no
 		where b.user_no = #{userNo }
+		order by a.no desc
 		]]>
 	</select>
 	
