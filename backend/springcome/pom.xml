@@ -140,6 +140,7 @@
 			<version>2.2</version>
 		</dependency>
 		
+
 		<!-- WebSocket -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -158,8 +159,20 @@
 		</dependency>
 		
 		
+
+		<!-- JSON PARSER -->
+	<dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1</version>
+        </dependency>
+
 		
 	</dependencies>
+	
+		
+
+
 
 	<build>
 		<finalName>springcome</finalName>

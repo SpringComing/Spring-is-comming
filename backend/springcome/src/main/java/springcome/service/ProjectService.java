@@ -38,11 +38,12 @@ public class ProjectService {
 		return projectRepository.findTest();
 	}
 
+
 	public boolean addAttendProject(Long no, Long projectNo) {
 		
 		//attend table에 있는 테이터인지 확인
 		if(projectRepository.findAttend(no,projectNo) != null) {
-			System.out.println("--------------------------------------------------이미 프로젝트에 참석함");
+			//System.out.println("--------------------------------------------------이미 프로젝트에 참석함");
 			return true;
 		}
 		
@@ -78,3 +79,10 @@ public class ProjectService {
 	}
 
 }
+
+	public ProjectVo findByProjectNo(Long no) {
+		return projectRepository.findByProjectNo(no);
+	}
+
+}
+

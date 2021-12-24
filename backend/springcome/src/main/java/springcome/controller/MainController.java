@@ -26,11 +26,18 @@ public class MainController {
 	@RequestMapping({"", "/main"})
 	public String index(@AuthenticationPrincipal PrincipalDetails principalDetails, HttpServletRequest req, HttpServletResponse resp) {
 		
-		Cookie Cookie = new Cookie("useremail", principalDetails.getEmail());
+
+// 		Cookie Cookie = new Cookie("useremail", principalDetails.getEmail());
 		
-		Cookie.setMaxAge(-1);
-		resp.addCookie(Cookie);
+// 		Cookie.setMaxAge(-1);
+// 		resp.addCookie(Cookie);
 		
+
+		Cookie cookie = new Cookie("useremail", principalDetails.getEmail());
+		cookie.setMaxAge(-1);
+		resp.addCookie(cookie);
+
+
 		Cookie cookie2 = new Cookie("userno", principalDetails.getNo().toString());
 		cookie2.setMaxAge(-1);
 		resp.addCookie(cookie2);
@@ -70,6 +77,11 @@ public class MainController {
 	@RequestMapping({"/findForm"})
 	public String findForm() {
 		return "findForm";
+	}
+	
+	@RequestMapping({"/loginFailForm"})
+	public String loginFailForm() {
+		return "loginFailForm";
 	}
 		
 }

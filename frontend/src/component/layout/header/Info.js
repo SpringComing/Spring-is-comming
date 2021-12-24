@@ -1,17 +1,81 @@
 import React from "react";
 import cookie from 'react-cookies'
+import { useState, useEffect } from 'react';
+
+
+let test;
+
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+window.onload = async() =>{
+  
+  try {
+    const response = await fetch(`/api/profile`, {
+        method: 'put',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            
+
+        })
+    });
+
+    if(!response.ok) {
+        throw  `${response.status} ${response.statusText}`;
+    }
+
+    const json = await response.json();
+
+    if(!json.data) {
+        return;
+    }
+  
+    document.getElementById("images").src = "data:image/;base64," + json.data.image;
+    test = "data:image/;base64," + json.data.image;
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 class Info extends React.Component {
 
-
   render() {
-  
+    
     return (
       <React.Fragment>
+
         <div className="name-user">{cookie.load('useremail')}</div>
         <div className="avatar-user">
           
-          <img src={require("../../../assets/img/thompson.jpg")} onClick={test}/>
+       
+        
+        <div className="dropdown">
+  {/* <button onClick={myFunction} className="dropbtn">Dropdown</button> */}
+  <img style={{width:"40px", height:"40px"}} className="dropbtn" id="images" src={test || null} onClick={myFunction}/>
+  <div id="myDropdown" className="dropdown-content">
+    <a href="#">Profile</a>
+    <a href="http://localhost:7777/logout">Logout</a>
+  </div>
+</div>
+ 
         </div>
       </React.Fragment>
     );
@@ -19,8 +83,5 @@ class Info extends React.Component {
 
 }
 
-function test(){
-  console.log('테스트');
-}
 
 export default Info;

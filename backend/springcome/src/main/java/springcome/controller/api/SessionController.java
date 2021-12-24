@@ -27,10 +27,11 @@ public class SessionController {
 		}
 		
 		if(principalDetails == null || checkCookie == null) {
-			System.out.println("바이");
+
+
 			return "redirect:http://localhost:7777/loginForm";
+
 		}else {
-			System.out.println("들어옴");
 			return "/main";
 		}
 

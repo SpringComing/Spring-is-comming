@@ -7,6 +7,7 @@ import ProjectUpdateModal from "./modal/ProjectUpdateModal"
 import ProjectPeopleModal from "./modal/ProjectPeopleModal"
 import SockJsClient from 'react-stomp';
 import  Cookie  from "react-cookies"
+
 //import projects2 from "../../assets/json/data.json"
 
 /**
@@ -15,6 +16,7 @@ import  Cookie  from "react-cookies"
  * 책임: 프로젝트화면 기능 상태 컴포넌트
  */
 const Project = () => {
+
 
   const $websocket = useRef (null); //웹소켓 Ref
 
@@ -30,6 +32,10 @@ const Project = () => {
     getProject();
     getAlarm();
   },[]); //project 초기데이터 가져오기
+
+
+
+
 
   /**
    * 함수: getProject 
@@ -66,6 +72,7 @@ const Project = () => {
       console.error(err);
     }
   }
+
 
   /**
     * 함수: getPeople 
@@ -181,6 +188,7 @@ const Project = () => {
         console.error(err);
     }
   }
+
   
   /**
    * 함수: openModal 
@@ -191,6 +199,7 @@ const Project = () => {
     setProject(projects.filter((project) => project.no === no )[0]);
     modal === 'update' ? setUpdateModalIsOpen(true) : setPeopleModalIsOpen(true);
   }
+
 
   /**
    * 함수: sendProjectMSG
@@ -498,23 +507,33 @@ const Project = () => {
     return (
       <SiteLayout alarmList={alarmList} updateAlarm={updateAlarm} deleteAlarm={deleteAlarm} 
                   updateAllAlarm={updateAllAlarm} deleteReadAlarm={deleteReadAlarm} deleteAllAlarm={deleteAllAlarm} >
+
+
+    return (
+      <SiteLayout>
+
         <Nav setModalIsOpen = { setAddModalIsOpen } />
         <ProjectMain projects={ projects } openModal={ openModal }/>
 
         <ProjectAddModal modalIsOpen= { addModalIsOpen } 
                          setModalIsOpen={ setAddModalIsOpen } 
+
                          getProject={ getProject } />
+
 
         <ProjectUpdateModal modalIsOpen= { updateModalIsOpen } 
                             setModalIsOpen={ setUpdateModalIsOpen } 
                             project={ project }
+
                             getProject={ getProject }
                             deleteProject={ deleteProject } 
                             sendProjectMSG={sendProjectMSG} />
 
+
         <ProjectPeopleModal modalIsOpen= { peopleModalIsOpen } 
                             setModalIsOpen={ setPeopleModalIsOpen } 
                             project={ project }
+
                             people={ people }
                             getPeople={ getPeople }
                             excludeUser={ excludeUser } 
@@ -524,8 +543,11 @@ const Project = () => {
                         topics={ ['/topics/project/' + Cookie.load('userno')] } 
                         onMessage={data => {  addAlarm(data); console.log ("소켓 리시브 data : ",  data); }}     
                         ref={$websocket} />
+
       </SiteLayout>
     );
 };
 
+
 export default Project;
+

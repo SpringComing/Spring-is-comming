@@ -47,6 +47,7 @@ public class ProjectRepository {
 		
 	}
 
+
 	public boolean insertGuest(String email, Long projectNo) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("email", email);
@@ -78,3 +79,10 @@ public class ProjectRepository {
 	}
 	
 }
+
+	public ProjectVo findByProjectNo(Long no) {
+		return sqlSession.selectOne("project.findByProjectNo", no);
+	}
+
+}
+

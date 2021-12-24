@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 		http.authorizeRequests()
 			.antMatchers("/").authenticated()        // /user는 로그인 한 사람만
-			.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")      // 로그인 한 사람중에 ADMIN 권한이 있는자
+			.antMatchers("/main").authenticated()  
 			.anyRequest().permitAll()
 			.and()
 			.formLogin()           // 인증되지 않은 사용자가 해당 페이지 방문 시 로그인 페이지로 이동
@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.usernameParameter("email")
 			.loginProcessingUrl("/login") // /login이라는 주소가 호출이되면 시큐리티가 낚아채서 대신 로그인을 진행 
 			.defaultSuccessUrl("/main",true)
-			.failureUrl("/loginForm")
+			.failureUrl("/loginFailForm")
 			.and()
 			.logout()
 			.logoutSuccessUrl("/loginForm");

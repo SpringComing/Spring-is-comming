@@ -40,6 +40,18 @@ public class UserService {
 		return userRepository.updatePWD(email, password);
 
 	}
+	
+	public UserVo findAll(Long long1) {
+		return userRepository.findAll(long1);
+	}
+	
+	public int updateProfile(String name, String birth, Long long1, String profile) {
+		return userRepository.updateProfile(name, birth, long1, profile);
+	}
+	
+	public int updateImage(String image, Long long1) {
+		return userRepository.updateImage(image, long1);
+	}
 
 	public List<UserVo> findProjectPeople(Long projectNo) {
 		return userRepository.findPeopleByProjectNo(projectNo);

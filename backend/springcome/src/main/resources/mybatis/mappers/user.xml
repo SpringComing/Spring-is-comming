@@ -18,6 +18,14 @@
 		]]>
 	</select>
 	
+	<select id="findAll" parameterType="map" resultType="uservo">
+		<![CDATA[
+		select email, name, join_date, tel, birth, profile,image
+		from user
+		where no = #{no }
+		]]>
+	</select>
+	
 	<select id="findPassword" parameterType="map" resultType="uservo">
 		<![CDATA[
 		select *
@@ -49,7 +57,7 @@
 		 where email=#{e }
 		]]>
 	</update>
-	
+
 	<select id="findPeopleByProjectNo" parameterType="long" resultType="uservo">
 		<![CDATA[
 		select u.no, u.email, u.name
@@ -57,6 +65,23 @@
 		where a.project_no = #{projectNo }
 		]]>
 	</select>
+
+	<update id="updateProfile" parameterType="map">
+		<![CDATA[
+		update user
+		   set name= #{name }, birth= #{birth }, profile= #{profile }
+		 where no=#{no }
+		]]>
+	</update>
+	
+	<update id="updateImage" parameterType="map">
+		<![CDATA[
+		update user
+		set image = #{image }
+		where no = #{no}
+		]]>
+	</update>
+
 	
 	
 	

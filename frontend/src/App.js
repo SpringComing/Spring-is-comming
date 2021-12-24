@@ -2,9 +2,10 @@ import React,{useState} from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Routes, Route } from "react-router";
 import Project from "./component/project/Project.js";
+import Kanban from "./component/kanban/Kanban.js";
 import Schedule from "./component/schedule/Schedule.js";
 import Error404 from "./component/error/Error404"
-import Settings from "./component/setting/Settings";
+import Profile from "./component/setting/Profile";
 
 const App = () => {
 
@@ -17,8 +18,11 @@ const App = () => {
                 <Route path="/" element={<Project />} > 
                     {/* <Route path="board" element={<Kanban />} /> */}
                 </Route>
+
+                <Route path="board" element={<Kanban />} />
+
                 <Route path="schedule" element={<Schedule />} />
-                <Route path="settings" element={<Settings />} />
+                <Route path='profile' element={<Profile />} />
                 <Route path='*' element={<Error404 />} />
                 <Route path='/api/checkSession'/>
             </Routes>

@@ -1,6 +1,6 @@
 import React,{useState,useRef} from 'react';
 import Modal from "react-modal";
-import "./modal.css"
+import ModalStyle from "../../assets/css/component/project/CalendarModal.scss"
 
 
 
@@ -20,61 +20,83 @@ const Mymodal = ({modalIsOpen, setModalIsOpen, data}) => {
     setModalIsOpen(false)
    }
 
+//    const moveProject = () => {
+//      window.location.href("/")
+//    }
+
 
     return (
         
         <Modal
             isOpen={ modalIsOpen }
+            className={ ModalStyle.Modal }
             onRequestClose={ () => modalClose() }          //오버레이 부분을 클릭하거나 또는 Esc 키를 누를 시 모달 창이 닫히게 한다
             shouldCloseOnOverlayClick={ false }            //오버레이 클릭은 막고 Esc 키만으로 모달창을 닫게 한다
             contentLabel="Project Setting"                 //웹접근성 ex) 시작장애인이 사용시 정보 전달에 사용
-            className='modal'
+            className={ ModalStyle.Modal }
+            overlayClassName={ ModalStyle.Overlay }
             >
             
-            <div className='modal_header'> 
-                <center><h2>상세 정보</h2></center><hr />
+            <div className={ ModalStyle.modal_header }> 
+                <center><h2>프로젝트 정보</h2></center>
                 <span onClick={ () => modalClose() }>
                 </span>
             </div>
+            <hr />
             <form 
-                
+                className={ ModalStyle.project_reg }
                 ref={ refForm }
                >
                    <br />
-                <div>
+                <div className={ ModalStyle.modal_input }>
                     <span className='text'>프로젝트 이름</span>
                     <input type='text'  
                            name="projectName" 
-                           placeholder={data[0]}
-                           
+                           placeholder={' ' + data[0]}
                            disabled
                         />
                 </div>
-                <br /> <br />
-                <div>
-                  <span className='text'>설명</span>
+                <div className={ ModalStyle.modal_input }>
+                  <span className='text' style={{
+                      width: "140px",
+                      height: "40px"
+                  }}>설명</span>
                 </div>
-                <div>
+                <div className={ ModalStyle.modal_textarea }>
                     <textarea name="projectDesc" 
                               value={ data[3] } 
                               disabled
                                
                               />
                 </div>
-                <br /> <br />
-
-                <div>
-                  <span className='text'>기간</span>
-                  <span >시작</span>
-                    <input type="date" name="startDate" value = { data[1] } disabled  />
+                <div className={ ModalStyle.modal_input }>
+                  <span className='text' style={{
+                      height: "40px"
+                  }}>기간</span>
+                  </div>
+                  <div className={ ModalStyle.modal_input } style={{
+                      paddingLeft: "10px",
+                      marginLeft: "0px"
+                  }}>
+                  <span>시작</span>
+                    <input type="date" style={{marginLeft:0}} name="startDate" value = { data[1] } disabled  /><br/>
                     <span >끝</span>
-                    <input type="date" name="endtDate" value = { data[2] }  disabled/>
-                </div>
+                    <input type="date" style={{marginLeft:0}} name="endtDate" value = { data[2] }  disabled/>
+                    </div>
                 
-            </form>
-            <br /> <br /><br /> <br /><br />
-            <div className='modal_btn'>
-              <button  
+            <br/>
+            <div className={ ModalStyle.modal_btn }>
+            <button style={{ width:150 ,marginLeft: 20,marginRight:0 }} 
+                      form="project_reg"
+                      onClick={ (e) => {  
+
+                              window.location.replace("/");
+
+
+                              } }>
+                 이동
+              </button>
+              <button style={{ width:150 ,marginLeft: 20, marginRight:0 }} 
                       form="project_reg"
                       onClick={ () => {  
                               modalClose(); 
@@ -82,7 +104,7 @@ const Mymodal = ({modalIsOpen, setModalIsOpen, data}) => {
                  확인
               </button>
             </div>
-
+            </form>
         </Modal>
         
     );
