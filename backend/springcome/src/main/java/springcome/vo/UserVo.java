@@ -1,7 +1,8 @@
 package springcome.vo;
 
 public class UserVo {
-
+	
+	private Long no;
 	private String email;
 	private String password;
 	private String name;
@@ -9,6 +10,30 @@ public class UserVo {
 	private String birth;
 	private String join_date;
 	private String profile;
+	public Long getNo() {
+		return no;
+	}
+	public void setNo(Long no) {
+		this.no = no;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+
 	private String no;
 	private String image;
 	
@@ -23,6 +48,7 @@ public class UserVo {
 	}
 	public void setNo(String no) {
 		this.no = no;
+
 	}
 	public String getTel() {
 		return tel;
@@ -33,6 +59,7 @@ public class UserVo {
 		return "UserVo [email=" + email + ", password=" + password + ", name=" + name + ", tel=" + tel + ", birth="
 				+ birth + ", join_date=" + join_date + ", profile=" + profile + ", no=" + no + ", image=" + image + "]";
 	}
+
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
@@ -54,22 +81,10 @@ public class UserVo {
 	public void setProfile(String profile) {
 		this.profile = profile;
 	}
-	public String getName() {
-		return name;
+	@Override
+	public String toString() {
+		return "UserVo [no=" + no + ", email=" + email + ", password=" + password + ", name=" + name + ", tel=" + tel
+				+ ", birth=" + birth + ", join_date=" + join_date + ", profile=" + profile + "]";
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
+	
 }

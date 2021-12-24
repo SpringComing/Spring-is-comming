@@ -34,4 +34,10 @@
 		]]>
 	</update>
 	
+	<delete id ="delete" parameterType="long">
+		<![CDATA[
+		delete from process where no = #{no }
+		]]>
+	</delete>
+	
 </mapper>

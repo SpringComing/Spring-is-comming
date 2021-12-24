@@ -22,4 +22,8 @@ public class ProjectService {
 		return projectRepository.findTest();
 	}
 
+	public ProjectVo findByProjectNo(Long no) {
+		return projectRepository.findByProjectNo(no);
+	}
+
 }

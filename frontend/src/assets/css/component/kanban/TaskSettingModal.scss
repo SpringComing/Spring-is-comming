@@ -125,25 +125,41 @@
 }
 
 .task_reg {
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 60px;
+    margin-left: 1px;
+    margin-right: 1px;
+    margin-bottom: 6px;
     background-color: white;
     border-radius: 5px;
 
+    width: 600px;
+    height: 450px;
+    overflow: auto;
+    border-radius: 5px;
+    border: 1px solid;
+    border-color:#fcfcf8;
+    margin: 13px 20px 0px 20px;
+
     .text {
         display: flex;
-        margin: 15px; 
+        margin: 15px 0px 10px 20px; 
 
         span {
-            width: 120px;
-            height: 30px;
-            font-size: 25px;
+            font-size: 20px;
             font-weight: 400;
             color: #7c7ca8;
         }
     }
 
+    .text2 {
+        display: flex;
+        margin: 15px 0px 0px 20px; 
+
+        span {
+            font-size: 20px;
+            font-weight: 400;
+            color: #7c7ca8;
+        }
+    }
 
     .modal_input {
         display: flex;
@@ -195,6 +211,82 @@
             background-color: #2bb632;
             //background: linear-gradient(to right, #a5c516, #5add32);
             border-radius: 5px;
+            width: 135px;
+            height: 30px;
+            border: 1px solid transparent;
+            padding: 8px 3px 2px 1px;
+            margin: 20px;
+        }
+        input {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid;
+            color:#7C7CA8;
+            border-color:#dddddd;
+            font-size: 20px;
+            width: 500px;
+            height: 50px;
+            margin: 10px 20px 20px 0px;
+
+            &:focus{
+                border-color: #66e966;
+                outline: 0;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0 , 0.08), 0 0 8px rgba(0, 0, 0 , 0.6);
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0 , 0.08), 0 0 8px rgba(0, 0, 0 , 0.6);
+            }
+        }
+        
+    }
+
+    .modal_input3 {
+        display: flex;
+        //justify-content: space-between;
+        text-align: center;
+        
+
+        span {
+            color: #fff;
+            background-color: #2bb632;
+            //background: linear-gradient(to right, #a5c516, #5add32);
+            border-radius: 5px;
+            width: 135px;
+            height: 30px;
+            border: 1px solid transparent;
+            padding: 8px 3px 2px 1px;
+            margin: 20px;
+        }
+        input {
+            padding: 5px;
+            border-radius: 5px;
+            //border: 1px solid;
+            color:#7C7CA8;
+            border-color:#dddddd;
+            font-size: 20px;
+            //width: 500px;
+            //height: 50px;
+            margin: 20px 20px 20px 0px;
+/*
+            &:focus{
+                border-color: #66e966;
+                outline: 0;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0 , 0.08), 0 0 8px rgba(0, 0, 0 , 0.6);
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0 , 0.08), 0 0 8px rgba(0, 0, 0 , 0.6);
+            } */
+        }
+        
+    }
+
+    .modal_input4 {
+        display: flex;
+        //justify-content: space-between;
+        text-align: center;
+        
+
+        span {
+            color: #fff;
+            background-color: #2bb632;
+            //background: linear-gradient(to right, #a5c516, #5add32);
+            border-radius: 5px;
             width: 170px;
             height: 30px;
             border: 1px solid transparent;
@@ -222,8 +314,6 @@
         
     }
 
-
-
     .modal_textarea {
         display: flex;
         text-align: center;
@@ -249,7 +339,79 @@
 
 }
 
-
+.team_wrapper {
+    display: flex;
+    background-color: #d6f5d6;
+    .team {
+        width: 700px;
+        height: 300px;
+        overflow: auto;
+        border-radius: 5px;
+        border: 1px solid;
+        border-color:#fcfcf8;
+        background-color: #FFFFFF;
+        margin: 13px 20px 20px 20px;
+        div {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 10px 0px 10px;
+            border-radius: 5px;
+            border: 1px solid;
+            border-color:#dddddd;
+            height: 60px;
+            &:hover{
+                border-color: #66E966;
+                outline: 0;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0 , 0.08), 0 0 8px rgba(0, 0, 0 , 0.6);
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0 , 0.08), 0 0 8px rgba(0, 0, 0 , 0.6);
+            }
+            span {
+                //display: flex;
+                //border: 1px solid red;
+                margin: 2px 2px 0px 2px;
+                width: 100px;
+                height: 55px;
+            }
+            .team_profile {
+                i {
+                    margin-top: 5px;
+                    line-height: 1;
+                    font-size: 35px;
+                    color: #7C7CA8;
+                    width: 50px;
+                }
+            }
+            .team_name {
+                width: 400px;
+                font-size: 20px;
+                font-weight: 400;
+                color: #7C7CA8;
+                line-height: 2;
+                width: 80px;
+            }
+            .team_email {
+                width: 400px;
+                font-size: 20px;
+                font-weight: 400;
+                color: #7C7CA8;
+                line-height: 2;
+                width: 200px;
+            }
+            .team_exclude {
+                i {
+                    margin-top: 5px;
+                    line-height: 1;
+                    font-size: 35px;
+                    color: #7C7CA8;
+                    &:hover{
+                        font-size: 40px;
+                        color: #2A9600;
+                    }
+                }
+            }
+        }
+    }
+}
 
 .modal_btn {
     button {
@@ -260,8 +422,7 @@
         border: 1px solid transparent;
         padding: 4px 3px 2px 1px;
         float: right;
-        margin-right: 80px;
-        margin-bottom: 40px;
+        margin: 40px 40px 40px 10px;
         width: 170px;
         height: 50px;
 
@@ -277,4 +438,16 @@
         }
     }
 }
+
+// .form_wrraper {
+//     display: flex;
+//     width: 600px;
+//     height: 450px;
+//     overflow: auto;
+//     border-radius: 5px;
+//     border: 1px solid;
+//     border-color:#fcfcf8;
+//     background-color: #74e048;
+//     margin: 13px 20px 0px 20px;
+// }
 

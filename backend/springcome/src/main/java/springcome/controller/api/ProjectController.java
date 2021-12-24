@@ -1,8 +1,6 @@
 package springcome.controller.api;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +36,15 @@ public class ProjectController {
 		//System.out.println("------------------------------projectList : " + projectList);
 		
 		return JsonResult.success(projectList);
+	}
+	
+	
+	@GetMapping("/attr/{no}")
+	public JsonResult findByProjectNo(@PathVariable(value = "no", required = true) Long no) {
+		//System.out.println("------------------------------projectNo : " + no);
+		ProjectVo vo = projectService.findByProjectNo(no);
+		//System.out.println("------------------------------projectVo : " + vo);
+		return JsonResult.success(vo);
 	}
 	
 }
