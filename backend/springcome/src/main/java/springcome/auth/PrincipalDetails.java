@@ -52,11 +52,20 @@ public class PrincipalDetails implements UserDetails {
 	public String getPassword() {
 		return userVo.getPassword();
 	}
+
+	public String getNo() {
+		return userVo.getNo();
+	}
+
 	@Override
 	public String getUsername() {
 		return userVo.getName();
 	}
 	
+	public String getImage() {
+		return userVo.getImage();
+	}
+
 	public String getJoindate() {
 		return userVo.getJoin_date();
 	}

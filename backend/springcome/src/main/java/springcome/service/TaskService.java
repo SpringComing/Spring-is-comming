@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import springcome.repository.ChecklistRepository;
 import springcome.repository.TaskRepository;
 import springcome.vo.FileVo;
+import springcome.vo.CommentVo;
 import springcome.vo.TaskDiffVo;
 import springcome.vo.TaskSameVo;
 import springcome.vo.TaskVo;
@@ -52,6 +53,18 @@ public class TaskService {
 
 	public Boolean updateTaskAttr(TaskVo vo) {
 		return taskRepository.updateTaskAttr(vo);
+	}
+	
+	public List<CommentVo> findComment(String no){
+		return taskRepository.findComment(no);
+	}
+	
+	public int addComment(String message, String task_no, String user_no) {
+		return taskRepository.addComment(message, task_no, user_no);
+	}
+	
+	public CommentVo commentData(int no) {
+		return taskRepository.commentData(no);
 	}
 
 	public List<UserVo> getTaskUser(Long no) {

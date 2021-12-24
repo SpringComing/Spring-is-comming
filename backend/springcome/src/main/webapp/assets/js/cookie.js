@@ -36,8 +36,8 @@ function getCookie(cookie_name) {
 */
 function remember(){
 	if($(check).is(":checked")){
-		setCookie('checkbox','check',360);
-		setCookie('rememberemail',$('#email').val(),360);
+		setCookie('checkbox','check',4320);
+		setCookie('rememberemail',$('#email').val(),4320);
 	}else{
 		setCookie('checkbox','',0);
 		setCookie('rememberemail','',0)

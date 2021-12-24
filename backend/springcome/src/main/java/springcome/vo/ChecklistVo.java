@@ -1,6 +1,7 @@
 package springcome.vo;
 
 public class ChecklistVo {
+
 	private Long no;
 	private int status;
 	private String name;

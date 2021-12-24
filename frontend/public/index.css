@@ -86,6 +86,7 @@
     display: flex;
     justify-content: space-between;
     background: linear-gradient(90deg, #E1E428 0%, #85D457 100%);
+    z-index: 10;
   }
   
   .kanban__header-search {
@@ -214,7 +215,8 @@
     justify-content: center;
     align-items: center;
     color: var(--colorWhite);
-    margin: 0 10px;
+    margin-left: 30px;
+    margin-right: 30px;
     font-size: 14px;
     font-weight: 300;
     width: 100px;
@@ -473,6 +475,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    z-index: 5;
+
   }
   
   .kanban__nav-wrapper {
@@ -481,6 +485,7 @@
     justify-content: space-between;
     margin: 0 50px 0 50px;
     background-color: var(--colorNav);
+
   }
   
   .kanban__nav-name {
@@ -2109,7 +2114,7 @@ A HORIZONTAL event
     color: var(--fc-neutral-text-color, #808080);
   }
 .fc {
-
+  margin: 10px 30px 50px 50px;
   /* popover */
 
 }
@@ -2192,3 +2197,48 @@ A HORIZONTAL event
     margin-left: 3px;
   }
 
+  
+  /* Dropdown Button */
+.dropbtn {
+  color: white;
+  padding: 0px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  z-index: 6000;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  border: black 1px solid;
+  position: absolute;
+  background-color: #E0FFE0;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  margin-top: 0px;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #808080}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}

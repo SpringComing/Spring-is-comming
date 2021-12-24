@@ -3,6 +3,7 @@ package springcome.vo;
 import java.util.List;
 
 public class TaskVo {
+
 	private Long no;
 	private String name;
 	private Long importance;
@@ -102,5 +103,5 @@ public class TaskVo {
 				+ ", processNo=" + processNo + ", checklists=" + checklists + "]";
 	}
 	
-	
+
 }
