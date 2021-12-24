@@ -78,7 +78,7 @@ public class ProjectRepository {
 		return sqlSession.selectList("project.findAllUserNoByProjectNo", projectNo);
 	}
 	
-}
+
 
 	public ProjectVo findByProjectNo(Long no) {
 		return sqlSession.selectOne("project.findByProjectNo", no);

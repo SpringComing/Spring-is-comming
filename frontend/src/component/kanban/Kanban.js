@@ -1,13 +1,21 @@
 import React, {useState, useEffect}  from "react";
-import SiteLayout from "../layout/SiteLayout"
-import KanbanMain from "./KanbanMain"
-import Nav from "./nav/Nav"
+import {useParams} from "react-router-dom";
+import SiteLayout from "../layout/SiteLayout";
+import KanbanMain from "./KanbanMain";
+import Nav from "./nav/Nav";
 //import processes2 from '../../assets/json/data.json';
 
 const Kanban = () => {
+  //const projectNo = 1;
   const [processes, setProcesses] = useState([]);
-  const projectNo = 1;
   const [project, setProject] = useState([]);
+  const { projectNo } = useParams();
+  
+  if(projectNo == null) {
+    console.log("no projectNo : ",projectNo);
+    location.href = "/";
+  }
+  console.log("yes projectNo : " ,projectNo);
   
   const addProcess = async () => {
     try {

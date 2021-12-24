@@ -10,7 +10,7 @@ const Notification = ({alarmList, updateAlarm, deleteAlarm,updateAllAlarm,delete
 
   const findStatus = (alarmList) => {
     
-    const result = alarmList.find( alarm => alarm.status == 0 );
+    const result = alarmList && alarmList.find( alarm => alarm.status == 0 );
     
     if(result){
       return (<div className={ style.notification_icon__alert } />);
@@ -49,7 +49,7 @@ const Notification = ({alarmList, updateAlarm, deleteAlarm,updateAllAlarm,delete
               
             </div>
             {
-              alarmList.map( (alarm,index) => <div key={index} 
+              alarmList && alarmList.map( (alarm,index) => <div key={index} 
                                                   className={alarm.status == 0 ? style.msg : style.readed_msg} 
                                                   onClick={() => updateAlarm(alarm.alarmNo)} >
                                                 <div className={style.text}>

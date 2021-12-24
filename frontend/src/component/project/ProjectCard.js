@@ -22,7 +22,24 @@ const ProjectSetting = (project, openModal) => {
 };
 
 
-const ProjectCard = ({ project, openModal }) => {
+/**
+* 함수: setProjectno
+* 작성자: 성창현
+* 기능: 칸반 보드로 화면 전환
+*/
+const intoBoard =  (project,setProjectNo) => {
+    if(project == null) {
+        console.log("check1");
+        return
+    }
+    console.log("check2", project.no);
+    //setProjectNo(project.no) ;
+    location.href = `/board/${project.no}`;
+
+}
+
+
+const ProjectCard = ({ project, openModal, projectNo, setProjectNo }) => {
     return (
         <div className="backlog-color card-wrapper">
             <div className="card-wrapper__header">
@@ -38,7 +55,9 @@ const ProjectCard = ({ project, openModal }) => {
 
                 </div>
             </div>
-            <div className="cards">
+            <div className="cards"
+                 onClick={() => intoBoard(project,setProjectNo) }>
+                     {projectNo}
                 <Description desc={ project.description }
                              startDate={ project.startDate }
                              endDate={ project.endDate } />

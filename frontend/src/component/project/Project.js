@@ -15,7 +15,7 @@ import  Cookie  from "react-cookies"
  * 작성자: 성창현
  * 책임: 프로젝트화면 기능 상태 컴포넌트
  */
-const Project = () => {
+const Project = ({projectNo,setProjectNo}) => {
 
 
   const $websocket = useRef (null); //웹소켓 Ref
@@ -32,9 +32,6 @@ const Project = () => {
     getProject();
     getAlarm();
   },[]); //project 초기데이터 가져오기
-
-
-
 
 
   /**
@@ -181,7 +178,7 @@ const Project = () => {
         }
         
         //삭제 성공시
-        console.log("jsonResult",jsonResult);
+        //console.log("jsonResult",jsonResult);
         setProjects(projects.filter(project => project.no !== projectNo) );
 
     } catch (err) {
@@ -507,13 +504,9 @@ const Project = () => {
     return (
       <SiteLayout alarmList={alarmList} updateAlarm={updateAlarm} deleteAlarm={deleteAlarm} 
                   updateAllAlarm={updateAllAlarm} deleteReadAlarm={deleteReadAlarm} deleteAllAlarm={deleteAllAlarm} >
-
-
-    return (
-      <SiteLayout>
-
+                    
         <Nav setModalIsOpen = { setAddModalIsOpen } />
-        <ProjectMain projects={ projects } openModal={ openModal }/>
+        <ProjectMain projects={ projects } openModal={ openModal } projectNo= { projectNo } setProjectNo={ setProjectNo }/>
 
         <ProjectAddModal modalIsOpen= { addModalIsOpen } 
                          setModalIsOpen={ setAddModalIsOpen } 
@@ -541,7 +534,9 @@ const Project = () => {
         <SockJsClient 
                         url="/socket" 
                         topics={ ['/topics/project/' + Cookie.load('userno')] } 
-                        onMessage={data => {  addAlarm(data); console.log ("소켓 리시브 data : ",  data); }}     
+                        onMessage={data => {  addAlarm(data); 
+                                              console.log ("소켓 리시브 data : ",  data); 
+                                          }}     
                         ref={$websocket} />
 
       </SiteLayout>

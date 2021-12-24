@@ -1,12 +1,12 @@
 import React from 'react';
 import ProjectCard from "./ProjectCard.js";
 
-const ProjectMain = ({ projects, openModal }) => {
+const ProjectMain = ({ projects, openModal, projectNo,setProjectNo }) => {
     return (
         <section className="kanban__main">
             <div className="kanban__main-wrapper">
                 { 
-                    projects.map( project =>  <ProjectCard key={ project.no } project={ project } openModal = { openModal }/> ) 
+                    projects.map( project =>  <ProjectCard key={ project.no } project={ project } openModal = { openModal } projectNo = { projectNo } setProjectNo ={ setProjectNo }/> ) 
                     
                 }
             </div>
@@ -16,3 +16,6 @@ const ProjectMain = ({ projects, openModal }) => {
 };
 
 export default ProjectMain;
+
+
+

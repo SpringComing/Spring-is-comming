@@ -10,6 +10,8 @@ public class UserVo {
 	private String birth;
 	private String join_date;
 	private String profile;
+	private String image;
+	
 	public Long getNo() {
 		return no;
 	}
@@ -35,15 +37,9 @@ public class UserVo {
 		this.name = name;
 	}
 
-	private String image;
 
 	
-	public Long getNo() {
-		return no;
-	}
-	public void setNo(Long no) {
-		this.no = no;
-
+	
 	public String getImage() {
 		return image;
 	}
