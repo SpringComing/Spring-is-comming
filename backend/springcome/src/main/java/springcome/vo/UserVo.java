@@ -33,8 +33,8 @@ public class UserVo {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
 
-	private String no;
 	private String image;
 	
 	public String getImage() {
@@ -43,21 +43,8 @@ public class UserVo {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	public String getNo() {
-		return no;
-	}
-	public void setNo(String no) {
-		this.no = no;
-
-	}
 	public String getTel() {
 		return tel;
-	}
-
-	@Override
-	public String toString() {
-		return "UserVo [email=" + email + ", password=" + password + ", name=" + name + ", tel=" + tel + ", birth="
-				+ birth + ", join_date=" + join_date + ", profile=" + profile + ", no=" + no + ", image=" + image + "]";
 	}
 
 	public void setTel(String tel) {
@@ -84,7 +71,8 @@ public class UserVo {
 	@Override
 	public String toString() {
 		return "UserVo [no=" + no + ", email=" + email + ", password=" + password + ", name=" + name + ", tel=" + tel
-				+ ", birth=" + birth + ", join_date=" + join_date + ", profile=" + profile + "]";
+				+ ", birth=" + birth + ", join_date=" + join_date + ", profile=" + profile + ", image=" + image + "]";
 	}
+
 	
 }

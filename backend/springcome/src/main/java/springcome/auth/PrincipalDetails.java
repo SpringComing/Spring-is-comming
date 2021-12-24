@@ -53,10 +53,6 @@ public class PrincipalDetails implements UserDetails {
 		return userVo.getPassword();
 	}
 
-	public String getNo() {
-		return userVo.getNo();
-	}
-
 	@Override
 	public String getUsername() {
 		return userVo.getName();
