@@ -32,6 +32,7 @@ const Profile = () => {
       const newImage = URL.createObjectURL(e.target.files[0]);
       setProfileImage(newImage)
       changeImage(e.target.files[0])
+      location.href = location.href;
     
     
     }
@@ -59,6 +60,9 @@ const Profile = () => {
         }
       }
         setProfile(profileBox);
+
+       
+
     }
 
     useEffect(async () => {  
@@ -93,18 +97,11 @@ const Profile = () => {
           setProfile(profileBox)
 
           console.log(jsonResult.data)
-
-          //setProfileImage(atob(jsonResult.data.image));
           document.getElementById("image").src = "data:image/;base64," + jsonResult.data.image;
           
           if(jsonResult.data.image == null){
             setProfileImage('https://bootdey.com/img/Content/avatar/avatar7.png')
-          }else{
-            
-          }
-
-
-          
+          } 
           console.log(jsonResult.data);
 
           

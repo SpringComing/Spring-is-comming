@@ -66,5 +66,10 @@ public class MainController {
 	public String findForm() {
 		return "findForm";
 	}
+	
+	@RequestMapping({"/loginFailForm"})
+	public String loginFailForm() {
+		return "loginFailForm";
+	}
 		
 }

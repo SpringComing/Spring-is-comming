@@ -32,22 +32,7 @@ public class SettingController {
 		String base64Str = null;
 
 		if(principalDetails != null) {
-			
-			
-//		
-//			try {
-//				File imageFile = new File("C:/profile/" + principalDetails.getEmail()+".jpg");
-//				FileInputStream fis =  new FileInputStream(imageFile);
-//				byte[] b = new byte[fis.available()];
-//				fis.read(b);
-//				byte[] encoded = Base64.encodeBase64(b);
-//				base64Str = new String(encoded);
-//								
-//			}catch(IOException e) {
-//				System.out.println("이미지 없뜸");
-//			}
-			
-			
+						
 			UserVo vo = userservice.findAll(principalDetails.getNo());
 			
 			return JsonResult.success(vo);
@@ -69,14 +54,6 @@ public class SettingController {
 		base64Str = new String(encoded);
 		int result = userservice.updateImage(base64Str, principalDetails.getNo());
 		
-		
-		
-//		String file = principalDetails.getEmail() + ".jpg";
-//		String fileSavePath = "C:/profile/";
-//		File f1 = new File(fileSavePath, file);
-//		report.transferTo(f1);	
-		
-
 		return JsonResult.success(base64Str);
 	}
 	

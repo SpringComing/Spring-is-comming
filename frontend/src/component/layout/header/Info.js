@@ -1,7 +1,10 @@
 import React from "react";
 import cookie from 'react-cookies'
+import { useState, useEffect } from 'react';
+
 
 let test;
+
 function myFunction() {
   document.getElementById("myDropdown").classList.toggle("show");
 }
@@ -21,6 +24,7 @@ window.onclick = function(event) {
 }
 
 window.onload = async() =>{
+  
   try {
     const response = await fetch(`/api/profile`, {
         method: 'put',
@@ -46,7 +50,6 @@ window.onload = async() =>{
   
     document.getElementById("images").src = "data:image/;base64," + json.data.image;
     test = "data:image/;base64," + json.data.image;
-    console.log('하이')
   } catch (err) {
     console.error(err);
   }

@@ -98,6 +98,10 @@ public class CalendarController {
 	@RequestMapping("/api/schedule")
 	public Object api(@AuthenticationPrincipal PrincipalDetails principalDetails, HttpServletRequest request) {
 
+		if(principalDetails != null) {
+		
+			
+		
 		Cookie[] cookies = request.getCookies();	
 		String checkCookie = null;
 		
@@ -127,13 +131,16 @@ public class CalendarController {
 		a.put("task", taskList);
 		a.put("maxNo", maxNo);
 		
-		if(principalDetails != null && checkCookie != null) {
+		
 			return JsonResult.success(a);
 
-		}
+		
+		
+		}else {
 		
 
-		return JsonResult.fail("실패");
+		return JsonResult.fail("fail");
+		}
 
 	}
 
