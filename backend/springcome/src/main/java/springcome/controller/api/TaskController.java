@@ -141,9 +141,9 @@ public class TaskController {
     
 	@GetMapping("/fileData/{fileNo}")
 	public JsonResult getFileData(@PathVariable(value="fileNo", required = true) Long no) {
-		System.out.println(no);
+		//System.out.println(no);
 		FileVo fileVo = taskService.getByFileNo(no);
-		System.out.println(fileVo);
+		//System.out.println(fileVo);
 		
 		String[] fileUrl = fileVo.getUrl().split("/");
 		
