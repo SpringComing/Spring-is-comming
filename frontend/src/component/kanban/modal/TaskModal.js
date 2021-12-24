@@ -1,13 +1,13 @@
 import React, {Fragment, useRef, useState} from 'react';
 import Modal from "react-modal";
 import update from 'react-addons-update';
+import stylesTask from "../../../assets/css/component/kanban/AddTask.scss"
 import SettingModalStyle from "../../../assets/css/component/kanban/TaskSettingModal.scss"
-import base64 from 'base-64'
-import fileDownload from 'file-saver';
 import CommentModalStyle from "../../../assets/css/component/kanban/TaskCommentModal.scss"
 import ModalStyle from "../../../assets/css/component/project/CommentModal.scss"
-import FileModalStyle from "../../../assets/css/component/kanban/TaskFileModal.scss"
 import  Cookie  from "react-cookies"
+import base64 from 'base-64'
+import { saveAs} from 'file-saver'
 
 Modal.setAppElement('body');
 
@@ -24,11 +24,6 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
     const [taskUsers, setTaskUsers] = useState([]);
     const [taskNoneUsers, setTaskNoneUsers] = useState([]);
     const [fileList, setFileList] = useState([]);
-    const [flag, setFlag] = useState(true);
-
-    const modalClose = () => {
-        setModalIsOpen(false);
-
     const [commentText, setComment] = useState([]);
     const [flag, setFlag] = useState(true);
 
@@ -41,16 +36,27 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
             return(file());
         }
     }
-        
-    const modalInit = () => {
 
+    const modalClose = () => {
+        setModalIsOpen(false);
         setName(task.name);
         setImportance(task.importance);
         setStartDate(task.startDate ? task.startDate : currentDate);
         setEndDate(task.endDate ? task.endDate : currentDate);
         setNum(1);
+        setComment('');
         setFlag(true);
     }
+        
+    // const modalInit = () => {
+    //     setName(task.name);
+    //     setImportance(task.importance);
+    //     setStartDate(task.startDate ? task.startDate : currentDate);
+    //     setEndDate(task.endDate ? task.endDate : currentDate);
+    //     setComment('');
+    //     setNum(1);
+        
+    // }
 
     const callTaskUser = async() => {
         try {
@@ -59,27 +65,21 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
               headers: {
                 'Content-Type': 'application/json',   // cf. application/x-www-form-urlencoded
                 'Accept': 'application/json'          // cf. text/html
-              },         
+              },        
               body: null
             });
-      
             if(!response.ok) {
               throw new Error(`${response.status} ${response.statusText}`);
             }
-      
             const jsonResult = await response.json();
-      
             if(jsonResult.result !== 'success') {
               throw new Error(`${jsonResult.result} ${jsonResult.message}`);
             }
-      
             setTaskUsers(jsonResult.data);
-      
           } catch (err) {
             console.error(err);
           }
     }
-
     const callTaskNoneUser = async() => {
         try {
             const response = await fetch(`/api/task/taskNoneUser?projectNo=${projectNo}&taskNo=${task.no}`, {
@@ -87,30 +87,22 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
               headers: {
                 'Content-Type': 'application/json',   // cf. application/x-www-form-urlencoded
                 'Accept': 'application/json'          // cf. text/html
-              },         
+              },        
               body: null
             });
-      
             if(!response.ok) {
               throw new Error(`${response.status} ${response.statusText}`);
             }
-      
             const jsonResult = await response.json();
-      
             if(jsonResult.result !== 'success') {
               throw new Error(`${jsonResult.result} ${jsonResult.message}`);
             }
-      
             setTaskNoneUsers(jsonResult.data);
-      
           } catch (err) {
             console.error(err);
           }
-
     }
-
     const fileLoad = async(taskNo) => {
-        
         try {
             const response = await fetch(`/api/task/file/${taskNo}`, {
                 method: 'get',
@@ -120,32 +112,18 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
                 },
                 body: null
             });
-
             if (!response.ok) {
                 throw `${response.status} ${response.statusText}`;
             }
-        
             const json = await response.json();
-    
             // update가 안 된 경우
             if(!json.data) {
                 return;
             }
-
             setFileList(json.data);
-
         } catch (err) {
             console.error(err);
         }
-    }
-    
-    if(modalIsOpen && flag) { 
-        callTaskUser();
-        callTaskNoneUser();
-        fileLoad(task.no);
-
-        setFlag(false);
-
     }
 
     const getComment = async(task) => { 
@@ -220,136 +198,315 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
               }
             }
 
+        // if(modalIsOpen && flag) {
+        //     setFlag(false)
+        //     getComment(task);
+        // }
+
         if(modalIsOpen && flag) {
-            setFlag(false)
+            callTaskUser();
+            callTaskNoneUser();
+            fileLoad(task.no);
             getComment(task);
+            setFlag(false);
         }
 
-        const scrollToBotton = () => {
-            scrollRef.current.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'nearest'});
-          };
-
-
-    const handleSettingSubmit = async(taskName, taskImportance, taskStartDate, taskEndDate) => { 
-
-        if(taskName.trim() == '') return;
-        else taskName = taskName.trim();
-
-        try {
-            const response = await fetch(`/api/task/attr`, {
-                method: 'put',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    no: task.no,
-                    name: taskName,
-                    importance: taskImportance,
-                    startDate: taskStartDate,
-                    endDate: taskEndDate
-                })
-            });
-    
-            if(!response.ok) {
-                throw  `${response.status} ${response.statusText}`;
-            }
-    
-            const json = await response.json();
-    
-            // update가 안 된 경우
-            if(!json.data) {
-                return;
-            }
-    
-            // update가 된 경우
-            
-            setProcesses(update(processes, {
-              [pindex]: {
-                tasks: { 
-                    [tindex]: {
-                        name: {$set: taskName},
-                        importance: {$set: taskImportance},
-                        startDate: {$set: taskStartDate},
-                        endDate: {$set: taskEndDate}
-                    }
+   
+        const handleSettingSubmit = async(taskName, taskImportance, taskStartDate, taskEndDate) => {
+            if(taskName.trim() == '') return;
+            else taskName = taskName.trim();
+            try {
+                const response = await fetch(`/api/task/attr`, {
+                    method: 'put',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        no: task.no,
+                        name: taskName,
+                        importance: taskImportance,
+                        startDate: taskStartDate,
+                        endDate: taskEndDate
+                    })
+                });
+                if(!response.ok) {
+                    throw  `${response.status} ${response.statusText}`;
                 }
+                const json = await response.json();
+                // update가 안 된 경우
+                if(!json.data) {
+                    return;
+                }
+                // update가 된 경우
+                setProcesses(update(processes, {
+                  [pindex]: {
+                    tasks: {
+                        [tindex]: {
+                            name: {$set: taskName},
+                            importance: {$set: taskImportance},
+                            startDate: {$set: taskStartDate},
+                            endDate: {$set: taskEndDate}
+                        }
+                    }
+                  }
+                }));
+                setModalIsOpen(false);
+                modalClose();
+              } catch (err) {
+                console.error(err);
               }
-            }));
-            
-            setModalIsOpen(false);
-            modalClose();
-            
-          } catch (err) {
-            console.error(err);
-          }
-
-    }
-
-    const delTaskUser = async(userNo, index) => {
-        try {
-            const response = await fetch(`/api/task/assign?userNo=${userNo}&taskNo=${task.no}`, {
-                method: 'delete',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: null
-            });
-
-            if(!response.ok) {
-                throw  `${response.status} ${response.statusText}`;
-            }
-
-            const json = await response.json();
-
-            if(!json.data) {
-                return;
-            }
-
-            let updateTaskUsers = taskUsers;
-            let [popTaskUser] = updateTaskUsers.splice(index, 1);
-            setTaskUsers(updateTaskUsers);
-            setTaskNoneUsers([popTaskUser, ...taskNoneUsers]);
-
-
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
-
-    const plusTaskUser = async(userNo, index) => {
-        try {
-            const response = await fetch(`/api/task/assign?userNo=${userNo}&taskNo=${task.no}`, {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: null
-            });
-
-            if(!response.ok) {
-                throw  `${response.status} ${response.statusText}`;
-            }
-
-            const json = await response.json();
-
-            if(!json.data) {
-                return;
-            }
-
-            let updateTaskNoneUsers = taskNoneUsers;
-            let [popTaskNoneUser] = updateTaskNoneUsers.splice(index, 1);
-            setTaskNoneUsers(updateTaskNoneUsers);
-            setTaskUsers([popTaskNoneUser, ...taskUsers]);
-
-        } catch (err) {
-            console.error(err);
         }
 
+        const delTaskUser = async(userNo, index) => {
+            try {
+                const response = await fetch(`/api/task/assign?userNo=${userNo}&taskNo=${task.no}`, {
+                    method: 'delete',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: null
+                });
+                if(!response.ok) {
+                    throw  `${response.status} ${response.statusText}`;
+                }
+                const json = await response.json();
+                if(!json.data) {
+                    return;
+                }
+                let updateTaskUsers = taskUsers;
+                let [popTaskUser] = updateTaskUsers.splice(index, 1);
+                setTaskUsers(updateTaskUsers);
+                setTaskNoneUsers([popTaskUser, ...taskNoneUsers]);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        const plusTaskUser = async(userNo, index) => {
+            try {
+                const response = await fetch(`/api/task/assign?userNo=${userNo}&taskNo=${task.no}`, {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: null
+                });
+                if(!response.ok) {
+                    throw  `${response.status} ${response.statusText}`;
+                }
+                const json = await response.json();
+                if(!json.data) {
+                    return;
+                }
+                let updateTaskNoneUsers = taskNoneUsers;
+                let [popTaskNoneUser] = updateTaskNoneUsers.splice(index, 1);
+                setTaskNoneUsers(updateTaskNoneUsers);
+                setTaskUsers([popTaskNoneUser, ...taskUsers]);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        const delTask  = async(taskNo) => {
+            try {
+                const response = await fetch(`/api/task/${taskNo}`, {
+                    method: 'delete',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: null
+                });
+                if(!response.ok) {
+                    throw  `${response.status} ${response.statusText}`;
+                }
+                const json = await response.json();
+                if(!json.data) {
+                    modalClose();
+                    return;
+                }
+                modalClose();
+                let updateTasks = processes[pindex].tasks;
+                updateTasks.splice(tindex, 1);
+                setProcesses(update(processes, {
+                    [pindex]: {
+                        tasks: {
+                            $set: updateTasks
+                        }
+                    }
+                }));
+            } catch (err) {
+                console.error(err);
+            }
+        }  
+        const notifyFile = {
+            add: async function(taskNo, file) {
+                try {
+                    // Create FormData
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    // Post
+                    const response = await fetch(`/api/task/file?userNo=${Cookie.load('userno')}&taskNo=${taskNo}`, {
+                        method: 'post',
+                        headers: {
+                            'Accept': 'application/json' },
+                        body: formData
+                    })
+                    // fetch success?
+                    if (!response.ok) {
+                        throw `${response.status} ${response.statusText}`;
+                    }
+                    // API success?
+                    const json = await response.json();
+                    if(!json.data) {
+                        return;
+                    }
+                    // re-rendering(update)
+                    setFileList([json.data, ...fileList]);
+                } catch (err) {
+                    console.error(err);
+                }
+            },
+            delete: async function(fileNo) {
+                try {
+                    // Delete
+                    const response = await fetch(`/api/task/file/${fileNo}`, {
+                        method: 'delete',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json' },
+                        body: null
+                    });
+                    // fetch success?
+                    if (!response.ok) {
+                        throw `${response.status} ${response.statusText}`;
+                    }
+                    // API success?
+                    const json = await response.json();
+                    if (json.result !== 'success') {
+                        throw json.message;
+                    }
+                    setFileList(fileList.filter(file => file.no !== fileNo));
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+        }    
 
+
+        const setting = () => {
+            return(
+            <Fragment>
+            <form
+                className={ SettingModalStyle.task_reg }
+                ref={ refForm }
+                onSubmit={() => handleSettingSubmit(name, importance, startDate, endDate) } >
+                    <div className={ SettingModalStyle.modal_input } >    
+                        <span>업무명</span>
+                        <input type='text'  
+                            name="taskName"
+                            placeholder={ task.name }
+                            defaultValue={ task.name }
+                            onChange={ (e) => setName(e.target.value) } />
+                    </div>
+                    <div className={ SettingModalStyle.modal_input2 } >
+                        <span>중요도</span>
+                    </div>
+                    <div className={SettingModalStyle.startRadio}>
+                        <label className={SettingModalStyle.startRadio__box}>
+                            <input type="radio" name="star" id="" defaultChecked={task.importance === 1} onClick={() => setImportance(1)}/>
+                            <span className={SettingModalStyle.startRadio__img}>
+                                <span className={SettingModalStyle.blind}>1</span>
+                            </span>
+                        </label>
+                        <label className={SettingModalStyle.startRadio__box}>
+                            <input type="radio" name="star" id="" defaultChecked={task.importance === 2} onClick={() => setImportance(2)}/>
+                            <span className={SettingModalStyle.startRadio__img}>
+                                <span className={SettingModalStyle.blind}>2</span>
+                            </span>
+                        </label>
+                        <label className={SettingModalStyle.startRadio__box}>
+                            <input type="radio" name="star" id="" defaultChecked={task.importance === 3} onClick={() => setImportance(3)} />
+                            <span className={SettingModalStyle.startRadio__img}>
+                                <span className={SettingModalStyle.blind}>3</span>
+                            </span>
+                        </label>
+                    </div>
+                    <div className={ SettingModalStyle.text2 }>
+                    <span>기간</span>
+                    </div>
+                    <div className={ SettingModalStyle.modal_input } >
+                        <span >시작</span>
+                        <input type="date" name="taskStartDate" defaultValue={task.startDate} onChange={ (e) => setStartDate(e.target.value) }/>
+                        <span >끝</span>
+                        <input type="date" name="taskEndtDate" defaultValue={task.endDate} onChange={ (e) => setEndDate(e.target.value) }/>
+                    </div>
+                    <div className={ SettingModalStyle.text }>
+                    <span>업무 참여 인원</span>
+                    </div>
+                    <div className={ SettingModalStyle.team_wrapper } >
+                            <div className={ SettingModalStyle.team }>
+                                {
+                                    taskUsers.map((user, index) =>
+                                                        <div key={index} >
+                                                            <span className={ SettingModalStyle.team_profile }>
+                                                                <i className="material-icons">account_circle</i>
+                                                            </span>
+                                                            <span className={ SettingModalStyle.team_name }>
+                                                                { user.name }
+                                                            </span>
+                                                            <span className={ SettingModalStyle.team_email }>
+                                                                { user.email }
+                                                            </span>
+                                                            <span className={ SettingModalStyle.team_exclude }>
+                                                                <i className="material-icons"
+                                                                    onClick={ () => delTaskUser(user.no, index) } >clear</i>
+                                                            </span>
+                                                        </div> )
+                                }
+                            </div>
+                        </div>
+                        <div className={ SettingModalStyle.text }>
+                        <span>프로젝트 인원</span>
+                        </div>
+                        <div className={ SettingModalStyle.team_wrapper } >
+                            <div className={ SettingModalStyle.team }>
+                                {
+                                    taskNoneUsers.map((user, index) =>
+                                                            <div key={index} >
+                                                                <span className={ SettingModalStyle.team_profile }>
+                                                                    <i className="material-icons">account_circle</i>
+                                                                </span>
+                                                                <span className={ SettingModalStyle.team_name }>
+                                                                    { user.name }
+                                                                </span>
+                                                                <span className={ SettingModalStyle.team_email }>
+                                                                    { user.email }
+                                                                </span>
+                                                                <span className={ SettingModalStyle.team_exclude }>
+                                                                    <i className="material-icons"
+                                                                        onClick={ () => plusTaskUser(user.no, index) } >add_box</i>
+                                                                </span>
+                                                            </div> )
+                                }
+                        </div>
+                    </div>          
+            </form>
+            <div className={ SettingModalStyle.modal_btn }>
+                <button type="submit"
+                      form="task_reg"
+                      onClick={ () => {refForm.current.dispatchEvent(new Event("submit", {cancelable: true, bubbles: true}))} }>
+                <span>변경</span>
+                </button>
+                <button form="task_reg"
+                      onClick={ () => delTask(task.no) }>
+                    <span>삭제</span>
+                </button>
+            </div>
+            </Fragment>);
+        }
+        const handleSubmit = () => {}
     const comment = () => {
         
         return(
@@ -443,261 +600,18 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
    
     }
 
-    const delTask  = async(taskNo) => {
-        try {
-            const response = await fetch(`/api/task/${taskNo}`, {
-                method: 'delete',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: null
-            });
-
-            if(!response.ok) {
-                throw  `${response.status} ${response.statusText}`;
-            }
-
-            const json = await response.json();
-
-            if(!json.data) {
-                modalClose();
-                return;
-            }
-
-            modalClose();
-
-            let updateTasks = processes[pindex].tasks;
-            updateTasks.splice(tindex, 1);
-
-            setProcesses(update(processes, {
-                [pindex]: {
-                    tasks: {
-                        $set: updateTasks
-                    }
-                }
-            }));
-
-        } catch (err) {
-            console.error(err);
-        }
-    }  
-
-    const notifyFile = {
-        add: async function(taskNo, file) {
-            try {
-
-                // Create FormData
-                const formData = new FormData();
-                formData.append('file', file);
-
-                // Post
-                const response = await fetch(`/api/task/file?userNo=${Cookie.load('userno')}&taskNo=${taskNo}`, {
-                    method: 'post',
-                    headers: { 
-                        'Accept': 'application/json' },
-                    body: formData
-                })
-
-                // fetch success?
-                if (!response.ok) {
-                    throw `${response.status} ${response.statusText}`;
-                }
-
-                // API success?
-                const json = await response.json();
-                if(!json.data) {
-                    return;
-                }
-                
-                // re-rendering(update)
-                setFileList([json.data, ...fileList]);
-
-            } catch (err) {
-                console.error(err);
-            }
-        },
-        delete: async function(fileNo) {
-            try {
-                // Delete
-                const response = await fetch(`/api/task/file/${fileNo}`, {
-                    method: 'delete',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json' },
-                    body: null
-                });
-
-                // fetch success?
-                if (!response.ok) {
-                    throw `${response.status} ${response.statusText}`;
-                }
-
-                // API success?
-                const json = await response.json();
-                if (json.result !== 'success') {
-                    throw json.message;
-                }
-
-                setFileList(fileList.filter(file => file.no !== fileNo));
-
-            } catch (err) {
-                console.error(err);
-            }
-        }
-    }
-
-    const setting = () => {
-        return(
-        <Fragment>
-        
-        <form 
-            className={ SettingModalStyle.task_reg }
-            ref={ refForm }
-            onSubmit={() => handleSettingSubmit(name, importance, startDate, endDate) } >
-
-                <div className={ SettingModalStyle.modal_input } >    
-                    <span>업무명</span>
-                    <input type='text'  
-                        name="taskName" 
-                        placeholder={ task.name }
-                        defaultValue={ task.name }
-                        onChange={ (e) => setName(e.target.value) } />
-                </div>
-
-                <div className={ SettingModalStyle.modal_input2 } >
-                    <span>중요도</span>
-                </div>
-                <div className={SettingModalStyle.startRadio}>
-                    <label className={SettingModalStyle.startRadio__box}>
-                        <input type="radio" name="star" id="" defaultChecked={task.importance === 1} onClick={() => setImportance(1)}/>
-                        <span className={SettingModalStyle.startRadio__img}>
-                            <span className={SettingModalStyle.blind}>1</span>
-                        </span>
-                    </label>
-                    <label className={SettingModalStyle.startRadio__box}>
-                        <input type="radio" name="star" id="" defaultChecked={task.importance === 2} onClick={() => setImportance(2)}/>
-                        <span className={SettingModalStyle.startRadio__img}>
-                            <span className={SettingModalStyle.blind}>2</span>
-                        </span>
-                    </label>
-                    <label className={SettingModalStyle.startRadio__box}>
-                        <input type="radio" name="star" id="" defaultChecked={task.importance === 3} onClick={() => setImportance(3)} />
-                        <span className={SettingModalStyle.startRadio__img}>
-                            <span className={SettingModalStyle.blind}>3</span>
-                        </span>
-                    </label>
-                </div>
-
-                <div className={ SettingModalStyle.text2 }>
-                <span>기간</span>
-                </div>
-                
-                <div className={ SettingModalStyle.modal_input } >
-                    <span >시작</span>
-                    <input type="date" name="taskStartDate" defaultValue={task.startDate} onChange={ (e) => setStartDate(e.target.value) }/>
-                    <span >끝</span>
-                    <input type="date" name="taskEndtDate" defaultValue={task.endDate} onChange={ (e) => setEndDate(e.target.value) }/>
-                </div>
-
-                <div className={ SettingModalStyle.text }>
-                <span>업무 참여 인원</span>
-                </div>
-
-                
-                <div className={ SettingModalStyle.team_wrapper } >
-                        <div className={ SettingModalStyle.team }>
-                            {
-                                taskUsers.map((user, index) =>
-                                                    <div key={index} >
-                                                        <span className={ SettingModalStyle.team_profile }>
-                                                            <i className="material-icons">account_circle</i>
-                                                        </span>
-                                                        <span className={ SettingModalStyle.team_name }>
-                                                            { user.name }
-                                                        </span>
-                                                        <span className={ SettingModalStyle.team_email }>
-                                                            { user.email }
-                                                        </span>
-                                                        <span className={ SettingModalStyle.team_exclude }>
-                                                            <i className="material-icons"
-                                                                onClick={ () => delTaskUser(user.no, index) } >clear</i>
-                                                        </span>
-                                                    </div> )
-                            }
-                        </div>
-                    </div>
-
-                    <div className={ SettingModalStyle.text }>
-                    <span>프로젝트 인원</span>
-                    </div>
-
-                    <div className={ SettingModalStyle.team_wrapper } >
-                        <div className={ SettingModalStyle.team }>
-                            {
-                                taskNoneUsers.map((user, index) => 
-                                                        <div key={index} >
-                                                            <span className={ SettingModalStyle.team_profile }>
-                                                                <i className="material-icons">account_circle</i>
-                                                            </span>
-                                                            <span className={ SettingModalStyle.team_name }>
-                                                                { user.name }
-                                                            </span>
-                                                            <span className={ SettingModalStyle.team_email }>
-                                                                { user.email }
-                                                            </span>
-                                                            <span className={ SettingModalStyle.team_exclude }>
-                                                                <i className="material-icons"
-                                                                    onClick={ () => plusTaskUser(user.no, index) } >add_box</i>
-                                                            </span>
-                                                        </div> )
-                            }
-                    </div>
-                </div>          
-        </form>
-
-        <div className={ SettingModalStyle.modal_btn }>
-            <button type="submit" 
-                  form="task_reg"
-                  onClick={ () => {refForm.current.dispatchEvent(new Event("submit", {cancelable: true, bubbles: true}))} }>
-            <span>변경</span>
-            </button>
-            <button form="task_reg"
-                  onClick={ () => delTask(task.no) }>
-                <span>삭제</span>
-            </button>
-        </div>
-        </Fragment>);
-    }
-
-    const comment = () => {
-        return(
-            <form 
-                className={ SettingModalStyle.task_reg }
-                ref={ refForm }
-                onSubmit={() => handleSettingSubmit(name, importance, startDate, endDate) } >
-            </form>
-        );
-    }
-
     const handleFileSubmit = (e) => {
         e.preventDefault();
-
         // Validation
         if (e.target['uploadImage'].files.length === 0) {
             console.error(`validation ${e.target['uploadImage'].placeholder} is empty`);
             return;
         }
-
         const fileData = e.target['uploadImage'].files[0];
-
         notifyFile.add(task.no, fileData);
-
         //modalClose();
     }
-    
     const callFileDownload = async (file) => {
-
         try {
             const response = await fetch(`/api/task/fileData/${file.no}`, {
                 method: 'get',
@@ -707,49 +621,36 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
                 },
                 body: null
             });
-
             if (!response.ok) {
                 throw `${response.status} ${response.statusText}`;
             }
-        
             const json = await response.json();
-    
             // update가 안 된 경우
             if(!json.data) {
                 return;
             }
-            
             let binary = base64.decode(json.data);
             let blob = new Blob([new String(binary)], {type: "text/plain;charset=utf-8"});
             saveAs(blob, file.name);
-
         } catch (err) {
             console.error(err);
         }
-
-        
-    
       }
-
     const file = () => {
-
         return(
             <Fragment>
-                <form 
+                <form
                 className={ SettingModalStyle.task_reg }
                 ref={ refForm }
                 onSubmit={ handleFileSubmit } >
-
                 <div className={ SettingModalStyle.modal_input3 } >
                     <span>파일첨부</span>
                     <input type={'file'}
                         name={'uploadImage'}/>
                 </div>
-
                 <div className={ SettingModalStyle.text }>
                     <span>파일 목록</span>
                 </div>
-
                 <div className={ SettingModalStyle.team_wrapper } >
                         <div className={ SettingModalStyle.team }>
                             {
@@ -776,35 +677,17 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
                             }
                         </div>
                 </div>
-                        
             </form>
             <div className={ SettingModalStyle.modal_btn }>
-              <button type="submit" 
+              <button type="submit"
                       form="task_reg"
                       onClick={ () => {refForm.current.dispatchEvent(new Event("submit", {cancelable: true, bubbles: true}))} }>
                 <span>파일업로드</span>
               </button>
             </div>
-        
-            </Fragment>)
-            
+            </Fragment>);
     }
 
-
-    const menu = (num) => {
-        if(num == 1) {
-            return(setting());
-        } else if(num == 2) {
-            return(comment());
-        } else {
-            return(file());
-        }
-    }
-
-
-
-    const handleSubmit = () => {}
-    
     return (
         
         <Modal
@@ -817,7 +700,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
             
             <div className={ SettingModalStyle.modal_header } >
                 <h2>업무</h2>
-                <span onClick={ () => { modalClose(); } }>
+                <span onClick={ () => { setModalIsOpen(false); modalInit(); } }>
                     <i className="material-icons">clear</i>
                 </span>
             </div>
