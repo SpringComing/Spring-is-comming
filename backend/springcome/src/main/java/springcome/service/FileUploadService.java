@@ -1,6 +1,7 @@
 package springcome.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -59,5 +60,19 @@ public class FileUploadService {
 		filename += ("." + extName);
 		
 		return filename;
-	}	
+	}
+	
+	public byte[] getFileBinary(String filepath) {
+		File file = new File(filepath);
+		byte[] data = new byte[(int) file.length()];
+		
+		try (FileInputStream stream = new FileInputStream(file)) {
+			stream.read(data, 0, data.length);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		
+		return data;
+	}
+
 }

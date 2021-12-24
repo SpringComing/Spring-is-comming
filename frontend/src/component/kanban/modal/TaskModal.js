@@ -1,10 +1,9 @@
 import React, {Fragment, useRef, useState} from 'react';
 import Modal from "react-modal";
 import update from 'react-addons-update';
-import stylesTask from "../../../assets/css/component/kanban/AddTask.scss"
 import SettingModalStyle from "../../../assets/css/component/kanban/TaskSettingModal.scss"
-import CommentModalStyle from "../../../assets/css/component/kanban/TaskCommentModal.scss"
-import FileModalStyle from "../../../assets/css/component/kanban/TaskFileModal.scss"
+import base64 from 'base-64'
+import fileDownload from 'file-saver';
 import  Cookie  from "react-cookies"
 
 Modal.setAppElement('body');
@@ -91,8 +90,8 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
 
     }
 
-    const fileUpload = async(taskNo) => {
-        console.log(taskNo);
+    const fileLoad = async(taskNo) => {
+        
         try {
             const response = await fetch(`/api/task/file/${taskNo}`, {
                 method: 'get',
@@ -114,7 +113,6 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
                 return;
             }
 
-            console.log(json.data)
             setFileList(json.data);
 
         } catch (err) {
@@ -125,7 +123,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
     if(modalIsOpen && flag) { 
         callTaskUser();
         callTaskNoneUser();
-        fileUpload(task.no);
+        fileLoad(task.no);
 
         setFlag(false);
     }
@@ -301,7 +299,8 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
                 // Post
                 const response = await fetch(`/api/task/file?userNo=${Cookie.load('userno')}&taskNo=${taskNo}`, {
                     method: 'post',
-                    headers: { 'Accept': 'applcation/json' },
+                    headers: { 
+                        'Accept': 'application/json' },
                     body: formData
                 })
 
@@ -317,18 +316,20 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
                 }
                 
                 // re-rendering(update)
-                setFileList([json.data, fileList]);
+                setFileList([json.data, ...fileList]);
 
             } catch (err) {
                 console.error(err);
             }
         },
-        delete: async function(fileNo, index) {
+        delete: async function(fileNo) {
             try {
                 // Delete
                 const response = await fetch(`/api/task/file/${fileNo}`, {
                     method: 'delete',
-                    headers: { 'Accept': 'applcation/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json' },
                     body: null
                 });
 
@@ -343,10 +344,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
                     throw json.message;
                 }
 
-                let updateFileList = fileList;
-                updateFileList.splice(index, 1);
-
-                setFileList(updateFileList);
+                setFileList(fileList.filter(file => file.no !== fileNo));
 
             } catch (err) {
                 console.error(err);
@@ -503,10 +501,43 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
         //modalClose();
     }
     
-    const fileDownload = () => {}
+    const callFileDownload = async (file) => {
+
+        try {
+            const response = await fetch(`/api/task/fileData/${file.no}`, {
+                method: 'get',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: null
+            });
+
+            if (!response.ok) {
+                throw `${response.status} ${response.statusText}`;
+            }
+        
+            const json = await response.json();
+    
+            // update가 안 된 경우
+            if(!json.data) {
+                return;
+            }
+            
+            let binary = base64.decode(json.data);
+            let blob = new Blob([new String(binary)], {type: "text/plain;charset=utf-8"});
+            saveAs(blob, file.name);
+
+        } catch (err) {
+            console.error(err);
+        }
+
+        
+    
+      }
 
     const file = () => {
-        console.log(Cookie.load('userno'));
+
         return(
             <Fragment>
                 <form 
@@ -531,7 +562,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
                                                     <div key={index} >
                                                         <span className={ SettingModalStyle.team_exclude }>
                                                             <i className="material-icons"
-                                                                onClick={ () => notifyFile.delete(item.no, index) } >clear</i>
+                                                                onClick={ () => notifyFile.delete(item.no) } >clear</i>
                                                         </span>
                                                         <span className={ SettingModalStyle.team_name }>
                                                             { item.userName }
@@ -544,7 +575,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
                                                         </span>
                                                         <span className={ SettingModalStyle.team_exclude }>
                                                             <i className="material-icons"
-                                                                onClick={ () => fileDownload() } >file_download</i>
+                                                                onClick={ () => callFileDownload(item) } >file_download</i>
                                                         </span>
                                                     </div> )
                             }

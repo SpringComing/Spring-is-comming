@@ -84,4 +84,16 @@ public class TaskRepository {
 	public Boolean insertFile(FileVo vo) {
 		return 1 == sqlSession.insert("task.insertFile", vo);
 	}
+
+	public String getFileUserName(Long no) {
+		return sqlSession.selectOne("task.getFileUserName", no);
+	}
+
+	public Boolean deleteFile(Long no) {
+		return 1 == sqlSession.delete("task.deleteFile", no);
+	}
+
+	public FileVo getByFileNo(Long no) {
+		return sqlSession.selectOne("task.getByFileNo", no);
+	}
 }

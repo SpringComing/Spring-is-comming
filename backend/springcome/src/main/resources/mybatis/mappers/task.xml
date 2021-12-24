@@ -22,6 +22,23 @@
 		]]>
 	</select>
 	
+	<select id="getByFileNo" parameterType="long" resultType="filevo">
+		<![CDATA[
+		select a.no, a.name, a.url, date_format(a.reg_date, '%Y-%m-%d %H:%i:%s') as regDate, a.task_no as taskNo, a.user_no as userNo, b.name as userName
+        from file a, user b
+        where a.no = #{no }
+        and a.user_no = b.no
+		]]>
+	</select>
+	
+	<select id="getFileUserName" parameterType="long" resultType="string">
+		<![CDATA[
+		select name as userName
+        from user
+        where no = #{no }
+		]]>
+	</select>
+	
 	<select id="findTaskUser"  parameterType="long" resultType="uservo">
 		<![CDATA[
 		select c.no, c.name, c.email, c.password, c.birth, c.join_date, c.tel, c.profile
@@ -180,5 +197,10 @@
 		]]>
 	</delete>
 	
+	<delete id="deleteFile" parameterType="long">
+		<![CDATA[
+		delete from file where no = #{no }
+		]]>
+	</delete>
 	
 </mapper>

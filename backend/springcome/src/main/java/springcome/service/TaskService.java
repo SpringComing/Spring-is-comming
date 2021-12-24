@@ -82,7 +82,15 @@ public class TaskService {
 		return taskRepository.insertFile(vo);
 	}
 
+	public String getFileUserName(Long userNo) {
+		return taskRepository.getFileUserName(userNo);
+	}
 
+	public Boolean deleteFile(Long no) {
+		return taskRepository.deleteFile(no);
+	}
 
-
+	public FileVo getByFileNo(Long no) {
+		return taskRepository.getByFileNo(no);
+	}
 }
