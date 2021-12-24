@@ -1,6 +1,11 @@
 package springcome.controller.api;
 
+import java.util.List;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -8,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import springcome.auth.PrincipalDetails;
 import springcome.dto.JsonResult;
 import springcome.service.TaskService;
+import springcome.vo.CommentVo;
 import springcome.vo.TaskDiffVo;
 import springcome.vo.TaskSameVo;
 /*
@@ -72,6 +79,57 @@ public class TaskController {
 			@RequestBody TaskDiffVo vo) {
 		//System.out.println(vo);
 		return JsonResult.success(taskService.updateProcessTaskSeq(vo));
+		
+	}
+	
+	@PutMapping("/comment")
+	public JsonResult getComment(
+			@RequestBody String args) {
+		
+		List<CommentVo> vo;
+		try {
+		JSONParser jsonParse = new JSONParser();
+		JSONObject jsonObj = (JSONObject) jsonParse.parse(args);
+		String taskNo = jsonObj.get("no").toString();
+		
+		vo = taskService.findComment(taskNo);
+		System.out.println(vo);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return JsonResult.fail(null);
+		}
+		
+		return JsonResult.success(vo);
+		
+	}
+	
+	@PutMapping("/addComment")
+	public JsonResult addComment(
+			@RequestBody String args, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+		
+		try {
+		JSONParser jsonParse = new JSONParser();
+		JSONObject jsonObj = (JSONObject) jsonParse.parse(args);
+		
+		String taskNo = jsonObj.get("no").toString();
+		String Message = jsonObj.get("message").toString();
+		String userno = principalDetails.getNo();
+		int result = taskService.addComment(Message, taskNo, userno);
+		CommentVo vo = taskService.commentData(result);
+		
+		
+		if(result != 0) {
+			return JsonResult.success(vo);
+		}else {
+			return JsonResult.fail(null);
+		}
+		
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+			return JsonResult.fail(null);
+		}
+		
 		
 	}
 	

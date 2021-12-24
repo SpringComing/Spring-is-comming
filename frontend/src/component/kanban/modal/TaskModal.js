@@ -4,7 +4,9 @@ import update from 'react-addons-update';
 import stylesTask from "../../../assets/css/component/kanban/AddTask.scss"
 import SettingModalStyle from "../../../assets/css/component/kanban/TaskSettingModal.scss"
 import CommentModalStyle from "../../../assets/css/component/kanban/TaskCommentModal.scss"
+import ModalStyle from "../../../assets/css/component/project/CommentModal.scss"
 import FileModalStyle from "../../../assets/css/component/kanban/TaskFileModal.scss"
+import  Cookie  from "react-cookies"
 
 Modal.setAppElement('body');
 
@@ -18,7 +20,8 @@ const TaskModal = ({modalIsOpen, setModalIsOpen, processes, setProcesses, pindex
     const [startDate, setStartDate] = useState(task.startDate ? task.startDate : currentDate);
     const [endDate, setEndDate] = useState(task.endDate ? task.endDate : currentDate);
     const [num, setNum] = useState(1);
-    const [commentText, setComment] = useState('');
+    const [commentText, setComment] = useState([]);
+    const [flag, setFlag] = useState(true);
 
     const menu = (num) => {
         if(num == 1) {
@@ -29,7 +32,7 @@ const TaskModal = ({modalIsOpen, setModalIsOpen, processes, setProcesses, pindex
             return(file());
         }
     }
-
+        
     const modalInit = () => {
         setName(task.name);
         setImportance(task.importance);
@@ -37,7 +40,90 @@ const TaskModal = ({modalIsOpen, setModalIsOpen, processes, setProcesses, pindex
         setEndDate(task.endDate ? task.endDate : currentDate);
         setComment('');
         setNum(1);
+        
     }
+
+    const getComment = async(task) => { 
+ 
+        try {
+            const response = await fetch(`/api/task/comment`, {
+                method: 'put',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    no: task.no,
+
+                })
+            });
+    
+            if(!response.ok) {
+                throw  `${response.status} ${response.statusText}`;
+            }
+    
+            const json = await response.json();
+    
+            if(!json.data) {
+                return;
+            }
+
+            
+            var comments = []
+            for(var i = 0; i<json.data.length; i++){
+                comments.push(json.data[i]);
+            }
+
+            setComment(comments)
+    
+          } catch (err) {
+            console.error(err);
+          }
+        }
+
+    const addComment = async(task,message) => { 
+
+            try {
+                const response = await fetch(`/api/task/addComment`, {
+                    method: 'put',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        no: task.no,
+                        message: message,
+    
+                    })
+                });
+        
+                if(!response.ok) {
+                    throw  `${response.status} ${response.statusText}`;
+                }
+        
+                const json = await response.json();
+        
+                if(!json.data) {
+                    return;
+                }
+                
+                setComment([...commentText, {no:json.data.no, name:json.data.name, message:json.data.message, reg_date:json.data.reg_date, user_no:json.data.user_no }])
+                document.getElementById("back").scrollTop = document.getElementById("back").scrollHeight
+                
+              } catch (err) {
+                console.error(err);
+              }
+            }
+
+        if(modalIsOpen && flag) {
+            setFlag(false)
+            getComment(task);
+        }
+
+        const scrollToBotton = () => {
+            scrollRef.current.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'nearest'});
+          };
+
 
     const handleSettingSubmit = async(taskName, taskImportance, taskStartDate, taskEndDate) => { 
 
@@ -157,39 +243,96 @@ const TaskModal = ({modalIsOpen, setModalIsOpen, processes, setProcesses, pindex
     }
 
     const comment = () => {
+        
         return(
             <Fragment>
                 <form 
                 className={ CommentModalStyle.task_reg }
                 ref={ refForm }
-                onSubmit={ handleSubmit } >
+                onSubmit={ handleSubmit }>
 
                 <div className={ CommentModalStyle.text }>
                 <span>COMMENT</span>
                 </div>
-                <div className={ CommentModalStyle.modal_textarea } >
-                    <textarea name="projectDesc" 
-                              value={''} 
-                              onChange={ (e) => setProjectDesc(e.target.value )}  
-                              />
-                </div>
-
+                <div className={ ModalStyle.team_wrapper }>
+                                    <div className={ ModalStyle.team } style={{display:"inline-block"}} id="back">         
+                                        {
+                                            commentText.map(comment => 
+                                                
+                                             
+                                             <div key={comment.no} style={{display: "inline"}}>
+                                                    
+                                                    {comment.user_no != Cookie.load('userno') ?
+                                                     <div>
+                                                                  
+                                                                    <span className={ ModalStyle.team_profile }>
+                                                                        <i className="material-icons">account_circle</i>
+                                                                    </span>
+                                                                    <span className={ ModalStyle.team_name } style={{ width:"110px",marginTop:"3px", textAlign:"left", fontWeight:"bold"}}>
+                                                                        {comment.name}
+                                                                    </span>
+                                                                    <p  style={{width: "500px", height: "50px", textAlign:"left", display: "inline-block", overflowY:"auto"}}>
+                                                                        {comment.message}
+                                                                    </p>
+                                                                    <span style={{fontSize:"8px", width:"100px", marginTop:"40px"}}>
+                                                                        {comment.reg_date}
+                                                                    </span>
+                                                    </div>  
+    : 
+                                                     <div>               
+                                                                    
+                                                                    
+                                                                    <span style={{fontSize:"8px", width:"100px", marginTop:"40px"}}>
+                                                                        {comment.reg_date}
+                                                                    </span>
+                                                                    <p  style={{marginTop:"8px",width: "500px", height: "50px", textAlign:"right", display: "inline-block", overflowY:"auto"}}>
+                                                                        {comment.message}
+                                                                    </p>
+                                                                    <span className={ ModalStyle.team_name } style={{ width:"110px",marginTop:"3px", textAlign:"right", fontWeight:"bold", color:"blue"}}>
+                                                                        {comment.name}
+                                                                    </span>
+                                                                    <span className={ ModalStyle.team_profile }>
+                                                                        <i className="material-icons" style={{color:"blue"}}>account_circle</i>
+                                                                    </span>
+                                                                    
+                                                    </div> }
+    
+                                            </div>
+                                            
+                                            )                  
+                                        }      
+                                    </div>
+                                    
+                                   
+                                </div>
+                                
+                                
                 <div className={ CommentModalStyle.modal_input } >
                     <input type='text' 
-                           placeholder='comment 를 남겨주세요.'
-                           value={commentText}
-                           onChange={ (e) => setComment(e.target.value) } />
+                           placeholder='comment 를 남겨주세요.' id='input'/>
+
                 </div>
 
                 <div className={ CommentModalStyle.modal_btn }>
                     <button type="submit" 
                             form="task_reg"
-                            onClick={ () => {refForm.current.dispatchEvent(new Event("submit", {cancelable: true, bubbles: true}))} }>
+                            onClick={ () => {
+                                var input = document.getElementById('input').value;   
+                                addComment(task,input)
+                                document.getElementById('input').value = ""
+       
+                            }}>
                         <span className={ stylesTask.add_icon }><i className="material-icons">send</i></span>
                     </button>
                 </div>
             </form>
-            </Fragment>);
+                            
+            
+            </Fragment>)
+            
+            
+            
+   
     }
 
     const file = () => {
@@ -250,8 +393,12 @@ const TaskModal = ({modalIsOpen, setModalIsOpen, processes, setProcesses, pindex
                 <span>변경</span>
               </button>
             </div>
-            </Fragment>);
+        
+            </Fragment>)
+            
     }
+
+
 
     const handleSubmit = () => {}
 
@@ -281,7 +428,12 @@ const TaskModal = ({modalIsOpen, setModalIsOpen, processes, setProcesses, pindex
 
         </Modal>
         
-    );
+    );  
+
 }
+
+
+
+
 
 export default TaskModal;

@@ -12,6 +12,33 @@
 		]]>
 	</select>
 	
+	<select id="findComment"  parameterType="map" resultType="commentvo">
+		<![CDATA[
+		select comment.no,reg_date,message,task_no, user_no, name
+		from comment,user
+		where user.no = comment.user_no and task_no = #{task_no}
+		order by comment.no asc
+		]]>
+	</select>
+	
+	<select id="commentData" parameterType="integer" resultType="commentvo">
+		<![CDATA[
+		select comment.no,reg_date,message,task_no, user_no, name
+		from comment,user
+		where user.no = comment.user_no and comment.no = #{comment_no}
+		]]>
+	</select> 
+	
+	<insert id="addComment" parameterType="map" useGeneratedKeys="true" keyColumn="no" keyProperty="no">
+		<![CDATA[
+		insert 
+		into comment 
+		values(null, now(), #{message }, #{task_no}, #{user_no})
+		]]>
+	</insert>
+	
+
+	
 	<select id="findMaxSeqByProcessNo"  parameterType="long" resultType="long">
 		<![CDATA[
 		select max(sequence)

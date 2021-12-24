@@ -13,6 +13,8 @@
 		<typeAlias type="springcome.vo.TaskSameVo" alias="tasksamevo" />
 		<typeAlias type="springcome.vo.TaskDiffVo" alias="taskdiffvo" />
 		<typeAlias type="springcome.vo.ChecklistVo" alias="checklistvo" />
+		<typeAlias type="springcome.vo.CommentVo" alias="commentvo" />
+		
 
 	</typeAliases>
 	<mappers>

@@ -67,6 +67,10 @@ public class PrincipalDetails implements UserDetails {
 		return userVo.getName();
 	}
 	
+	public String getImage() {
+		return userVo.getImage();
+	}
+	
 
 	public String getJoindate() {
 		return userVo.getJoin_date();

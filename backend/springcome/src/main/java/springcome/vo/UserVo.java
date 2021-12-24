@@ -10,7 +10,14 @@ public class UserVo {
 	private String join_date;
 	private String profile;
 	private String no;
+	private String image;
 	
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
 	public String getNo() {
 		return no;
 	}
@@ -24,7 +31,7 @@ public class UserVo {
 	@Override
 	public String toString() {
 		return "UserVo [email=" + email + ", password=" + password + ", name=" + name + ", tel=" + tel + ", birth="
-				+ birth + ", join_date=" + join_date + ", profile=" + profile + ", no=" + no + "]";
+				+ birth + ", join_date=" + join_date + ", profile=" + profile + ", no=" + no + ", image=" + image + "]";
 	}
 	public void setTel(String tel) {
 		this.tel = tel;

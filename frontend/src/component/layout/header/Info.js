@@ -1,5 +1,9 @@
 import React from "react";
 import cookie from 'react-cookies'
+import { useState, useEffect } from 'react';
+
+
+let test;
 
 function myFunction() {
   document.getElementById("myDropdown").classList.toggle("show");
@@ -19,11 +23,42 @@ window.onclick = function(event) {
   }
 }
 
+window.onload = async() =>{
+  
+  try {
+    const response = await fetch(`/api/profile`, {
+        method: 'put',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            
+
+        })
+    });
+
+    if(!response.ok) {
+        throw  `${response.status} ${response.statusText}`;
+    }
+
+    const json = await response.json();
+
+    if(!json.data) {
+        return;
+    }
+  
+    document.getElementById("images").src = "data:image/;base64," + json.data.image;
+    test = "data:image/;base64," + json.data.image;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 class Info extends React.Component {
 
-
   render() {
-  
+    
     return (
       <React.Fragment>
 
@@ -34,10 +69,10 @@ class Info extends React.Component {
         
         <div className="dropdown">
   {/* <button onClick={myFunction} className="dropbtn">Dropdown</button> */}
-  <img className="dropbtn" src={require("../../../assets/img/thompson.jpg")} onClick={myFunction}/>
+  <img style={{width:"40px", height:"40px"}} className="dropbtn" id="images" src={test || null} onClick={myFunction}/>
   <div id="myDropdown" className="dropdown-content">
     <a href="#">Profile</a>
-    <a href="http://localhost:8080/logout">Logout</a>
+    <a href="http://localhost:7777/logout">Logout</a>
   </div>
 </div>
  
@@ -48,8 +83,5 @@ class Info extends React.Component {
 
 }
 
-function test(){
-  console.log('테스트');
-}
 
 export default Info;
