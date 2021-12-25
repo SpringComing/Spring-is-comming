@@ -2,7 +2,7 @@ import React from 'react';
 import Process from './Process';
 import { DragDropContext } from "react-beautiful-dnd";
 import update from 'react-addons-update';
-
+const SERVER_URL = "http://localhost:8080";
 const KanbanMain = ({projectNo, processes, setProcesses, reUploadProcesses}) => {
 
     const changeTaskSameProc = async(
@@ -21,7 +21,7 @@ const KanbanMain = ({projectNo, processes, setProcesses, reUploadProcesses}) => 
         sourcedroppableId);
 */      
       try {
-        const response = await fetch(`/api/task/same`, {
+        const response = await fetch(`${SERVER_URL}/api/task/same`, {
             method: 'put',
             headers: {
                 'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ const KanbanMain = ({projectNo, processes, setProcesses, reUploadProcesses}) => 
           destinationdroppableId);
 */
       try {
-        const response = await fetch(`/api/task/diff`, {
+        const response = await fetch(`${SERVER_URL}/api/task/diff`, {
             method: 'put',
             headers: {
                 'Content-Type': 'application/json',

@@ -2,7 +2,7 @@ var email_ok;
 var password_ok;
 var tel_ok;
 var timer;
-
+const SERVER_URL = "http://localhost:8080";
 function msg_time() {   // 1초씩 카운트      
 	m = Math.floor(timer / 60) + "분 " + (timer % 60) + "초"; // 남은 시간 계산     
 	$("#authTime").text(m);
@@ -274,7 +274,7 @@ function modal(e) {
 				text: "OK",
 				val: true,
 				onClick: function(e) {
-					location.href = '/loginForm';
+					location.href = `${SERVER_URL}/loginForm`;
 				}
 			}],
 			center: true,

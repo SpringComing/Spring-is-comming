@@ -5,7 +5,7 @@ import interactionPlugin from "@fullcalendar/interaction"
 import "./Calendar.js"
 import Mymodal from './Mymodal'
 import Mymodal2 from './Mymodal2'
-
+const SERVER_URL = "http://localhost:8080";
 let saveEvent = []
 let maxNo = 0;
 
@@ -19,7 +19,7 @@ const Calendar = () => {
     useEffect(async () => {  
       saveEvent = []
             try {
-          const response = await fetch('/api/schedule', {
+          const response = await fetch(`${SERVER_URL}/api/schedule`, {
             method: 'get',
             headers: {
               'Content-Type': 'application/json',   // cf. application/x-www-form-urlencoded
@@ -33,7 +33,7 @@ const Calendar = () => {
           }
           const jsonResult = await response.json();
           if(jsonResult.result !== 'success') {
-            location.href = "/api/checkSession"
+            location.href = `${SERVER_URL}/api/checkSession`
             alert('세션이 만료되었습니다!')
             throw new Error(`${jsonResult.result} ${jsonResult.message}`);
             
@@ -288,7 +288,7 @@ const dragAndDrop = async (args) => {
   
 
   try {
-    const response = await fetch(`/api/updateMemo`, {
+    const response = await fetch(`${SERVER_URL}/api/updateMemo`, {
         method: 'put',
         headers: {
             'Content-Type': 'application/json',
@@ -316,7 +316,7 @@ const dragAndDrop = async (args) => {
 const deleteMemo = async (title,date,no) => {
 
   try {
-      const response = await fetch(`/api/deleteMemo`, {
+      const response = await fetch(`${SERVER_URL}/api/deleteMemo`, {
           method: 'put',
           headers: {
               'Content-Type': 'application/json',
@@ -343,7 +343,7 @@ const deleteMemo = async (title,date,no) => {
 const addMemo = async (args) => {
 
   try {
-      const response = await fetch(`/api/addMemo`, {
+      const response = await fetch(`${SERVER_URL}/api/addMemo`, {
           method: 'put',
           headers: {
               'Content-Type': 'application/json',

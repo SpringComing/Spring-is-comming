@@ -1,7 +1,7 @@
 var timer;
 var email;
 var type;
-
+const SERVER_URL = "http://localhost:8080";
 /*
 * 함수: msg_time
 * 작성자: 이동현
@@ -587,9 +587,9 @@ function modal(e) {
 						r = s = a == 1 ? true : false;
 						if (o == 'info' && a == 0) {
 							u._modalHide();
-							location.href = '/loginForm?' + email;
+							location.href = `${SERVER_URL}/loginForm?` + email;
 						} else if (o === 'success') {
-							location.href = '/loginForm';
+							location.href = `${SERVER_URL}/loginForm`;
 						}
 						else {
 							u._modalHide();

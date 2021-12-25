@@ -24,14 +24,7 @@ import springcome.auth.PrincipalDetails;
 public class MainController {
 		
 	@RequestMapping({"", "/main"})
-	public String index(@AuthenticationPrincipal PrincipalDetails principalDetails, HttpServletRequest req, HttpServletResponse resp) {
-		
-
-// 		Cookie Cookie = new Cookie("useremail", principalDetails.getEmail());
-		
-// 		Cookie.setMaxAge(-1);
-// 		resp.addCookie(Cookie);
-		
+	public String index(@AuthenticationPrincipal PrincipalDetails principalDetails, HttpServletRequest req, HttpServletResponse resp) {		
 
 		Cookie cookie = new Cookie("useremail", principalDetails.getEmail());
 		cookie.setMaxAge(-1);
@@ -41,7 +34,7 @@ public class MainController {
 		Cookie cookie2 = new Cookie("userno", principalDetails.getNo().toString());
 		cookie2.setMaxAge(-1);
 		resp.addCookie(cookie2);
-		return "redirect:http://localhost:9999/";
+		return "index";
 	}
 	
 	@RequestMapping({"/user"})

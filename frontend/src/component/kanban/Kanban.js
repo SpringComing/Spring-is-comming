@@ -4,6 +4,7 @@ import SiteLayout from "../layout/SiteLayout";
 import KanbanMain from "./KanbanMain";
 import Nav from "./nav/Nav";
 //import processes2 from '../../assets/json/data.json';
+const SERVER_URL = "http://localhost:8080";
 
 const Kanban = () => {
   //const projectNo = 1;
@@ -13,13 +14,13 @@ const Kanban = () => {
   
   if(projectNo == null) {
     console.log("no projectNo : ",projectNo);
-    location.href = "/";
+    location.href = `${SERVER_URL}/`;
   }
   console.log("yes projectNo : " ,projectNo);
   
   const addProcess = async () => {
     try {
-      const response = await fetch(`/api/process`, {
+      const response = await fetch(`${SERVER_URL}/api/process`, {
           method: 'post',
           headers: {
               'Content-Type': 'application/json',
@@ -53,7 +54,7 @@ const Kanban = () => {
 
   const reUploadProcesses = async() => {
       try {
-        const response = await fetch(`/api/process/${projectNo}`, {
+        const response = await fetch(`${SERVER_URL}/api/process/${projectNo}`, {
           method: 'get',
           headers: {
             'Content-Type': 'application/json',   // cf. application/x-www-form-urlencoded
@@ -81,7 +82,7 @@ const Kanban = () => {
 
   const reUploadProject = async() => {
     try {
-      const response = await fetch(`/api/project/attr/${projectNo}`, {
+      const response = await fetch(`${SERVER_URL}/api/project/attr/${projectNo}`, {
         method: 'get',
         headers: {
           'Content-Type': 'application/json',   // cf. application/x-www-form-urlencoded

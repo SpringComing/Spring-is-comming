@@ -1,7 +1,7 @@
 import React,{useState,useRef, useEffect} from 'react';
 import Modal from "react-modal";
 import ModalStyle from "../../../assets/css/component/project/ProjectPeopleModal.scss"
-
+const SERVER_URL = "http://localhost:8080";
 
 Modal.setAppElement('body');
 
@@ -45,7 +45,7 @@ const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getPeople, project, pe
                 projectNo : project.no
             } 
         
-            const response = await fetch('/api/project/sendemail', {
+            const response = await fetch(`${SERVER_URL}/api/project/sendemail`, {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getPeople, project, pe
             //console.log(jsonResult);
 
             if (jsonResult.result !== 'success') {
-                location.href = "/api/checkSession"
+                location.href = `${SERVER_URL}/api/checkSession`
                 alert("세션이 만료 되었습니다.");
                 throw new Error(`${jsonResult.result} ${jsonResult.message}`);
             }
@@ -79,6 +79,7 @@ const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getPeople, project, pe
             setEmailCheck("초대 이메일을 보냈습니다");
             getPeople(project.no);
             sendProjectMSG(project.no,project.name,"프로젝트 인원이 추가되었습니다.");
+            
         } catch (err) {
             console.error(err);
         }
@@ -97,7 +98,7 @@ const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getPeople, project, pe
         setModalIsOpen(false)
     }
 
-
+   
     return (
         
         <Modal
@@ -126,9 +127,16 @@ const ProjectPeopleModal = ({modalIsOpen, setModalIsOpen, getPeople, project, pe
                 <div className={ ModalStyle.team_wrapper } >
                     <div className={ ModalStyle.team }>
                         {
+                            
                             people.map(user => <div key={user.no} className="user">
                                                     <span className={ ModalStyle.team_profile }>
-                                                        <i className="material-icons">account_circle</i>
+                                                    {
+                                                        user.image ?  
+                                                        <img style={{width:"40px", height:"40px"}} id="images" src={"data:image/;base64," + user.image}/>
+                                                        :
+                                                        <i class="material-icons">account_circle</i>
+                                                    }
+                                                        
                                                     </span>
                                                     <span className={ ModalStyle.team_name }>
                                                         { user.name } 

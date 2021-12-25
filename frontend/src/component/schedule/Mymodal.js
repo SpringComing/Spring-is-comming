@@ -1,7 +1,7 @@
 import React,{useState,useRef} from 'react';
 import Modal from "react-modal";
 import ModalStyle from "../../assets/css/component/project/CalendarModal.scss"
-
+const SERVER_URL = "http://localhost:8080";
 
 
 Modal.setAppElement('body');
@@ -21,7 +21,7 @@ const Mymodal = ({modalIsOpen, setModalIsOpen, data}) => {
    }
 
 //    const moveProject = () => {
-//      window.location.href("/")
+//      window.location.href(`${SERVER_URL}/`)
 //    }
 
 

@@ -2,7 +2,7 @@ import React,{useState,useRef, useEffect} from 'react';
 import Modal from "react-modal";
 import ModalStyle from "../../../assets/css/component/project/ProjectModal.scss"
 import deleteModalStyle from "../../../assets/css/component/project/ProjectDeleteModal.scss"
-
+const SERVER_URL = "http://localhost:8080";
 
 Modal.setAppElement('body');
 
@@ -53,7 +53,7 @@ const ProjectUpdateModal = ({modalIsOpen, setModalIsOpen, getProject, project, d
                 endDate: endDate
             }
 
-            const response = await fetch('/api/project', {
+            const response = await fetch(`${SERVER_URL}/api/project`, {
                 method: 'put',
                 headers: {
                     'Content-Type': 'application/json',

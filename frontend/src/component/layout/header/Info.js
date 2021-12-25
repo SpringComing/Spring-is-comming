@@ -1,7 +1,7 @@
 import React from "react";
 import cookie from 'react-cookies'
 import { useState, useEffect } from 'react';
-
+const SERVER_URL = "http://localhost:8080";
 
 let test;
 
@@ -26,7 +26,7 @@ window.onclick = function(event) {
 window.onload = async() =>{
   
   try {
-    const response = await fetch(`/api/profile`, {
+    const response = await fetch(`${SERVER_URL}/api/profile`, {
         method: 'put',
         headers: {
             'Content-Type': 'application/json',
@@ -47,9 +47,17 @@ window.onload = async() =>{
     if(!json.data) {
         return;
     }
-  
+    
+
+
+
+    if(json.data.image == null){
+      document.getElementById("images").src = "https://bootdey.com/img/Content/avatar/avatar7.png";
+    test = "https://bootdey.com/img/Content/avatar/avatar7.png"
+    }else{
     document.getElementById("images").src = "data:image/;base64," + json.data.image;
     test = "data:image/;base64," + json.data.image;
+    }
   } catch (err) {
     console.error(err);
   }
@@ -71,8 +79,8 @@ class Info extends React.Component {
   {/* <button onClick={myFunction} className="dropbtn">Dropdown</button> */}
   <img style={{width:"40px", height:"40px"}} className="dropbtn" id="images" src={test || null} onClick={myFunction}/>
   <div id="myDropdown" className="dropdown-content">
-    <a href="#">Profile</a>
-    <a href="http://localhost:7777/logout">Logout</a>
+    <a href="/profile">Profile</a>
+    <a href="/logout">Logout</a>
   </div>
 </div>
  

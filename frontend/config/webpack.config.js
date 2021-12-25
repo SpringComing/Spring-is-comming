@@ -31,6 +31,7 @@ module.exports = (env) => ({
     },
     devtool: "eval-source-map",
     devServer: {
+        historyApiFallback: true,
         contentBase: path.resolve('public'),
         watchContentBase: true,
         host: "0.0.0.0",

@@ -1,7 +1,7 @@
 import React,{useState,useRef} from 'react';
 import Modal from "react-modal";
 import ModalStyle from "../../../assets/css/component/project/ProjectModal.scss"
-
+const SERVER_URL = "http://localhost:8080";
 
 Modal.setAppElement('body');
 
@@ -39,7 +39,7 @@ const ProjectAddModal = ({modalIsOpen, setModalIsOpen, getProject}) => {
                 endDate: endDate
             }
 
-            const response = await fetch('/api/project', {
+            const response = await fetch(`${SERVER_URL}/api/project`, {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ const ProjectAddModal = ({modalIsOpen, setModalIsOpen, getProject}) => {
 
 
             if (jsonResult.result !== 'success') {
-                location.href = "/api/checkSession"
+                location.href = `${SERVER_URL}/api/checkSession`
                 alert("세션이 만료 되었습니다.");
                 throw new Error(`${jsonResult.result} ${jsonResult.message}`);
             }

@@ -383,12 +383,19 @@
                 }
             }
             .team_name {
-                width: 400px;
+                width: 80px;
                 font-size: 20px;
                 font-weight: 400;
                 color: #7C7CA8;
                 line-height: 2;
-                width: 80px;
+            }
+            .file_name{
+                width: 200px;
+                font-size: 20px;
+                font-weight: 400;
+                color: #7C7CA8;
+                line-height: 2;
+                overflow: hidden;
             }
             .team_email {
                 width: 400px;

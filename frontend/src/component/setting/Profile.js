@@ -6,6 +6,8 @@ import "./setting.css"
 integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" 
 crossorigin="anonymous"/>
 
+const SERVER_URL = "http://localhost:8080";
+
 const Profile = () => {
 
     const [profile, setProfile] = useState([]);    
@@ -68,7 +70,7 @@ const Profile = () => {
     useEffect(async () => {  
 
         try {
-          const response = await fetch('/api/profile', {
+          const response = await fetch(`${SERVER_URL}/api/profile`, {
             method: 'get',
             headers: {
               'Content-Type': 'application/json',   // cf. application/x-www-form-urlencoded
@@ -82,7 +84,7 @@ const Profile = () => {
           }
           const jsonResult = await response.json();
           if(jsonResult.result !== 'success') {
-            location.href = "/api/checkSession"
+            location.href = `${SERVER_URL}/api/checkSession`
             alert('세션이 만료되었습니다!')
             throw new Error(`${jsonResult.result} ${jsonResult.message}`);
           }
@@ -284,7 +286,7 @@ const changeImage = async (images) => {
   formData.append("image", images)
 
   try {
-      const response = await fetch(`/api/changeImage`, {
+      const response = await fetch(`${SERVER_URL}/api/changeImage`, {
           method: 'put',
           headers: {
               'Accept': 'application/json'
@@ -311,7 +313,7 @@ const changeImage = async (images) => {
 const changeProfile = async (profile) => {
   
     try {
-        const response = await fetch(`/api/changeProfile`, {
+        const response = await fetch(`${SERVER_URL}/api/changeProfile`, {
             method: 'put',
             headers: {
                 'Content-Type': 'application/json',

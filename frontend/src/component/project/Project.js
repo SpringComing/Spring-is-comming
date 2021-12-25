@@ -7,15 +7,14 @@ import ProjectUpdateModal from "./modal/ProjectUpdateModal"
 import ProjectPeopleModal from "./modal/ProjectPeopleModal"
 import SockJsClient from 'react-stomp';
 import  Cookie  from "react-cookies"
-
 //import projects2 from "../../assets/json/data.json"
-
+const SERVER_URL = "http://localhost:8080";
 /**
  * 컴포넌트: Project
  * 작성자: 성창현
  * 책임: 프로젝트화면 기능 상태 컴포넌트
  */
-const Project = ({projectNo,setProjectNo}) => {
+const Project = () => {
 
 
   const $websocket = useRef (null); //웹소켓 Ref
@@ -42,7 +41,7 @@ const Project = ({projectNo,setProjectNo}) => {
   const getProject = async () => {
     
     try {
-      const response = await fetch('/api/project', {
+      const response = await fetch(`${SERVER_URL}/api/project`, {
         method: 'get',
         headers: {
           'Content-Type': 'application/json',   // cf. application/x-www-form-urlencoded
@@ -58,7 +57,7 @@ const Project = ({projectNo,setProjectNo}) => {
       const jsonResult = await response.json();
       
       if(jsonResult.result !== 'success') {
-        location.href = "/api/checkSession"
+        location.href = `${SERVER_URL}/api/checkSession`
         alert("세션이 만료 되었습니다.");
         throw new Error(`${jsonResult.result} ${jsonResult.message}`);
       }
@@ -78,7 +77,7 @@ const Project = ({projectNo,setProjectNo}) => {
     */
   const getPeople = async (projectNo) => {
     try {
-        const response = await fetch("/api/project/people/" + projectNo, {
+        const response = await fetch(`${SERVER_URL}/api/project/people/` + projectNo, {
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
@@ -96,14 +95,15 @@ const Project = ({projectNo,setProjectNo}) => {
 
         // 팀원 데이터 가져오기 실패할 경우
         if (jsonResult.result !== 'success') {
-          location.href = "/api/checkSession"
+          location.href = `${SERVER_URL}/api/checkSession`
           alert("세션이 만료 되었습니다.");
           throw new Error(`${jsonResult.result} ${jsonResult.message}`);
         }
         
         // 가져온 팀원 데이터 상태에 셋팅
-        //console.log("jsonResult",jsonResult.data);
+        
         setPeople(jsonResult.data);
+        
         
     } catch (err) {
         console.error(err);
@@ -117,7 +117,7 @@ const Project = ({projectNo,setProjectNo}) => {
     */
   const excludeUser = async (projectNo, userNo) => {
     try {
-        const response = await fetch(`/api/project/people?projectNo=${projectNo}&userNo=${userNo}`, {
+        const response = await fetch(`${SERVER_URL}/api/project/people?projectNo=${projectNo}&userNo=${userNo}`, {
             method: 'put',
             headers: {
                 'Content-Type': 'application/json',
@@ -155,7 +155,7 @@ const Project = ({projectNo,setProjectNo}) => {
     */
   const deleteProject = async (projectNo) => {
     try {
-        const response = await fetch(`/api/project/${projectNo}`, {
+        const response = await fetch(`${SERVER_URL}/api/project/${projectNo}`, {
             method: 'delete',
             headers: {
                 'Content-Type': 'application/json',
@@ -219,7 +219,7 @@ const Project = ({projectNo,setProjectNo}) => {
    */
   const getAlarm = async () => {
     try {
-        const response = await fetch(`/api/alarm`, {
+        const response = await fetch(`${SERVER_URL}/api/alarm`, {
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
@@ -237,7 +237,7 @@ const Project = ({projectNo,setProjectNo}) => {
 
         // 세션만료시
         if (jsonResult.result !== 'success') {
-          location.href = "/api/checkSession"
+          location.href = `${SERVER_URL}/api/checkSession`
           alert("세션이 만료 되었습니다.");
             throw new Error(`${jsonResult.result} ${jsonResult.message}`);
         }
@@ -267,7 +267,7 @@ const Project = ({projectNo,setProjectNo}) => {
       }
       
       try {
-          const response = await fetch(`/api/alarm`, {
+          const response = await fetch(`${SERVER_URL}/api/alarm`, {
               method: 'post',
               headers: {
                   'Content-Type': 'application/json',
@@ -287,7 +287,7 @@ const Project = ({projectNo,setProjectNo}) => {
   
           // 세션만료시
           if (jsonResult.result !== 'success') {
-            location.href = "/api/checkSession"
+            location.href = `${SERVER_URL}/api/checkSession`
             alert("세션이 만료 되었습니다.");
               throw new Error(`${jsonResult.result} ${jsonResult.message}`);
           }
@@ -309,7 +309,7 @@ const Project = ({projectNo,setProjectNo}) => {
     const updateAlarm = async (alarmNo) => {
   
       try {
-          const response = await fetch(`/api/alarm/${alarmNo}`, {
+          const response = await fetch(`${SERVER_URL}/api/alarm/${alarmNo}`, {
               method: 'put',
               headers: {
                   'Content-Type': 'application/json',
@@ -327,7 +327,7 @@ const Project = ({projectNo,setProjectNo}) => {
   
           // 세션만료시
           if (jsonResult.result !== 'success') {
-            location.href = "/api/checkSession"
+            location.href = `${SERVER_URL}/api/checkSession`
             alert("세션이 만료 되었습니다.");
               throw new Error(`${jsonResult.result} ${jsonResult.message}`);
           }
@@ -349,7 +349,7 @@ const Project = ({projectNo,setProjectNo}) => {
     const deleteAlarm = async (alarmNo) => {
   
       try {
-          const response = await fetch(`/api/alarm/${alarmNo}`, {
+          const response = await fetch(`${SERVER_URL}/api/alarm/${alarmNo}`, {
               method: 'delete',
               headers: {
                   'Content-Type': 'application/json',
@@ -367,7 +367,7 @@ const Project = ({projectNo,setProjectNo}) => {
   
           // 세션만료시
           if (jsonResult.result !== 'success') {
-            location.href = "/api/checkSession"
+            location.href = `${SERVER_URL}/api/checkSession`
             alert("세션이 만료 되었습니다.");
               throw new Error(`${jsonResult.result} ${jsonResult.message}`);
           }
@@ -389,7 +389,7 @@ const Project = ({projectNo,setProjectNo}) => {
     const updateAllAlarm = async () => {
   
       try {
-          const response = await fetch(`/api/alarm/all`, {
+          const response = await fetch(`${SERVER_URL}/api/alarm/all`, {
               method: 'put',
               headers: {
                   'Content-Type': 'application/json',
@@ -407,7 +407,7 @@ const Project = ({projectNo,setProjectNo}) => {
   
           // 세션만료시
           if (jsonResult.result !== 'success') {
-            location.href = "/api/checkSession"
+            location.href = `${SERVER_URL}/api/checkSession`
             alert("세션이 만료 되었습니다.");
               throw new Error(`${jsonResult.result} ${jsonResult.message}`);
           }
@@ -429,7 +429,7 @@ const Project = ({projectNo,setProjectNo}) => {
      const deleteReadAlarm = async () => {
   
       try {
-          const response = await fetch(`/api/alarm/read`, {
+          const response = await fetch(`${SERVER_URL}/api/alarm/read`, {
               method: 'delete',
               headers: {
                   'Content-Type': 'application/json',
@@ -447,7 +447,7 @@ const Project = ({projectNo,setProjectNo}) => {
   
           // 세션만료시
           if (jsonResult.result !== 'success') {
-            location.href = "/api/checkSession"
+            location.href = `${SERVER_URL}/api/checkSession`
             alert("세션이 만료 되었습니다.");
               throw new Error(`${jsonResult.result} ${jsonResult.message}`);
           }
@@ -469,7 +469,7 @@ const Project = ({projectNo,setProjectNo}) => {
     const deleteAllAlarm = async () => {
   
       try {
-          const response = await fetch(`/api/alarm/all`, {
+          const response = await fetch(`${SERVER_URL}/api/alarm/all`, {
               method: 'delete',
               headers: {
                   'Content-Type': 'application/json',
@@ -487,7 +487,7 @@ const Project = ({projectNo,setProjectNo}) => {
   
           // 세션만료시
           if (jsonResult.result !== 'success') {
-            location.href = "/api/checkSession"
+            location.href = `${SERVER_URL}/api/checkSession`
             alert("세션이 만료 되었습니다.");
               throw new Error(`${jsonResult.result} ${jsonResult.message}`);
           }
@@ -506,7 +506,7 @@ const Project = ({projectNo,setProjectNo}) => {
                   updateAllAlarm={updateAllAlarm} deleteReadAlarm={deleteReadAlarm} deleteAllAlarm={deleteAllAlarm} >
                     
         <Nav setModalIsOpen = { setAddModalIsOpen } />
-        <ProjectMain projects={ projects } openModal={ openModal } projectNo= { projectNo } setProjectNo={ setProjectNo }/>
+        <ProjectMain projects={ projects } openModal={ openModal } />
 
         <ProjectAddModal modalIsOpen= { addModalIsOpen } 
                          setModalIsOpen={ setAddModalIsOpen } 

@@ -13,13 +13,14 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
-
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import springcome.interceptor.RouterInterceptor;
 
 @Configuration
 @PropertySource("classpath:springcome/config/WebConfig.properties")
@@ -27,6 +28,23 @@ public class WebConfig implements WebMvcConfigurer {
 	
 	@Autowired
 	private Environment env;
+	
+	// Interceptors
+	@Bean
+	public HandlerInterceptor routerInterceptor() {
+		return new RouterInterceptor();
+	}
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+//		registry.addInterceptor(routerInterceptor())
+//				.addPathPatterns("/")
+//				.addPathPatterns("/schedule")
+//				.addPathPatterns("/profile")
+//				.addPathPatterns("/board/**");
+				
+
+	}
 	
 	// Message Converter
 	@Bean

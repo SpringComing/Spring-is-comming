@@ -69,7 +69,7 @@ spring:
 
 # server
 server:
-   port: 7777
+   port: 8080
    servlet:
      context-path: /
      encoding:

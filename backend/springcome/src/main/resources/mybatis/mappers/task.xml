@@ -41,7 +41,7 @@
 	
 	<select id="findTaskUser"  parameterType="long" resultType="uservo">
 		<![CDATA[
-		select c.no, c.name, c.email, c.password, c.birth, c.join_date, c.tel, c.profile
+		select c.no, c.name, c.email, c.password, c.birth, c.join_date, c.tel, c.profile, c.image
 		from task a, assign b, user c
 		where a.no = #{no } and a.no = b.task_no and b.user_no = c.no
 		]]>
@@ -62,7 +62,7 @@
 	
 	<select id="findComment"  parameterType="map" resultType="commentvo">
 		<![CDATA[
-		select comment.no,reg_date,message,task_no, user_no, name
+		select comment.no,reg_date,message,task_no, user_no, name,image
 		from comment,user
 		where user.no = comment.user_no and task_no = #{task_no}
 		order by comment.no asc

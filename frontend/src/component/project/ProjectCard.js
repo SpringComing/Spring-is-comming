@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
-import Description from './Description'
+import Description from './Description';
 import styles from '../../assets/css/component/project/ProjectCard.scss'
-
+const SERVER_URL = "http://localhost:8080";
 
 const ProjectSetting = (project, openModal) => {
     return(
@@ -23,23 +23,24 @@ const ProjectSetting = (project, openModal) => {
 
 
 /**
-* 함수: setProjectno
+* 함수: intoBoard
 * 작성자: 성창현
 * 기능: 칸반 보드로 화면 전환
 */
-const intoBoard =  (project,setProjectNo) => {
+const intoBoard =  (project) => {
     if(project == null) {
-        console.log("check1");
+        console.log("프로젝트번호 없음");
         return
     }
-    console.log("check2", project.no);
-    //setProjectNo(project.no) ;
+    console.log("프로젝트번호 : ", project.no);
+    
+    //location.href = `${SERVER_URL}/board/${project.no}`;
     location.href = `/board/${project.no}`;
 
 }
 
 
-const ProjectCard = ({ project, openModal, projectNo, setProjectNo }) => {
+const ProjectCard = ({ project, openModal }) => {
     return (
         <div className="backlog-color card-wrapper">
             <div className="card-wrapper__header">
@@ -56,8 +57,7 @@ const ProjectCard = ({ project, openModal, projectNo, setProjectNo }) => {
                 </div>
             </div>
             <div className="cards"
-                 onClick={() => intoBoard(project,setProjectNo) }>
-                     {projectNo}
+                 onClick={() => intoBoard(project)}>  
                 <Description desc={ project.description }
                              startDate={ project.startDate }
                              endDate={ project.endDate } />

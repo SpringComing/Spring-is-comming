@@ -3,7 +3,7 @@ import update from 'react-addons-update';
 import Checklist from './Checklist';
 import TaskModal from "./modal/TaskModal";
 import styles from './Kanban.scss';
-
+const SERVER_URL = "http://localhost:8080";
 const Task = ({projectNo, processes, setProcesses, modalData, setModalData, pindex, tindex}) => {
     const task = processes[pindex].tasks[tindex];
     const [text, setText] = useState('');
@@ -22,7 +22,7 @@ const Task = ({projectNo, processes, setProcesses, modalData, setModalData, pind
     const changeTaskStatus = async () => {
 
         try {
-            const response = await fetch(`/api/task/${task.no}`, {
+            const response = await fetch(`${SERVER_URL}/api/task/${task.no}`, {
                 method: 'put',
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const Task = ({projectNo, processes, setProcesses, modalData, setModalData, pind
 
     const insertChecklist = async (name) => {
         try {
-            const response = await fetch(`/api/checklist`, {
+            const response = await fetch(`${SERVER_URL}/api/checklist`, {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
@@ -161,8 +161,8 @@ const Task = ({projectNo, processes, setProcesses, modalData, setModalData, pind
 
                 <div className={styles.card__menu_right}>
                     <div className={styles.img_avatar2} onClick={ () => changeTaskStatus() }>
-                        {task.status ? <img src={require("../../assets/img/green.jpg")}/>
-                         : <img src={ require("../../assets/img/red.jpg")}/>}
+                        {task.status ? <img src='/assets/images/green.jpg'/>
+                         : <img src='/assets/images/red.jpg'/>}
                     </div>
                 </div>
             </div>

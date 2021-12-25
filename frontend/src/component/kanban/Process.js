@@ -6,7 +6,7 @@ import update from 'react-addons-update';
 import stylesTask from "../../assets/css/component/kanban/AddTask.scss"
 import styles from './Kanban.scss'
 import modalStyles from "../../assets/css/component/kanban/modal.scss";
-
+const SERVER_URL = "http://localhost:8080";
 const Process = ({projectNo, processes, setProcesses, pindex, reUploadProcesses}) => {
     const process = processes[pindex];
     const [text, setText] = useState(process.name);
@@ -15,7 +15,7 @@ const Process = ({projectNo, processes, setProcesses, pindex, reUploadProcesses}
 
     const delProcess = async(processNo, pindex) => {
         try {
-            const response = await fetch(`/api/process/${processNo}`, {
+            const response = await fetch(`${SERVER_URL}/api/process/${processNo}`, {
                 method: 'delete',
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ const Process = ({projectNo, processes, setProcesses, pindex, reUploadProcesses}
     const addTask = async() => {
         //console.log("process.no : ", process.no);
         try {
-            const response = await fetch(`/api/task/`, {
+            const response = await fetch(`${SERVER_URL}/api/task/`, {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ const Process = ({projectNo, processes, setProcesses, pindex, reUploadProcesses}
 
     const changeProcess = async (processName) => {
         try {
-            const response = await fetch(`/api/process`, {
+            const response = await fetch(`${SERVER_URL}/api/process`, {
                 method: 'put',
                 headers: {
                     'Content-Type': 'application/json',

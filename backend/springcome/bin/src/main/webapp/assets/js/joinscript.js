@@ -2,7 +2,7 @@ var email_ok;
 var password_ok;
 var tel_ok;
 var timer;
-
+const SERVER_URL = "http://localhost:8080";
 /*
 * 함수: msg_time
 * 작성자: 이동현
@@ -356,7 +356,7 @@ function modal(e) {
 				text: "OK",
 				val: true,
 				onClick: function(e) {
-					location.href = '/loginForm';
+					location.href = `${SERVER_URL}/loginForm`;
 				}
 			}],
 			center: true,

@@ -60,7 +60,7 @@
 
 	<select id="findPeopleByProjectNo" parameterType="long" resultType="uservo">
 		<![CDATA[
-		select u.no, u.email, u.name
+		select u.no, u.email, u.name, u.image
 		from attend a join user u on a.user_no = u.no
 		where a.project_no = #{projectNo }
 		]]>

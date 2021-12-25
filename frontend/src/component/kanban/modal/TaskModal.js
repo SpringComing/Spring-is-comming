@@ -8,7 +8,7 @@ import ModalStyle from "../../../assets/css/component/project/CommentModal.scss"
 import  Cookie  from "react-cookies"
 import base64 from 'base-64'
 import { saveAs} from 'file-saver'
-
+const SERVER_URL = "http://localhost:8080";
 Modal.setAppElement('body');
 
 const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProcesses, pindex, tindex}) => {
@@ -60,7 +60,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
 
     const callTaskUser = async() => {
         try {
-            const response = await fetch(`/api/task/taskUser/${task.no}`, {
+            const response = await fetch(`${SERVER_URL}/api/task/taskUser/${task.no}`, {
               method: 'get',
               headers: {
                 'Content-Type': 'application/json',   // cf. application/x-www-form-urlencoded
@@ -82,7 +82,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
     }
     const callTaskNoneUser = async() => {
         try {
-            const response = await fetch(`/api/task/taskNoneUser?projectNo=${projectNo}&taskNo=${task.no}`, {
+            const response = await fetch(`${SERVER_URL}/api/task/taskNoneUser?projectNo=${projectNo}&taskNo=${task.no}`, {
               method: 'get',
               headers: {
                 'Content-Type': 'application/json',   // cf. application/x-www-form-urlencoded
@@ -104,7 +104,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
     }
     const fileLoad = async(taskNo) => {
         try {
-            const response = await fetch(`/api/task/file/${taskNo}`, {
+            const response = await fetch(`${SERVER_URL}/api/task/file/${taskNo}`, {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json',
@@ -129,7 +129,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
     const getComment = async(task) => { 
  
         try {
-            const response = await fetch(`/api/task/comment`, {
+            const response = await fetch(`${SERVER_URL}/api/task/comment`, {
                 method: 'put',
                 headers: {
                     'Content-Type': 'application/json',
@@ -156,7 +156,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
             for(var i = 0; i<json.data.length; i++){
                 comments.push(json.data[i]);
             }
-
+            console.log(json.data)
             setComment(comments)
     
           } catch (err) {
@@ -167,7 +167,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
     const addComment = async(task,message) => { 
 
             try {
-                const response = await fetch(`/api/task/addComment`, {
+                const response = await fetch(`${SERVER_URL}/api/task/addComment`, {
                     method: 'put',
                     headers: {
                         'Content-Type': 'application/json',
@@ -216,7 +216,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
             if(taskName.trim() == '') return;
             else taskName = taskName.trim();
             try {
-                const response = await fetch(`/api/task/attr`, {
+                const response = await fetch(`${SERVER_URL}/api/task/attr`, {
                     method: 'put',
                     headers: {
                         'Content-Type': 'application/json',
@@ -260,7 +260,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
 
         const delTaskUser = async(userNo, index) => {
             try {
-                const response = await fetch(`/api/task/assign?userNo=${userNo}&taskNo=${task.no}`, {
+                const response = await fetch(`${SERVER_URL}/api/task/assign?userNo=${userNo}&taskNo=${task.no}`, {
                     method: 'delete',
                     headers: {
                         'Content-Type': 'application/json',
@@ -285,7 +285,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
         }
         const plusTaskUser = async(userNo, index) => {
             try {
-                const response = await fetch(`/api/task/assign?userNo=${userNo}&taskNo=${task.no}`, {
+                const response = await fetch(`${SERVER_URL}/api/task/assign?userNo=${userNo}&taskNo=${task.no}`, {
                     method: 'post',
                     headers: {
                         'Content-Type': 'application/json',
@@ -310,7 +310,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
         }
         const delTask  = async(taskNo) => {
             try {
-                const response = await fetch(`/api/task/${taskNo}`, {
+                const response = await fetch(`${SERVER_URL}/api/task/${taskNo}`, {
                     method: 'delete',
                     headers: {
                         'Content-Type': 'application/json',
@@ -347,7 +347,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
                     const formData = new FormData();
                     formData.append('file', file);
                     // Post
-                    const response = await fetch(`/api/task/file?userNo=${Cookie.load('userno')}&taskNo=${taskNo}`, {
+                    const response = await fetch(`${SERVER_URL}/api/task/file?userNo=${Cookie.load('userno')}&taskNo=${taskNo}`, {
                         method: 'post',
                         headers: {
                             'Accept': 'application/json' },
@@ -371,7 +371,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
             delete: async function(fileNo) {
                 try {
                     // Delete
-                    const response = await fetch(`/api/task/file/${fileNo}`, {
+                    const response = await fetch(`${SERVER_URL}/api/task/file/${fileNo}`, {
                         method: 'delete',
                         headers: {
                             'Content-Type': 'application/json',
@@ -613,7 +613,7 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
     }
     const callFileDownload = async (file) => {
         try {
-            const response = await fetch(`/api/task/fileData/${file.no}`, {
+            const response = await fetch(`${SERVER_URL}/api/task/fileData/${file.no}`, {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json',
@@ -663,11 +663,8 @@ const TaskModal = ({projectNo, modalIsOpen, setModalIsOpen, processes, setProces
                                                         <span className={ SettingModalStyle.team_name }>
                                                             { item.userName }
                                                         </span>
-                                                        <span className={ SettingModalStyle.team_name }>
+                                                        <span className={ SettingModalStyle.file_name }>
                                                             { item.name }
-                                                        </span>
-                                                        <span className={ SettingModalStyle.team_email }>
-                                                            { item.regDate }
                                                         </span>
                                                         <span className={ SettingModalStyle.team_exclude }>
                                                             <i className="material-icons"

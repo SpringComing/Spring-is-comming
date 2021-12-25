@@ -9,22 +9,17 @@ import Profile from "./component/setting/Profile";
 
 const App = () => {
 
-    const[projectNo, setProjectNo] = useState(null);
-    
-
-
     return (
         <Router>
             <Routes>  
-                <Route path="/" element={<Project projectNo = { projectNo }setProjectNo={setProjectNo}/>} /> 
-                    
-
+                <Route path="/" element={<Project />} /> 
+                
                 <Route path="board/:projectNo" element={<Kanban />} />
 
                 <Route path="schedule" element={<Schedule />} />
                 <Route path='profile' element={<Profile />} />
                 <Route path='*' element={<Error404 />} />
-                <Route path='/api/checkSession'/>
+                {/* <Route path='/api/checkSession'/> */}
             </Routes>
         </Router>
     );

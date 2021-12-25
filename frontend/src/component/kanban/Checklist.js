@@ -1,13 +1,14 @@
 import React from 'react';
 import styles from './Kanban.scss';
 import update from 'react-addons-update';
+const SERVER_URL = "http://localhost:8080";
 
 const Checklist = ({processes, setProcesses, modalData, setModalData, pindex, tindex, cindex}) => {
     const checklist = processes[pindex].tasks[tindex].checklists[cindex];
 
     const changeChecklistStatus = async (changeChecklist) => {
         try {
-            const response = await fetch(`/api/checklist/${changeChecklist.no}`, {
+            const response = await fetch(`${SERVER_URL}/api/checklist/${changeChecklist.no}`, {
                 method: 'put',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,7 +51,7 @@ const Checklist = ({processes, setProcesses, modalData, setModalData, pindex, ti
     
     const deleteChecklist = async (changeChecklist) => {        
         try {
-            const response = await fetch(`/api/checklist/${changeChecklist.no}`, {
+            const response = await fetch(`${SERVER_URL}/api/checklist/${changeChecklist.no}`, {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json',

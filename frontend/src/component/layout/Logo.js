@@ -6,7 +6,8 @@ const Logo = () => {
     return (
       <Link to="/">
         <section className={styles.logo} >
-          <img src={require("../../assets/img/logoSpring.png")} />
+          {/* <img src={require("../../assets/img/logoSpring.png")} /> */}
+          <img src='/assets/images/logoSpring.png' />
         </section>
       </Link>
     );

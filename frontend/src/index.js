@@ -3,9 +3,9 @@ import ReactDOM from "react-dom";
 import React from 'react';
 
 import  Cookie  from "react-cookies"
-
+const SERVER_URL = "http://localhost:8080";
 function test(){
-    location.href = "/api/checkSession"
+    location.href = `${SERVER_URL}/api/checkSession`
     
 }
 
